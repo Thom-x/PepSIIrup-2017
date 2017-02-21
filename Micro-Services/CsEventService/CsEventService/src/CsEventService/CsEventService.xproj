@@ -6,8 +6,8 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>12d6bbb5-af51-4287-82fe-5b7d1ef3a778</ProjectGuid>
-    <RootNamespace>CSharp_EventService</RootNamespace>
+    <ProjectGuid>2cab0388-0212-48d2-9929-959ffe2157b0</ProjectGuid>
+    <RootNamespace>CsEventService</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
