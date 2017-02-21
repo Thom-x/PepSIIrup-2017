@@ -6,3 +6,5 @@ mono: none
 dotnet: 1.0.0-preview2-003121
 script:
   - ./build.sh --quiet verify
+after_script:
+  - nunit-console Micro-Services/CsEventService/src/TestLibrary/bin/Debug/netcoreapp1.0/TestLibrary.dll
