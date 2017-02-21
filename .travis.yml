@@ -1,4 +1,8 @@
 language: csharp
 solution: "./Micro-Services/CsEventService/CsEventService.sln"
-install:
-- travis_retry nuget restore -source "https://www.nuget.org/api/v2" ./Micro-Services/CsEventService/CsEventService.sln
+matrix:
+  include:
+    - dotnet: 1.0.1
+      mono: none
+      env: DOTNETCORE=1
+    - mono: latest
