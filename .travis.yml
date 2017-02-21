@@ -5,4 +5,4 @@ sudo: required
 mono: none
 dotnet: 1.0.0-preview2-003121
 script:
-  - ./build.sh --quiet verify
+  - ./Micro-Services/CsEventService/build.sh --quiet verify
