@@ -6,8 +6,3 @@ mono: none
 dotnet: 1.0.0-preview2-003121
 install:
   - nuget restore solution-name.sln
-  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
-script:
-  - ./build.sh --quiet verify
-  - xbuild /p:Configuration=Release Micro-Services/CsEventService/CsEventService.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Micro-Services/CsEventService/src/TestLibrary/bin/Debug/netcoreapp1.0/TestLibrary.dll
