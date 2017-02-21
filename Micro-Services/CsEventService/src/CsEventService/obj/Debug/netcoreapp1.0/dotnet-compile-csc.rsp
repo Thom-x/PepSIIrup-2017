@@ -7,8 +7,8 @@
 -debug:full
 -nostdlib
 -nologo
-"C:\Projects\PepSIIrup-2017\Micro-Services\CsEventService\CsEventService\src\CsEventService\obj\Debug\netcoreapp1.0\dotnet-compile.assemblyinfo.cs"
--out:"C:\Projects\PepSIIrup-2017\Micro-Services\CsEventService\CsEventService\src\CsEventService\bin\Debug\netcoreapp1.0\CsEventService.dll"
+"C:\Projects\PepSIIrup-2017\Micro-Services\CsEventService\src\CsEventService\obj\Debug\netcoreapp1.0\dotnet-compile.assemblyinfo.cs"
+-out:"C:\Projects\PepSIIrup-2017\Micro-Services\CsEventService\src\CsEventService\bin\Debug\netcoreapp1.0\CsEventService.dll"
 -r:"C:\Users\jlenormand\.nuget\packages\dotnet-test-mstest\1.1.2-preview\lib\netcoreapp1.0\dotnet-test-mstest.dll"
 -r:"C:\Users\jlenormand\.nuget\packages\Microsoft.ApplicationInsights\2.1.0\lib\dotnet5.4\Microsoft.ApplicationInsights.dll"
 -r:"C:\Users\jlenormand\.nuget\packages\Microsoft.ApplicationInsights.AspNetCore\1.0.0\lib\netstandard1.6\Microsoft.ApplicationInsights.AspNetCore.dll"
@@ -187,7 +187,7 @@
 -r:"C:\Users\jlenormand\.nuget\packages\System.Threading.Timer\4.0.1\ref\netstandard1.2\System.Threading.Timer.dll"
 -r:"C:\Users\jlenormand\.nuget\packages\System.Xml.ReaderWriter\4.0.11\ref\netstandard1.3\System.Xml.ReaderWriter.dll"
 -r:"C:\Users\jlenormand\.nuget\packages\System.Xml.XDocument\4.0.11\ref\netstandard1.3\System.Xml.XDocument.dll"
--resource:"C:\Projects\PepSIIrup-2017\Micro-Services\CsEventService\CsEventService\src\CsEventService\obj\Debug\netcoreapp1.0\CsEventServicedotnet-compile.deps.json",CsEventService.deps.json
-"C:\Projects\PepSIIrup-2017\Micro-Services\CsEventService\CsEventService\src\CsEventService\Program.cs"
-"C:\Projects\PepSIIrup-2017\Micro-Services\CsEventService\CsEventService\src\CsEventService\Startup.cs"
-"C:\Projects\PepSIIrup-2017\Micro-Services\CsEventService\CsEventService\src\CsEventService\Controllers\ValuesController.cs"
+-resource:"C:\Projects\PepSIIrup-2017\Micro-Services\CsEventService\src\CsEventService\obj\Debug\netcoreapp1.0\CsEventServicedotnet-compile.deps.json",CsEventService.deps.json
+"C:\Projects\PepSIIrup-2017\Micro-Services\CsEventService\src\CsEventService\Program.cs"
+"C:\Projects\PepSIIrup-2017\Micro-Services\CsEventService\src\CsEventService\Startup.cs"
+"C:\Projects\PepSIIrup-2017\Micro-Services\CsEventService\src\CsEventService\Controllers\ValuesController.cs"
