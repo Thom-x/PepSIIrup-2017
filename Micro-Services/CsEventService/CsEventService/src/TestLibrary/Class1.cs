@@ -14,5 +14,11 @@ namespace TestLibrary
         {
             Assert.IsTrue(true);
         }
+
+        [TestMethod]
+        public void testFalse()
+        {
+            Assert.IsFalse(false);
+        }
     }
 }
