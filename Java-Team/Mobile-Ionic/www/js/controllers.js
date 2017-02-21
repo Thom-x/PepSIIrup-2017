@@ -21,6 +21,27 @@ function ($scope, $stateParams) {
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams) {
 
+	var options = {timeout: 10000, enableHighAccuracy: true};
+	 
+	var latLng = new google.maps.LatLng(47.2112216, -1.5570168);
+	 
+	var mapOptions = {
+			center: latLng,
+			zoom: 15,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+	$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+	
+	var marker = new google.maps.Marker({position:new google.maps.LatLng(47.2112216, -1.5570168)});
+	marker.setMap($scope.map);
+	var infowindow = new google.maps.InfoWindow({
+		content: "<div style=\"display:inline-block\"><img src=\"img/logo.png\"style=\"display:inline;width:50px;height:50px;\"></div>" +
+				"<div style=\"display:inline-block\"><p>22 rue oui</p><p>***</p></div>"
+	});
+	
+	marker.addListener('click', function() {
+		infowindow.open($scope.map, marker);
+	  });
 
 }])
    
