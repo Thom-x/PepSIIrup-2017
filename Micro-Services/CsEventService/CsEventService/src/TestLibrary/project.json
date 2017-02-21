@@ -1,0 +1,30 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "testRunner": "mstest",
+
+  "dependencies": {
+    "CsEventService": "1.0.0-*",
+    "dotnet-test-mstest": "1.1.2-preview",
+    "Microsoft.NETCore.App": "1.1.0",
+    "MSTest.TestAdapter": "1.1.11",
+    "MSTest.TestFramework": "1.1.11",
+    "NETStandard.Library": "1.6.1"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [
+        "dnxcore50",
+        "portable-net45+win8"
+      ],
+
+      "dependencies": {
+      }
+    }
+  },
+
+  "runtimes": {
+    "win10-x64": {}
+  }
+}
