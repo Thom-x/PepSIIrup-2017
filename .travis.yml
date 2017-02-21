@@ -6,3 +6,5 @@ mono: none
 dotnet: 1.0.0-preview2-003121
 install:
   - nuget restore solution-name.sln
+script:
+  - ./build.sh --quiet verify
