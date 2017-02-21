@@ -4,7 +4,5 @@ dist: trusty
 sudo: required
 mono: none
 dotnet: 1.0.0-preview2-003121
-install:
-  - nuget restore Micro-Services/CsEventService/CsEventService.sln  -Verbosity detailed
 script:
   - ./build.sh --quiet verify
