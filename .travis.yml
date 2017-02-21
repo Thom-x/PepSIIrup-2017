@@ -1,0 +1,6 @@
+language: csharp
+solution: "./Micro-Services/CsEventService/CsEventService.sln"
+install:
+- travis_retry nuget restore -source "https://www.nuget.org/api/v2" ./Micro-Services/CsEventService/CsEventService.sln
+script:
+- xbuild ./Micro-Services/CsEventService/CsEventService.sln
