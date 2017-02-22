@@ -6,9 +6,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class EventController {
+	
+	/*@Autowired
+	private EventService eventService;*/
 
 	@RequestMapping(value = "/coucou", method = RequestMethod.GET)
-	public String coucou(){
-		return "coucou depuis l'autre côté!";
+	public Event coucou(){
+		Event event = new Event(1, "coucou depuis l'autre côté!");
+		return event;
 	}
 }
