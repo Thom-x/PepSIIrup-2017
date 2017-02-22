@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class EventController {
-	
 	/*@Autowired
 	private EventService eventService;*/
 
