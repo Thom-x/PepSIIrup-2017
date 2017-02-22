@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-MSBuild.SonarQube.Runner.exe begin /k:"org.sonarqube:sonarqube-scanner-msbuild" /n:"TraineeSIIp" /v:"1.0"
+C:/SonarQube/bin/SonarQube.Scanner.MSBuild.exe begin /key:"org.sonarqube:sonarqube-scanner-msbuild" /name:"TraineeSIIp" /version:"1.0"
 dotnet restore && dotnet build **/project.json && dotnet test Micro-Services/CsEventService/src/TestLibrary/project.json
-MSBuild.SonarQube.Runner.exe end
+C:/SonarQube/bin/SonarQube.Scanner.MSBuild.exe end
