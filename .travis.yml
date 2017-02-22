@@ -4,5 +4,13 @@ dist: trusty
 sudo: required
 mono: none
 dotnet: 1.0.0-preview2-003121
+addons:
+  sonarqube:
+    token:
+      secure: FYHRG8MdOxOtH+blaNBtwPADN4V/2VpmFflguN2f6U4V+g0lahDJJ2v99z3/rQVHiNSzKSB479A1UTWLFIRhODGR7UcF1dbBosfAj7Zco48FMHALe6imYf2PyWvGeDA8DribLt6ULhPbsRTyrmeTsU77VBiwc58vHLagYrrQswqYRPpXaTyv8gvhEwa5QCRChYcpHlZSNw6yFnhJvBYbv6BVs3ddVON4aAdxLTKBzEezsepfWw2HgtjMQ/XdJ8WRB4UKQmnOekqnYImJnc5N4H4IilWQGHamVR/siUslw+9UVon+xdBKmzqvrg8MkZDwV2t//KjzPOZTgVojfnaSHZS8emFyfUpt/UuLwcQD1TIoS9nO/a7VVW8rPIDdqR50r9H278g2A7XFW/TKegN1iwaSjRte7IW1Bj5LiHBfCvp7eokjd9fKsGFQlDvX0QT1EPMl1skWxmH7KS6GysXAwcn6jmVa4JJBmAQY5ENyWTemfeo0PCijZ73yHZSQW28O7yxIWW0cwaAxfS3TZ2zFXCtJQBujME5WRSechy/cN0JC2DuUehkzuUURkDVtd7vrjhlYWcda07i7NLLP6QzDy2nk0yqj1XZX0rht9Xx0t9F2bN8y2trlnIU0Jg0BRYEce87xBBr5CfPchfILgqynrwFgTKb2wXkeUaKSAXVK6/o=
 script:
   - ./build.sh --quiet verify
+<<<<<<< HEAD
+  - sonar-scanner
+=======
+>>>>>>> 6a1fcde0674ad8de203d4724d381ba371e7689cd
