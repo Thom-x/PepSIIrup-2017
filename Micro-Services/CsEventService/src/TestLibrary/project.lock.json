@@ -3912,7 +3912,7 @@
           "Microsoft.Extensions.Logging.Console": "1.0.0",
           "Microsoft.Extensions.Logging.Debug": "1.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
-          "Microsoft.NETCore.App": "1.0.1",
+          "Microsoft.NETCore.App": "1.1.0",
           "dotnet-test-mstest": "1.1.2-preview"
         },
         "compile": {
@@ -7980,7 +7980,7 @@
           "Microsoft.Extensions.Logging.Console": "1.0.0",
           "Microsoft.Extensions.Logging.Debug": "1.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
-          "Microsoft.NETCore.App": "1.0.1",
+          "Microsoft.NETCore.App": "1.1.0",
           "dotnet-test-mstest": "1.1.2-preview"
         },
         "compile": {
@@ -12012,7 +12012,7 @@
           "Microsoft.Extensions.Logging.Console": "1.0.0",
           "Microsoft.Extensions.Logging.Debug": "1.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
-          "Microsoft.NETCore.App": "1.0.1",
+          "Microsoft.NETCore.App": "1.1.0",
           "dotnet-test-mstest": "1.1.2-preview"
         },
         "compile": {
