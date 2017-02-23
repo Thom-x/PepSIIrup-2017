@@ -15,7 +15,8 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "MSTest.TestFramework": "1.1.11",
     "MSTest.TestAdapter": "1.1.11",
-    "dotnet-test-mstest": "1.1.2-preview" },
+    "dotnet-test-mstest": "1.1.2-preview"
+  },
 
   "tools": {
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.0.0-preview2-final"
@@ -52,5 +53,10 @@
 
   "scripts": {
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
+  },
+
+  "runtimes": {
+    "win10-x64": {},
+    "ubuntu.14.04-x64": {}
   }
 }
