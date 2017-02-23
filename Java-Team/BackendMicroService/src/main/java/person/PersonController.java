@@ -12,7 +12,7 @@ public class PersonController {
 
     private static final String template = "Hello, %s!";
 
-    @RequestMapping("/greeting")
+    @RequestMapping(value="/greeting", produces="application/json")
     public Person greeting(@RequestParam(value="name", defaultValue="World") String name) {
         return new Person(String.format(template, name));
     }
