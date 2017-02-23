@@ -12,11 +12,6 @@
 		<version>Brixton.RELEASE</version>
 	</parent>
 
-	<properties>
-		<!-- Stand-alone RESTFul application for testing only -->
-		<start-class>io.pivotal.microservices.services.Main</start-class>
-	</properties>
-
 	<dependencies>
 	<!-- spring libraries -->
         <dependency>
