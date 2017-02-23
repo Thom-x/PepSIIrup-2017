@@ -1,11 +1,11 @@
-package services.event;
+package com.eventService.services;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Import;
 
-import event.EventConfiguration;
+import com.eventService.event.EventConfiguration;
 
 @EnableAutoConfiguration
 @EnableDiscoveryClient
