@@ -7,4 +7,21 @@
     <version>1.1.0.RELEASE</version>
   </parent>
   <artifactId>com.SII.EventService</artifactId>
+   <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+               <mainClass>com.eventService.EventServer</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
 </project>
