@@ -7,7 +7,6 @@
     <version>1.1.0.RELEASE</version>
   </parent>
   <artifactId>com.SII.ClientService</artifactId>
-  
    <build>
     <plugins>
       <plugin>
@@ -24,6 +23,5 @@
       </plugin>
     </plugins>
   </build>
-  
   
 </project>
