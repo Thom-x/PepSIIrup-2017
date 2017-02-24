@@ -2,6 +2,7 @@
 eureka:
   instance:
     hostname: localhost
+    prefer-ip-address: true
   client:  # Not a client, don't register with yourself
     registerWithEureka: false
     fetchRegistry: false

@@ -1,0 +1,14 @@
+eurekaTry:
+    image: eureka
+    ports:
+        - "1111:1111"
+        
+personTry:
+    image: person
+    ports:
+        - "2222:2222"
+        
+clientTry:
+    image: client
+    ports:
+        -  "4444:4444"
