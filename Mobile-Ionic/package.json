@@ -21,7 +21,8 @@
     "karma-ie-launcher": "^1.0.0",
     "karma-jasmine": "^1.1.0",
     "karma-safari-launcher": "^1.0.0",
-    "shelljs": "^0.3.0"
+    "shelljs": "^0.3.0",
+    "jasmine-core": "^2.5.2"
   },
   "cordovaPlugins": [
     "cordova-plugin-whitelist",
