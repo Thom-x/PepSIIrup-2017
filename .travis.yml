@@ -27,4 +27,3 @@ script:
 - npm install
 - cordova platform add android
 - ionic build android 
-
