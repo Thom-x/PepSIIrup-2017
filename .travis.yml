@@ -1,4 +1,12 @@
 language: java
 jdk:
   - oraclejdk8
-script: cd BackendMicroService && mvn test && cd .. && cd Mobile-Ionic && npm install && npm test
+script: 
+    - cd BackendMicroService 
+    - && mvn test 
+    - cd .. 
+    - cd Mobile-Ionic 
+    - npm install 
+    - ionic platform add android
+    - ionic build android 
+    
