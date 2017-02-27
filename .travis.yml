@@ -25,5 +25,8 @@ script:
 - mvn test 
 - cd ../Mobile-Ionic 
 - npm install
+- cd platform/android
+- ./gradlew --info build clean
+- cd ../..
 - cordova platform add android
 - ionic build android 
