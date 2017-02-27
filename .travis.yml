@@ -6,6 +6,6 @@ script:
 - mvn test 
 - cd ../Mobile-Ionic 
 - npm install
-- npm install cordova ionic
+- npm install -g cordova ionic
 - cordova platform add android
 - ionic build android 
