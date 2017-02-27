@@ -1,11 +1,12 @@
 language: java
 jdk:
   - oraclejdk8
+before_install:  
+- npm install -g  cordova ionic
 script:  
 - cd BackendMicroService
 - mvn test 
 - cd ../Mobile-Ionic 
 - npm install
-- npm install -g cordova ionic
 - cordova platform add android
 - ionic build android 
