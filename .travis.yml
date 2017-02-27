@@ -4,7 +4,7 @@ jdk:
 script:  
 - cd BackendMicroService
 - mvn test 
-- cd ../ Mobile-Ionic 
+- cd ../Mobile-Ionic 
 - npm install 
 - cordova platform add android
 - ionic build android 
