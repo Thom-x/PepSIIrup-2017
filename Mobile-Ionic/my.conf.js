@@ -17,7 +17,7 @@ module.exports = function(config) {
     files: [
       'www/lib/ionic/js/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
-      'www/js/calculator.html'
+      'www/js/calculator.js'
     ],
 
 
