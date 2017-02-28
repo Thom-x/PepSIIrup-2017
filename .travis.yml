@@ -35,7 +35,7 @@ script:
 - cd ../com.SII.ClientService
 - docker build -t client .
 - cd ..
-- docker-compose -f docker-compose.yml run backend
+- docker-compose -f docker-compose.yml run eureka person event client
 - cd ../Mobile-Ionic 
 - npm install
 - npm test
