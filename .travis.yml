@@ -1,5 +1,7 @@
-language: java
 sudo: required
+language: java
+services:
+  - docker
 jdk:
  - oraclejdk8
 node_js:
@@ -29,6 +31,7 @@ script:
 - npm test
 - cordova platform add android
 - ionic build android 
+- cd ..
 
 deploy:
   provider: releases
