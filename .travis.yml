@@ -52,4 +52,4 @@ deploy:
   file_glob: "true"
   skip_cleanup: true
   on:
-    repo: P1erreGaultier/PepSIIrup-2017    
+    repo: TraineeSIIp/PepSIIrup-2017    
