@@ -1,14 +1,19 @@
-eurekaTry:
+eureka:
     image: eureka
     ports:
         - "1111:1111"
         
-personTry:
+person:
     image: person
     ports:
         - "2222:2222"
         
-clientTry:
+event:
+    image: person
+    ports:
+        - "3333:3333"
+        
+client:
     image: client
     ports:
         -  "4444:4444"
