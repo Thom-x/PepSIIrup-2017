@@ -35,10 +35,7 @@ script:
 - cd ../com.SII.ClientService
 - docker build -t client .
 - cd ..
-- docker run -p 1111:1111 eureka eureka
-- docker run -p 2222:2222 person person
-- docker run -p 3333:3333 event event
-- docker run -p 4444:4444 client client
+- docker-compose run
 - cd ../Mobile-Ionic 
 - npm install
 - npm test
