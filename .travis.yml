@@ -1,31 +1,31 @@
 language: java
 sudo: required
 services:
- - docker
+- docker
 jdk:
- - oraclejdk8
+- oraclejdk8
 node_js:
- - "7.5"
-before_install:  
+- '7.5'
+before_install:
 - npm install -g npm@2.14.5
 - npm install -g cordova ionic
 before_script:
-  - wget https://dl.google.com/android/repository/tools_r25.1.7-linux.zip
-  - unzip tools_r25.1.7-linux.zip
-  - echo y | ./tools/android update sdk --no-ui --all --filter platform-tools
-  - echo y | ./tools/android update sdk --no-ui --all --filter build-tools-25.0.1
-  - echo y | ./tools/android update sdk --no-ui --all --filter android-25
-  - echo y | ./tools/android update sdk --no-ui --all --filter extra-android-support
-  - echo y | ./tools/android update sdk --no-ui --all --filter extra-android-m2repository
-  - echo y | ./tools/android update sdk --no-ui --all --filter extra-google-m2repository
-  - ls -l
-  - export ANDROID_HOME=$PWD
-  - export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/25.0.1
-  - mkdir "$ANDROID_HOME/licenses"
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-script:  
+- wget https://dl.google.com/android/repository/tools_r25.1.7-linux.zip
+- unzip tools_r25.1.7-linux.zip
+- echo y | ./tools/android update sdk --no-ui --all --filter platform-tools
+- echo y | ./tools/android update sdk --no-ui --all --filter build-tools-25.0.1
+- echo y | ./tools/android update sdk --no-ui --all --filter android-25
+- echo y | ./tools/android update sdk --no-ui --all --filter extra-android-support
+- echo y | ./tools/android update sdk --no-ui --all --filter extra-android-m2repository
+- echo y | ./tools/android update sdk --no-ui --all --filter extra-google-m2repository
+- ls -l
+- export ANDROID_HOME=$PWD
+- export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/25.0.1
+- mkdir "$ANDROID_HOME/licenses"
+- echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+script:
 - cd BackendMicroService
-- mvn -q install 
+- mvn -q install
 - cd com.SII.RegisterService
 - docker build -t eureka .
 - cd ../com.SII.PersonneService
@@ -35,25 +35,21 @@ script:
 - cd ../com.SII.ClientService
 - docker build -t client .
 - cd ..
-- cd ../Mobile-Ionic 
+- cd ../Mobile-Ionic
 - npm install
 - npm test
 - chmod +x hooks/after_prepare/010_add_platform_class.js
 - cordova platform add android
-- ionic build android 
+- ionic build android
 - cd ..
-
+after_success:
+- sh set_tags.sh
 deploy:
   provider: releases
-    api_key:
-    secure: "jAy5+lpFyNTKnChWE9tUOykhQ1P2wwM6eRjdMlaJIOkV9dgUAKPuhWIxE5COK+ZDaAzOUQem+J664FHOE4OWT7CDnQMNa0BXJdSpKCW2Xe2UtVY2DhwcuDO9e+t5wrUPHRi/tUjEReJeyT8gKxTwuuT1JYZAUHt6m8iOkp5hnX9ujCHcSknaFEG7cGFPCvaW56Z3P2Vwc1ww72dab5kHYs6FpRnaRVbzW2gM2m2+2tXRVDmOQ8u+FsLsPOaiIgPEqBH6uuNUfhVjKuR3O6Er4fRlPNwrfd8BzU5BmzG0simdkSMYH8+mfanpL+Js/DxUZF4UYSOYgnfcy8SbIG+ZewEZXUay9NFJ7UIkTXn2ZlR3JZe2gAuAsGE8dPj5plc5mm9mwGJgnsIA+hnylpFEdcS4zUNXmngf83Lx8DOgTY7VmOooueijPpKld9za2eaEUJtvUqRIs6WauswguCjJ+I1E6yBzBuLGYIPcqxGweOWIdYo84Yzm6Fk2Z4ulKVNcM8j8j2YdxED2qHStoAdLWltRGdkc+TKBUz9cwVIobDKbXnU+TucmOIp4YfJxJBu+9HpQKvKu8HzXKGltsibhuXBOFjAhcUHz0nbexgENntH1Yi7vwMsZ4Jn+rNOkyXOuv4ISiOC6bxAlZK8x7rqA+RHRIw39quHY1me9Otvp/n0="
+  api_key:
+    secure: Sta/RTbO9a8M9oHndJjO4YGzaG0h00sjKzLqkYOSlVd3FQDEQS0fb0Kl2a+lJnT1DMN2PTI+eZOK520sH7B9FtOaZhmKFk1ij+IcgfmDsJnNLuLZgEsuu1FIVoLNdfpStohiuD994zOedPzNh0gKqe0KvJWWYWEA8xQIrc12LtZYcRmGhMaT/tAYkj2W3rdYWtDHDnDtnx9mQxaI97p5I9nqygxB5kz9hutZgNG5oxEW47iKlHTg3N0Z0Uxl+Np9zpqXdh0jrUk/rWWhf+nKHaIZjNg4XcUcd0ztIQTilXd8pvCcmUzjUh8zFOZyF3DWhgRrNeFgRlwdZ9l1yykg6g35wDKoHmzbWU1ho/6rcwgPRSVswhyArpr0P2XrOhGY9afWgNm3ZbKA0Cn6l/L7hw2gnBNrXsRAnWFykG2zK46Dzu8v0C6cPZprYBL08AQOkc7ACflKLZAb0aYHiRfjTfa5kjPEjUN8b3kkxMmDrd1XsOhoyFdGblbLtFLkb+dYbmPln1PaVo5/imIjM1nTQ9TF5pMUk8ycezMoN8MM6ySnMXWY3vkLuHCQCnV/kwpokToLP0Neoj8PBkUAXnpA7cMNs/+kdZsKy3TAQygJ5aputClEborjiqjNcPsZUaKqZahsIqPNu9NJQrTZ1gMPX1K80F2V+Y5t4LAnW/k97pE=
   file: "/home/travis/build/TraineeSIIp/PepSIIrup-2017/Mobile-Ionic/platforms/android/build/outputs/apk/android-debug.apk"
   file_glob: "true"
   skip_cleanup: true
   on:
-    branch: master
-    repo: TraineeSIIp/PepSIIrup-2017
-
-after_success:
-- sh set_tags.sh
-    
+    repo: P1erreGaultier/PepSIIrup-2017    
