@@ -45,6 +45,8 @@ script:
 
 deploy:
   provider: releases
+  api_key:
+    secure: "jAy5+lpFyNTKnChWE9tUOykhQ1P2wwM6eRjdMlaJIOkV9dgUAKPuhWIxE5COK+ZDaAzOUQem+J664FHOE4OWT7CDnQMNa0BXJdSpKCW2Xe2UtVY2DhwcuDO9e+t5wrUPHRi/tUjEReJeyT8gKxTwuuT1JYZAUHt6m8iOkp5hnX9ujCHcSknaFEG7cGFPCvaW56Z3P2Vwc1ww72dab5kHYs6FpRnaRVbzW2gM2m2+2tXRVDmOQ8u+FsLsPOaiIgPEqBH6uuNUfhVjKuR3O6Er4fRlPNwrfd8BzU5BmzG0simdkSMYH8+mfanpL+Js/DxUZF4UYSOYgnfcy8SbIG+ZewEZXUay9NFJ7UIkTXn2ZlR3JZe2gAuAsGE8dPj5plc5mm9mwGJgnsIA+hnylpFEdcS4zUNXmngf83Lx8DOgTY7VmOooueijPpKld9za2eaEUJtvUqRIs6WauswguCjJ+I1E6yBzBuLGYIPcqxGweOWIdYo84Yzm6Fk2Z4ulKVNcM8j8j2YdxED2qHStoAdLWltRGdkc+TKBUz9cwVIobDKbXnU+TucmOIp4YfJxJBu+9HpQKvKu8HzXKGltsibhuXBOFjAhcUHz0nbexgENntH1Yi7vwMsZ4Jn+rNOkyXOuv4ISiOC6bxAlZK8x7rqA+RHRIw39quHY1me9Otvp/n0="
   file: "/home/travis/build/TraineeSIIp/PepSIIrup-2017/Mobile-Ionic/platforms/android/build/outputs/apk/android-debug.apk"
   file_glob: "true"
   skip_cleanup: true
