@@ -25,7 +25,7 @@ before_script:
   - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
 script:  
 - cd BackendMicroService
-- mvn install 
+- mvn -q install 
 - cd com.SII.RegisterService
 - docker build -t eureka .
 - cd ../com.SII.PersonneService
@@ -35,7 +35,7 @@ script:
 - cd ../com.SII.ClientService
 - docker build -t client .
 - cd ..
-- docker-compose run
+- docker-compose -f docker-compose.yml run backend
 - cd ../Mobile-Ionic 
 - npm install
 - npm test
