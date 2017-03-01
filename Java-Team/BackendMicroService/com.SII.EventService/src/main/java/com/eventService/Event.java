@@ -1,30 +1,46 @@
 package com.eventService;
 
 
+import java.io.Serializable;
+
+import javax.persistence.*;
+
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+@Entity
+@Table(name="Event")
 @JsonRootName("Account")
-public class Event {
+public class Event implements Serializable{
 
-	private String texte;
+	public Event(){
+	}
+	
+	public Event(String name, String texte){
+		this.name = name;
+		this.texte = texte;
+	}
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
-	public Event(String texte){
-		this.texte = texte;
-	}
-	
-	public Event(int id, String texte){
-		this.id = id;
-		this.texte = texte;
-	}
-	
+
 	public int getId() {
 		return this.id;
 	}
 	
-	public void setId(int id) {
-		this.id = id;
+	@Column(name = "name")
+	private String name;
+	
+	public String getName() {
+		return this.name;
 	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Column(name = "texte")
+	private String texte;
 	
 	public String getTexte(){
 		return this.texte;
@@ -36,6 +52,6 @@ public class Event {
 	
 	@Override
 	public String toString() {
-		return "Event" + " [" + id + "]: $" + texte;
+		return name + ": " + texte;
 	}
 }

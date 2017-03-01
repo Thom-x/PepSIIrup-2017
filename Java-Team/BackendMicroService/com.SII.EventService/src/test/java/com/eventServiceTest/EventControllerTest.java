@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(classes = {WebConfig.class})
 @ContextConfiguration(loader=AnnotationConfigContextLoader.class)
 public class EventControllerTest {
 	
@@ -49,9 +48,6 @@ public class EventControllerTest {
 	@Mock
 	private EventService eventService;
 	
-	 /*@InjectMocks
-	 private EventController eventController;*/
-	
     @Before
     public void init(){
         MockitoAnnotations.initMocks(this);
@@ -64,7 +60,7 @@ public class EventControllerTest {
 	public void coucou() throws Exception{
 		mockMvc.perform(get("/coucou")).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-				.andExpect(jsonPath("$.id").value(1))
+				.andExpect(jsonPath("$.id").value(0))
 				.andExpect(jsonPath("$.texte").value("coucou depuis l'autre côté!"));
 	}
 }
