@@ -1,4 +1,4 @@
-package com.eventService;
+package com.service.event;
 
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
