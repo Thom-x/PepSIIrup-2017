@@ -16,5 +16,5 @@ event:
 client:
     image: client
     ports:
-        -  "4444:4444"
+        - "4444:4444"
         
