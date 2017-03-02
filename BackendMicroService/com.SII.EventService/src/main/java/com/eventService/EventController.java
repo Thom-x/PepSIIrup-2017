@@ -1,6 +1,9 @@
 package com.eventService;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,15 +17,12 @@ public class EventController {
 	@RequestMapping(value = "/coucou", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
 	public Event coucou(){
 		Event event = new Event("sing", "coucou depuis l'autre côté!");
+        //Event event = new Event("sing", "coucou depuis l'autre côté!");
+		System.out.println(event.getId());
 		repository.save(event);
-		System.out.println("Bien le bonjour utilisateur." + repository);
-		Event e = repository.findByName("sing");
-		repository.majName("Adele", 1);
-		System.out.println("Recup: " + e.getId() + " " + e.getName() + " " + e.getTexte()); 
-		/*e = repository.findByName("Adele");
-		System.out.println("Recup: " + e.getId() + " " + e.getName() + " " + e.getTexte());*/
-		Event e2 = repository.findByName("non");
-		System.out.println(e2);
+		Event event2 = new Event("sing2", "coucou depuis l'autre côté!2");
+		repository.save(event2);
+
 		return event;
 	}
 }

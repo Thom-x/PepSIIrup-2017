@@ -1,10 +1,9 @@
-package com.eventServiceTest;
+package com.eventService;
 
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +16,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.eventService.EventController;
-import com.eventService.EventService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -44,9 +42,6 @@ public class EventControllerTest {
     private EventController eventController;
     
 	private MockMvc mockMvc;
-	
-	@Mock
-	private EventService eventService;
 	
     @Before
     public void init(){

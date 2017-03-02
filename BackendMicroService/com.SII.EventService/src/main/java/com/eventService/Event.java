@@ -4,16 +4,14 @@ package com.eventService;
 import java.io.Serializable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-
+//@Column(name = "id",unique=true, nullable=false)
 @Entity
 @Table(name="Event")
-@JsonRootName("Account")
+@JsonRootName("Event")
 public class Event implements Serializable{
-
-	public Event(){
-	}
 	
 	public Event(String name, String texte){
 		this.name = name;
@@ -21,7 +19,8 @@ public class Event implements Serializable{
 	}
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id",unique=true, nullable=false)
 	private int id;
 
 	public int getId() {
