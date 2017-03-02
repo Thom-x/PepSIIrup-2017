@@ -1,4 +1,4 @@
-package com.ClientService;
+package com.service.client;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
