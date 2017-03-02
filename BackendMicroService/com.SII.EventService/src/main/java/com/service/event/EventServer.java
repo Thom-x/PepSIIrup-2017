@@ -1,11 +1,10 @@
-package com.eventService;
+package com.service.event;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableAutoConfiguration
 @EnableDiscoveryClient
@@ -13,6 +12,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 //@EnableJpaRepositories("com.project.data.spring_jpa.reposito‌​ries")
 @Import(EventConfiguration.class)
 public class EventServer {
+	
+	private EventServer(){
+		
+	}
 
 	/**
 	 * Run the application using Spring Boot and an embedded servlet engine.
