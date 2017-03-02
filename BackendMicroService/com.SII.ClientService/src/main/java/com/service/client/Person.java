@@ -1,4 +1,4 @@
-package com.ClientService;
+package com.service.client;
 
 public class Person {
 	

@@ -1,4 +1,4 @@
-package com.PersonService;
+package com.service.person;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Import;
 @EnableDiscoveryClient
 @Import(PersonConfiguration.class)
 public class PersonServer {
+	
+	private PersonServer(){}
 
     public static void main(String[] args) {
         // Will configure using accounts-server.yml

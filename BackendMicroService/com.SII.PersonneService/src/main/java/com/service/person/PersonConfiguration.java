@@ -1,4 +1,4 @@
-package com.PersonService;
+package com.service.person;
 
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
