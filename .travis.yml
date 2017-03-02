@@ -9,8 +9,7 @@ node_js:
 - '7.5'
 addons:
   sonarqube:
-    token:
-          secure: "CVijVHYdSNasFy4y+3UmlpRA7NPovHAlOckHzW0jSSmSTBrdPdCy9+Np9B+9AQyPppkbINdmdHW7KEs4Eq2s49MsDncRHvPsejwfPpupZDVB9TeNr/apo/3m60isRzDa0/VBkoRVmzixOvffpkQI8ZeC+5cBbG1yNPdhXXfuHsXQC7HIKDPDkaE88GTf/2jhtn5ewMu/9JlCSBPxjrx32tS87ZIE7nDRJzukRc65NIE08Vfk3uBrHmieSZVxNkCBZHdNKSMH1FoucLW5XfKky0mv7uDe6K34COHsduqjuxzIMbSemmspAStmWDownyw3qubr3dxIMVnOuvXAMeO4Xq61FBUXVHwlgJXFU8hDGyQC+H+eiFyEz72bAjA+PxijO5mLpMxhvzkFI3R+Ze3b5I83Uj9vwRdGzQ5hotSAZRCbR++9YIk7aWxzcpDNB6Eer/FK4wOKr6Gwcb40v1A9HyXQ5uynHR5TZg0V8sbh7ASZVkTNhDg1Sf60XssipQSTu383tSgrTCvSzMDX4kqs2W/QWoovqn4eXDjj7cKtm3qSq1WcRFuNn0XYnzObsKt91hBG64h8nqGWxz0LZZndR39lQOvZgElu4KOBDb5p43z6wsL8DP8rlcmjICQ9zkPJwYT/yJf6dFCODh1AWP259Rik3tqy8q5fvDguF87bpAg="
+    token: $SONAR_TOKEN
 before_install:
 - npm install -g npm@2.14.5
 - npm install -g cordova ionic
