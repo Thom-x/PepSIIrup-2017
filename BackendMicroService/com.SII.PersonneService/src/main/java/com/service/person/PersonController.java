@@ -1,4 +1,4 @@
-package com.PersonService;
+package com.service.person;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PersonController {
 
-    private static final String template = "Hello, %s!";
+    private static final String TEMPLATE = "Hello, %s!";
 
     @RequestMapping(value="/greeting", produces="application/json")
     public Person greeting(@RequestParam(value="name", defaultValue="World") String name) {
-        return new Person(String.format(template, name));
+        return new Person(String.format(TEMPLATE, name));
     }
 }

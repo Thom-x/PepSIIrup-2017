@@ -1,11 +1,15 @@
 language: java
 sudo: required
+dist: trusty
 services:
 - docker
 jdk:
 - oraclejdk8
 node_js:
 - '7.5'
+addons:
+  sonarqube:
+    token: $SONAR_TOKEN
 before_install:
 - npm install -g npm@2.14.5
 - npm install -g cordova ionic
@@ -25,7 +29,7 @@ before_script:
 - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
 script:
 - cd BackendMicroService
-- mvn -q install
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 - cd com.SII.RegisterService
 - docker build -t eureka .
 - cd ../com.SII.PersonneService
@@ -54,3 +58,5 @@ deploy:
   skip_cleanup: true
   on:
     repo: TraineeSIIp/PepSIIrup-2017
+    
+    
