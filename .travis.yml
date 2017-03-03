@@ -29,6 +29,7 @@ before_script:
 - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
 script:
 - cd BackendMicroService
+- mvn install:install-file -Dfile=lib/sqljdbc42.jar -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc42 -Dversion=4.2 -Dpackaging=jar
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 - cd com.SII.RegisterService
 - docker build -t eureka .
