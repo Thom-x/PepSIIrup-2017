@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Import;
 @Import(PersonConfiguration.class)
 public class PersonServer {
 	
-	private PersonServer(){}
-
     public static void main(String[] args) {
         // Will configure using accounts-server.yml
         System.setProperty("spring.config.name", "person-server");

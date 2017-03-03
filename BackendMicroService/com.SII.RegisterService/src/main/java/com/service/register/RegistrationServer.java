@@ -12,8 +12,6 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 @SpringBootApplication
 @EnableEurekaServer
 public class RegistrationServer {
-
-	private RegistrationServer(){}
 	
 	/**
 	 * Run the application using Spring Boot and an embedded servlet engine.
