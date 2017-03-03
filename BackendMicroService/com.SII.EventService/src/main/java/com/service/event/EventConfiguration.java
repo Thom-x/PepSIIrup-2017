@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan
-@EntityScan("com.eventService")
+@EntityScan("com.service.event")
 public class EventConfiguration {
 
 }
