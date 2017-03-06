@@ -9,6 +9,7 @@ addons:
   sonarqube:
     token: $SONAR_TOKEN
 script:
+- mvn install:install-file -Dfile=lib/sqljdbc42.jar -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc42 -Dversion=4.2 -Dpackaging=jar
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 - cd com.SII.RegisterService
 - docker build -t eureka .
@@ -18,5 +19,4 @@ script:
 - docker build -t event .
 - cd ../com.SII.ClientService
 - docker build -t client .
-- cd ..
 - docker-compose up -d eureka person event client
