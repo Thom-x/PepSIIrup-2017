@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Component
 public class EventController {
 	
-	/*@Autowired
-	private EventRepository repository;*/
+	@Autowired
+	private EventRepository repository;
 	
 	@RequestMapping(value = "/coucou", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
 	public Event coucou(){
