@@ -13,12 +13,6 @@ import org.springframework.context.annotation.PropertySource;
 @Import(EventConfiguration.class)
 public class EventServer {
 	
-	/**
-	 * Run the application using Spring Boot and an embedded servlet engine.
-	 * 
-	 * @param args
-	 *            Program arguments - ignored.
-	 */
 	public static void main(String[] args) {
 		// Tell server to look for event-server.properties or
 		// event-server.yml

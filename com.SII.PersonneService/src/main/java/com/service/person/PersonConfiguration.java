@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan
-@EntityScan("person")
+@EntityScan("com.service.person")
 public class PersonConfiguration {
 
 }
