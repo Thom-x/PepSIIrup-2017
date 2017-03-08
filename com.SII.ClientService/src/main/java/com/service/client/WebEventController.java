@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Component
-public class WebPersonController {
+public class WebEventController {
 
 	
 	@Autowired
@@ -24,9 +24,10 @@ public class WebPersonController {
 	@Autowired
 	private DirectExchange direct;
 	
-    @RequestMapping("/getPerson")
-    public String getPerson(@RequestParam(value="id", defaultValue="1") String id) {
-		String response = (String) template.convertSendAndReceive(direct.getName(), "person",id);
+    
+    @RequestMapping("/getEvent")
+    public String getEvent(@RequestParam(value="id", defaultValue="1") String id) {
+		String response = (String) template.convertSendAndReceive(direct.getName(), "event",id);
 		System.out.println(response);
 		return response;
     }
