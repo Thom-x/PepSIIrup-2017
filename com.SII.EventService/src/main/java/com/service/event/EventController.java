@@ -1,7 +1,7 @@
 package com.service.event;
 
-import java.util.List;
 
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,5 +24,11 @@ public class EventController {
 		}*/
 			
 		return returnVal;
+	}
+	
+	//mocked
+	@RabbitListener(queues = "#{eventQueue.name}")
+	 public String getAllEvent(int id) throws InterruptedException {
+		return "Afterwork hangar a bananes, Foot en salle urban soccer, dej tech big data";
 	}
 }
