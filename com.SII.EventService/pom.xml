@@ -18,7 +18,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-               <mainClass>com.eventService.EventServer</mainClass>
+               <mainClass>com.service.event.EventServer</mainClass>
             </manifest>
           </archive>
         </configuration>
