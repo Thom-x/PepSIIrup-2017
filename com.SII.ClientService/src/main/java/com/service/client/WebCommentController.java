@@ -1,7 +1,8 @@
 package com.service.client;
 
 import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.Connection;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Component
-public class WebPersonController {
+public class WebCommentController {
 
 	
 	@Autowired
@@ -25,10 +26,10 @@ public class WebPersonController {
 	private DirectExchange direct;
 	
 	
-
-    @RequestMapping("/getPerson")
-    public String getPerson(@RequestParam(value="id", defaultValue="1") String id) {
-		String response = (String) template.convertSendAndReceive(direct.getName(), "person",id);
+    
+    @RequestMapping("/getComment")
+    public String getComment(@RequestParam(value="id", defaultValue="1") String id) {
+		String response = (String) template.convertSendAndReceive(direct.getName(), "comment",id);
 		System.out.println(response);
 		return response;
     }
