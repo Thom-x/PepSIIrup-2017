@@ -13,6 +13,8 @@ public class ClientConfiguration {
 	public ConnectionFactory connectionFactory() {
 	    CachingConnectionFactory connectionFactory =
 	        new CachingConnectionFactory("10.10.1.155");
+    		connectionFactory.setUsername("guest");
+    		connectionFactory.setPassword("guest");
 	    return connectionFactory;
 	}
 
