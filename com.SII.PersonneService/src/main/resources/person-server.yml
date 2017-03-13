@@ -18,3 +18,4 @@ eureka:
     leaseRenewalIntervalInSeconds: 5   # DO NOT DO THIS IN PRODUCTION
     prefer-ip-address: true
     ip-address: nantes-0150.sii.fr
+    

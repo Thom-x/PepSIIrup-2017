@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 @EnableAutoConfiguration
 @SpringBootApplication
 @EnableDiscoveryClient
-@Import(ClientConfiguration.class)
+//@Import(ClientConfiguration.class)
 public class WebServer {
 
 	/**

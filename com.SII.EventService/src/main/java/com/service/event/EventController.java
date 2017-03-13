@@ -1,9 +1,11 @@
 package com.service.event;
 
 
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.connection.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,19 +21,20 @@ public class EventController {
 	
 
 	@RequestMapping(value = "/coucou", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-	public Event coucou(){
-		Event returnVal = new Event("sing", "coucou depuis l'autre côté!");
-		/*List<Event> events = repository.findAll();
-		for(Event event : events){
-			System.out.println("id: " + event.getId() + " Name: " + event.getName() + " Texte: " + event.getTexte());
-		}*/
-			
-		return returnVal;
+	public Event coucou() throws ParseException{
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/hh/mm");
+		Date ds = sdf.parse("12/03/2016/12/00");
+		Date df = sdf.parse("12/03/2016/14/00");
+		//System.out.println(repository);
+		//List<Event> events = repository.findAll();
+		//System.out.println(events.get(0).getDescription() + " start: " + events.get(0).getDateStart() + " - " + events.get(0).getDateEnd());
+		return new Event("Foot en salle", ds ,df, "x45dr84ww64vg", "Seance intensive, venez motivé!", 0, 1);
 	}
 	
 	//mocked
 	@RabbitListener(queues = "#{eventQueue.name}")
-	 public String getAllEvent(int id) throws InterruptedException {
+	 public String getAllEvent(byte[] id) throws InterruptedException, UnsupportedEncodingException {
+		System.out.println(new String(id,"UTF-8"));
 		return "Afterwork hangar a bananes, Foot en salle urban soccer, dej tech big data";
 	}
 }
