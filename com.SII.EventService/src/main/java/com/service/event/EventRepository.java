@@ -15,9 +15,7 @@ public interface EventRepository extends CrudRepository<Event, Integer>{
 
 	Event findByName(String name);
 	
+	//@Query("update Event e set e.texte = :texte where e.id = :id")
 	List<Event> findAll();
 	
-	@Query("update Event e set e.texte = :texte where e.id = :id")
-	@Modifying
-	void majTexte(@Param("texte")String texte, @Param("id")int id);
 }

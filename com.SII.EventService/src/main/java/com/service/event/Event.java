@@ -2,6 +2,7 @@ package com.service.event;
 
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.*;
 
@@ -16,46 +17,120 @@ public class Event implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id",unique=true, nullable=false)
+	@Column(name = "Eventid",unique=true, nullable=false)
 	private int eventId;
-	@Column(name = "name")
+	@Column(name = "Name")
 	private String name;
-	@Column(name = "texte")
-	private String texte;
+	@Column(name = "Datestart")
+	private Date dateStart;
+	@Column(name = "Dateend")
+	private Date dateEnd;
+	@Column(name = "Placeid")
+	private String placeID;
+	@Column(name = "Description")
+	private String description;
+	@Column(name = "Image")
+	private String image;
+	@Column(name = "Iscanceled")
+	private int isCanceled;
+	@Column(name = "Owner")
+	private int owner;
+	
 	
 	public Event(){}
 	
-	public Event(String name, String texte){
+	public Event(String name, Date dateStart, Date dateEnd, String placeID, String description, int isCanceled,
+			int owner) {
+		super();
 		this.name = name;
-		this.texte = texte;
+		this.dateStart = dateStart;
+		this.dateEnd = dateEnd;
+		this.placeID = placeID;
+		this.description = description;
+		this.isCanceled = isCanceled;
+		this.owner = owner;
+	}
+
+	public int getEventId() {
+		return eventId;
 	}
 	
-	public int getId() {
-		return this.eventId;
-	}
-	
-	public void setId(int id){
+	public void setEventId(int id){
 		this.eventId = id;
 	}
 	
 	public String getName() {
-		return this.name;
+		return name;
 	}
 	
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getTexte(){
-		return this.texte;
+	public Date getDateStart() {
+		return dateStart;
 	}
-	
-	public void setTexte(String texte) {
-		this.texte = texte;
+
+	public void setDateStart(Date dateStart) {
+		this.dateStart = dateStart;
 	}
-	
+
+	public Date getDateEnd() {
+		return dateEnd;
+	}
+
+	public void setDateEnd(Date dateEnd) {
+		this.dateEnd = dateEnd;
+	}
+
+	public String getPlaceID() {
+		return placeID;
+	}
+
+	public void setPlaceID(String placeID) {
+		this.placeID = placeID;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public int getIsCanceled() {
+		return isCanceled;
+	}
+
+	public void setIsCanceled(int isCanceled) {
+		this.isCanceled = isCanceled;
+	}
+
+	public int getOwner() {
+		return owner;
+	}
+
+	public void setOwner(int owner) {
+		this.owner = owner;
+	}
+
 	@Override
-	public String toString() {
-		return name + ": " + texte;
+	public boolean equals(Object obj) {
+		if (obj instanceof Event){
+		Event event = (Event)obj;
+		if (event.getDateStart().equals(this.dateStart) && event.getDateEnd().equals(this.dateEnd)){
+			return true;
+		}
+		}
+		return false;
 	}
 }
