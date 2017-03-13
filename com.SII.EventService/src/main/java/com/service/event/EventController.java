@@ -1,14 +1,11 @@
 package com.service.event;
 
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.connection.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +33,8 @@ public class EventController {
 	
 	//mocked
 	@RabbitListener(queues = "#{eventQueue.name}")
-	 public String getAllEvent(int id) throws InterruptedException {
+	 public String getAllEvent(byte[] id) throws InterruptedException, UnsupportedEncodingException {
+		System.out.println(new String(id,"UTF-8"));
 		return "Afterwork hangar a bananes, Foot en salle urban soccer, dej tech big data";
 	}
 }
