@@ -28,7 +28,7 @@ public class EventRepositoryTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		Properties props = new Properties();
+		/*Properties props = new Properties();
 		
 		//ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 	    InputStream is = Driver.class.getResourceAsStream("applicationTest.properties");
@@ -37,7 +37,7 @@ public class EventRepositoryTest {
 	        props.load(is);
 	    } catch (IOException e) {
 	        e.printStackTrace(); 
-	    }
+	    }*/
 		/*Event event1 = new Event("sing", "lyrics of some song");
 		Event event2 = new Event("book", "lorem ipsum");
 		System.out.println(event1.getId() + " " + event2.getId());
