@@ -58,7 +58,8 @@ public class EventControllerTest {
 	
 	@Test
 	public void getAllEvent() throws Exception{
-		String result = eventController.getAllEvent(1);
+		String id = "oui";
+		String result = eventController.getAllEvent(id.getBytes("UTF-8"));
 		assertEquals("Afterwork hangar a bananes, Foot en salle urban soccer, dej tech big data", result);
 	}
 	
