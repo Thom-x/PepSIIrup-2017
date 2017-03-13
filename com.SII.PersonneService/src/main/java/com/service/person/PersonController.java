@@ -24,6 +24,8 @@ public class PersonController {
 	
 	@Autowired 
 	private PersonRepository repository;
+	
+
 
 <<<<<<< HEAD
 	@Autowired 

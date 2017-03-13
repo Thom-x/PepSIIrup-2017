@@ -16,7 +16,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-               <mainClass>com.ClientService.WebServer</mainClass>
+               <mainClass>com.service.client.WebServer</mainClass>
             </manifest>
           </archive>
         </configuration>
