@@ -90,15 +90,4 @@ public class WebPersonController {
 			}
 			return null;
 	    }
-	      
-	    @RequestMapping("/close")
-	    public void closeConnection(){
-	    	try {
-				this.channel.close();
-		    	this.connection.close();
-			} catch (IOException | TimeoutException e) {
-				e.printStackTrace();
-			}
-
-	    }
 }
