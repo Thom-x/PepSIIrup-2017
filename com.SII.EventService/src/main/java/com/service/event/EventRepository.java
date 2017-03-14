@@ -1,5 +1,6 @@
 package com.service.event;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,5 +18,10 @@ public interface EventRepository extends CrudRepository<Event, Integer>{
 	
 	//@Query("update Event e set e.texte = :texte where e.id = :id")
 	List<Event> findAll();
+	
+	@Query("select e From Event e where e.placeID = :placeID and e.dateStart > :dateStart")
+	List<Event> getEventFromPlace(@Param("placeID") String placeID, @Param("dateStart") Date dateStart);
+	
+	List<Event> findByOwner(int owner);
 	
 }
