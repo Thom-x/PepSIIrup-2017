@@ -39,6 +39,17 @@ public class Event implements Serializable{
 	
 	public Event(){}
 	
+	public Event(String name) {
+		this.name = name;
+		this.dateStart = new Date();
+		this.dateEnd = new Date();
+		this.placeID = "17";
+		this.description = "too long";
+		this.isCanceled = 0;
+		this.owner = 2;
+	}
+	
+	
 	public Event(String name, Date dateStart, Date dateEnd, String placeID, String description, int isCanceled,
 			int owner) {
 		super();

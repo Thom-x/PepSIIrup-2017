@@ -26,4 +26,5 @@
     </plugins>
   </build>
   
+   <groupId>stage</groupId>
 </project>
