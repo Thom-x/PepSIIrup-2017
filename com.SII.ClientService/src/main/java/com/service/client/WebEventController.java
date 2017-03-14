@@ -50,20 +50,20 @@ public class WebEventController {
 			e.printStackTrace();
 		}
 	}
-    @RequestMapping("/getEvent")
+    @RequestMapping("/findByOwner")
     public String getEvent(@RequestParam(value="id", defaultValue="1") String id) throws InterruptedException, UnsupportedEncodingException {
-    	return rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getEvent");
+    	return rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"findByOwner");
 	}
     
-    @RequestMapping("/getAllEvent")
+    @RequestMapping("/getEventByPlace")
     public String getAllEvent(@RequestParam(value="id", defaultValue="1") String id) throws InterruptedException, UnsupportedEncodingException {
-    	return rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getAllEvent");
+    	return rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getEventByPlace");
 	}
     
-    @RequestMapping("/updateEvent")
+    @RequestMapping("/saveEvent")
     public String updateEvent(@RequestParam(value="id", defaultValue="1") String id) throws InterruptedException, UnsupportedEncodingException {
     	Event e = new Event("test");
-    	return rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(e),"updateEvent");
+    	return rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(e),"saveEvent");
 	}
 
     private String rabbitRPCRoutingKeyExchange(byte[] data, String routingKey){
