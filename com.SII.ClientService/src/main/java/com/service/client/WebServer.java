@@ -24,5 +24,4 @@ public class WebServer {
 		System.setProperty("spring.config.name", "web-server");
 		SpringApplication.run(WebServer.class, args);
 	}
-
 }
