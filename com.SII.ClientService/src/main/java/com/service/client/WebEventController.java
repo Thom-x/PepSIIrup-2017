@@ -85,26 +85,4 @@ public class WebEventController {
 		}
 		return null;
     }
-=======
-	
-    @RequestMapping("/getEvent")
-    public String getEvent(@RequestParam(value="id", defaultValue="1") String id) throws InterruptedException {
-		final String corrId = UUID.randomUUID().toString();
-		AMQP.BasicProperties props = new AMQP.BasicProperties.Builder().correlationId(corrId).replyTo(replyQueueName).build();   	
-		final BlockingQueue<String> response = new ArrayBlockingQueue<String>(1);
-		try {
-			channel.basicPublish("eureka.rpc", "event", props, id.getBytes("UTF-8"));
-			channel.basicConsume(replyQueueName, true, new DefaultConsumer(channel) {
-			    @Override
-			    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-			        if (properties.getCorrelationId().equals(corrId)) {
-			            response.offer(new String(body, "UTF-8"));
-			        }
-			    }
-			});
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	      return response.take();
-	}
 }
