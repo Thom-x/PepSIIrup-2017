@@ -21,8 +21,8 @@ public class PersonConfiguration {
 	public ConnectionFactory connectionFactory() {
 	    CachingConnectionFactory connectionFactory =
 	        new CachingConnectionFactory("10.10.1.155");
-	    	connectionFactory.setUsername("guest");
-	    	connectionFactory.setPassword("guest");
+	    	connectionFactory.setUsername("BugsBunny");
+	    	connectionFactory.setPassword("Koi29Dr");
 	    return connectionFactory;
 	}
 		
@@ -38,13 +38,32 @@ public class PersonConfiguration {
 	}
 
 	@Bean
-	public Queue personQueue() {
+	public Queue getPersonQueue() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
+	public Queue getAllPersonQueue() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
+	public Queue addPersonQueue() {
 		return new AnonymousQueue();
 	}
 
-
 	@Bean
-	public Binding binding1a(DirectExchange direct, Queue personQueue) {
-		return BindingBuilder.bind(personQueue).to(direct).with("person");
+	public Binding binding1(DirectExchange direct, Queue getPersonQueue) {
+		return BindingBuilder.bind(getPersonQueue).to(direct).with("getPerson");
+	}
+	
+	@Bean
+	public Binding binding2(DirectExchange direct, Queue getAllPersonQueue) {
+		return BindingBuilder.bind(getAllPersonQueue).to(direct).with("getAllPerson");
+	}
+	
+	@Bean
+	public Binding binding3(DirectExchange direct, Queue addPersonQueue) {
+		return BindingBuilder.bind(addPersonQueue).to(direct).with("addPerson");
 	}
 }

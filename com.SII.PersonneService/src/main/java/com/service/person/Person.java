@@ -1,13 +1,21 @@
 package com.service.person;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "Person")
 @JsonRootName("Person")
-public class Person {
+public class Person implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7525202378849284784L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "PersonID",unique=true, nullable=false)
@@ -19,7 +27,14 @@ public class Person {
 	@Column(name = "Job")
 	private String job;
 	
-	public Person(){}
+	
+	
+	public Person(String pseudo, String job) {
+		this.pseudo = pseudo;
+		this.job = job;
+	}
+
+	public Person(){} 
 	
 	public int getPersonID(){
 		return this.personID;
@@ -44,5 +59,12 @@ public class Person {
 	public void setString(String job){
 		this.job = job;
 	}
+
+	@Override
+	public String toString() {
+		return "Person [personID=" + personID + ", pseudo=" + pseudo + ", job=" + job + "]";
+	}
+	
+	
 	
 	}
