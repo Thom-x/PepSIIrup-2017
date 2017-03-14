@@ -1,5 +1,6 @@
 package com.service.event;
 
+import org.springframework.amqp.core.AnonymousQueue;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -35,6 +36,21 @@ public class EventConfiguration {
 	@Bean
 	public EventServer server() {
 		return new EventServer();
+	}
+	
+	@Bean
+	public Queue saveEventQueue() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
+	public Queue findByOwnerQueue() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
+	public Queue getEventByPlaceQueue() {
+		return new AnonymousQueue();
 	}
 	
 	@Bean

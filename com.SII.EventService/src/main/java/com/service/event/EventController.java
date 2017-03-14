@@ -46,19 +46,19 @@ public class EventController {
 		return new Event("Foot en salle", ds ,df, "x45dr84ww64vg", "Seance intensive, venez motivé!", 0, 1);
 	}
 	
-	@RabbitListener(queues = "#{saveEvent.name}")
+	@RabbitListener(queues = "#{saveEventQueue.name}")
 	public String saveEvent(byte[] data){
 		Event e = (Event)SerializationUtils.deserialize(data);
 		repository.save(e);
 		return "ok";
 	}
 	
-	@RabbitListener(queues = "{findByOwner}")
+	@RabbitListener(queues = "#{findByOwnerQueue.name}")
 	public String findByOwner(byte[] owner) throws UnsupportedEncodingException{
 		return repository.findByOwner(Integer.parseInt(new String(owner,ENCODE))).toString();
 	}
 	
-	@RabbitListener(queues = "{getEventByPlace}")
+	@RabbitListener(queues = "#{getEventByPlaceQueue.name}")
 	public String getEventByPlace(byte[] place) throws UnsupportedEncodingException{
 		return repository.getEventFromPlace(new String(place, ENCODE), new Date()).toString();
 	}
