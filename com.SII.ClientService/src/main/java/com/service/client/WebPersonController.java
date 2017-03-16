@@ -3,6 +3,7 @@ package com.service.client;
 import java.io.UnsupportedEncodingException;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import com.service.person.Person;
  */
 @RestController
 @Component
+@CrossOrigin
 public class WebPersonController {
 	
 		private static final String ENCODE = "UTF-8";
