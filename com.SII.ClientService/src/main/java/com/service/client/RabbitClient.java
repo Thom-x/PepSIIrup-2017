@@ -6,7 +6,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -46,7 +45,6 @@ public class RabbitClient {
 		try{
 			this.connection = connectionFactory.newConnection();
 			this.channel = this.connection.createChannel();
-			
 			channel.exchangeDeclare(exchange, "direct",true);
 			replyQueueName = channel.queueDeclare().getQueue();
 		} catch (Exception e) {
@@ -55,29 +53,29 @@ public class RabbitClient {
 	}
 
 	/**
-	 * Method to exchange a message to another service
-	 * @param data
-	 * @param routingKey
-	 * @return
-	 */
-    public String rabbitRPCRoutingKeyExchange(byte[] data, String routingKey){
-    	this.corrId = UUID.randomUUID().toString();
-		AMQP.BasicProperties props = new AMQP.BasicProperties.Builder().correlationId(this.corrId).replyTo(replyQueueName).build();   	
-		try {
-			channel.basicPublish(this.exchange, routingKey, props, data);
-			channel.basicConsume(replyQueueName, true, new DefaultConsumer(channel) {
-				@Override
-			    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-			        if (properties.getCorrelationId().equals(corrId)) {
-			            boolean b = response.offer(new String(body, ENCODE));
-			            LOGGER.log( Level.FINE, "rabbit message handled status :", b);
-			        }
-			    }
-			});
-	        return response.take();
-		} catch (Exception e) {
-			LOGGER.log( Level.SEVERE, "an exception was thrown", e);
-		}
-		return null;
-    }
-}
+ 	 * Method to exchange a message to another service
+ 	 * @param data
+ 	 * @param routingKey
+ 	 * @return
+ 	 */
+     public String rabbitRPCRoutingKeyExchange(byte[] data, String routingKey){
+     	this.corrId = UUID.randomUUID().toString();
+ 		AMQP.BasicProperties props = new AMQP.BasicProperties.Builder().correlationId(this.corrId).replyTo(replyQueueName).build();   	
+ 		try {
+ 			channel.basicPublish(this.exchange, routingKey, props, data);
+ 			channel.basicConsume(replyQueueName, true, new DefaultConsumer(channel) {
+ 				@Override
+ 			    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+ 			        if (properties.getCorrelationId().equals(corrId)) {
+ 			            boolean b = response.offer(new String(body, ENCODE));
+ 			            LOGGER.log( Level.FINE, "rabbit message handled status :", b);
+ 			        }
+ 			    }
+ 			});
+ 	        return response.take();
+ 		} catch (Exception e) {
+ 			LOGGER.log( Level.SEVERE, "an exception was thrown", e);
+ 		}
+ 		return null;
+     }
+ }

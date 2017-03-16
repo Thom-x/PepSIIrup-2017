@@ -3,7 +3,6 @@ package com.service.client;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;

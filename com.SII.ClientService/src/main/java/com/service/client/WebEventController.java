@@ -25,7 +25,6 @@ public class WebEventController {
 	private static final String EXCHANGE = "exc.event";
 	private static final Logger LOGGER = Logger.getLogger(WebEventController.class.getName());
 
-
 	/**
 	 * Method to find an Event by Owner with RabbitMq
 	 * @param id
