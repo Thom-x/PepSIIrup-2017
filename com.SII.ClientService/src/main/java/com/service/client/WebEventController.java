@@ -15,7 +15,6 @@ import com.service.event.Event;
 /**
  * Client controller, fetches Account info from the microservice via
  */
-@CrossOrigin
 @RestController
 @Component
 @CrossOrigin
@@ -42,7 +41,7 @@ public class WebEventController {
     
     @RequestMapping("/getAllEvent")
     public String findAllEvent(@RequestParam(value="id", defaultValue="1") String id) throws UnsupportedEncodingException{
-    	return rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE), "getAllEvent");
+    	return new RabbitClient().rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE), "getAllEvent");
     }
 
 }
