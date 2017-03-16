@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 @RestController
 @Component
 public class EventController {
@@ -61,5 +65,13 @@ public class EventController {
 	@RabbitListener(queues = "#{getEventByPlaceQueue.name}")
 	public String getEventByPlace(byte[] place) throws UnsupportedEncodingException{
 		return repository.getEventFromPlace(new String(place, ENCODE), new Date()).toString();
+	}
+	
+	@RabbitListener(queues = "#{getAllEventQueue.name}")
+	public String getAllEvent(byte[] id) throws JsonProcessingException{
+		List<Event> events = repository.findAll();
+		ObjectMapper mapper = new ObjectMapper();
+	    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+	    return mapper.writeValueAsString(events);
 	}
 }
