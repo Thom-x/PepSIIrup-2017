@@ -2,6 +2,7 @@ package com.service.client;
 
 import java.io.UnsupportedEncodingException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Component
+@CrossOrigin
 public class WebCommentController {
 
 		
