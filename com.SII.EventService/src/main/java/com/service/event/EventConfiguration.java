@@ -54,6 +54,11 @@ public class EventConfiguration {
 	}
 	
 	@Bean
+	public Queue getAllEventQueue() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
 	public Binding binding1(DirectExchange direct, Queue saveEventQueue) {
 		return BindingBuilder.bind(saveEventQueue).to(direct).with("saveEvent");
 	}
@@ -66,6 +71,11 @@ public class EventConfiguration {
 	@Bean
 	public Binding binding3(DirectExchange direct, Queue getEventByPlaceQueue) {
 		return BindingBuilder.bind(getEventByPlaceQueue).to(direct).with("getEventByPlace");
+	}
+	
+	@Bean
+	public Binding binding4(DirectExchange direct, Queue getAllEventQueue) {
+		return BindingBuilder.bind(getAllEventQueue).to(direct).with("getAllEvent");
 	}
 
 }
