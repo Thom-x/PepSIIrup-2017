@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 //@Column(name = "id",unique=true, nullable=false)
 @Entity
@@ -15,24 +16,41 @@ public class Event implements Serializable{
 	
 
 	private static final long serialVersionUID = 1L;
+	@JsonProperty("id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Eventid",unique=true, nullable=false)
 	private int eventId;
+	
+	@JsonProperty("Name")
 	@Column(name = "Name")
 	private String name;
+	
+	@JsonProperty("Datestart")
 	@Column(name = "Datestart")
 	private Date dateStart;
+	
+	@JsonProperty("Dateend")
 	@Column(name = "Dateend")
 	private Date dateEnd;
+	
+	@JsonProperty("Placeid")
 	@Column(name = "Placeid")
 	private String placeID;
+	
+	@JsonProperty("Description")
 	@Column(name = "Description")
 	private String description;
+	
+	@JsonProperty("Image")
 	@Column(name = "Image")
 	private String image;
+	
+	@JsonProperty("Iscanceled")
 	@Column(name = "Iscanceled")
 	private int isCanceled;
+	
+	@JsonProperty("Owner")
 	@Column(name = "Owner")
 	private int owner;
 	
@@ -145,12 +163,5 @@ public class Event implements Serializable{
 		return false;
 	}
 
-	@Override
-	public String toString() {
-		return "Event [eventId=" + eventId + ", name=" + name + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd
-				+ ", placeID=" + placeID + ", description=" + description + ", image=" + image + ", isCanceled="
-				+ isCanceled + ", owner=" + owner + "]";
-	}
-	
 	
 }

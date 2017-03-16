@@ -8,6 +8,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,7 @@ import com.service.event.Event;
 /**
  * Client controller, fetches Account info from the microservice via
  */
+@CrossOrigin
 @RestController
 @Component
 public class WebEventController {
@@ -65,6 +67,11 @@ public class WebEventController {
     	Event e = new Event("test");
     	return rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(e),"saveEvent");
 	}
+    
+    @RequestMapping("/getAllEvent")
+    public String findAllEvent(@RequestParam(value="id", defaultValue="1") String id) throws UnsupportedEncodingException{
+    	return rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE), "getAllEvent");
+    }
 
     private String rabbitRPCRoutingKeyExchange(byte[] data, String routingKey){
     	this.corrId = UUID.randomUUID().toString();
