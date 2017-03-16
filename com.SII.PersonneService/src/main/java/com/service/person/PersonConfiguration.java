@@ -12,15 +12,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ *Configuration for Person service, mostly for RabbitMQ
+ * @author Dorian Coqueron & Pierre Gaultier
+ * @version 1.0
+ */
 @Configuration
 @ComponentScan
 @EntityScan("com.service.person")
 public class PersonConfiguration {
 	
+	public static final String RABBITIP = "10.10.1.155";
+	
 	@Bean
 	public ConnectionFactory connectionFactory() {
 	    CachingConnectionFactory connectionFactory =
-	        new CachingConnectionFactory("10.10.1.155");
+	        new CachingConnectionFactory(RABBITIP);
 	    	connectionFactory.setUsername("BugsBunny");
 	    	connectionFactory.setPassword("Koi29Dr");
 	    return connectionFactory;
@@ -29,7 +36,7 @@ public class PersonConfiguration {
 
 	@Bean
 	public DirectExchange direct() {
-		return new DirectExchange("eureka.rpc");
+		return new DirectExchange("exc.person");
 	}
 
 	@Bean
