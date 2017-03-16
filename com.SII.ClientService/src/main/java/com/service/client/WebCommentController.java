@@ -1,10 +1,6 @@
 package com.service.client;
 
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.connection.Connection;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.UnsupportedEncodingException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,20 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Component
 public class WebCommentController {
 
+		
 	
-	@Autowired
-	private RabbitTemplate template;
-
-	@Autowired
-	private DirectExchange direct;
+	private static final String ENCODE = "UTF-8";
 	
-	
-    
-    @RequestMapping("/getComment")
-    public String getComment(@RequestParam(value="id", defaultValue="1") String id) {
-		String response = (String) template.convertSendAndReceive(direct.getName(), "comment",id);
-		System.out.println(response);
-		return response;
+    @RequestMapping("/getCommentByEvent")
+    public String getComment(@RequestParam(value="id", defaultValue="1") String id) throws UnsupportedEncodingException {
+    	return new RabbitClient().rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getCommentByEvent");
     }
 	
 }

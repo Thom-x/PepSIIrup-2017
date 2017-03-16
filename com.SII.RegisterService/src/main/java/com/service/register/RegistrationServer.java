@@ -3,6 +3,7 @@ package com.service.register;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 
 /**
  * All you need to run a Eureka registration server.
