@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  * @author Dorian Coqueron & Pierre Gaultier
  * @version 1.0
  */
+
 @RestController
 @Component
 public class EventController {
@@ -45,7 +46,7 @@ public class EventController {
 	public String getEventByPlace(byte[] place) throws UnsupportedEncodingException{
 		return repository.getEventFromPlace(new String(place, ENCODE), new Date()).toString();
 	}
-
+	
 	@RabbitListener(queues = "#{getAllEventQueue.name}")
 	public String getAllEvent(byte[] id) throws JsonProcessingException{
 		List<Event> events = repository.findAll();
