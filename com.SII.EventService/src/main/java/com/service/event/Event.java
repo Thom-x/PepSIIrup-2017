@@ -8,10 +8,6 @@ package com.service.event;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
-<<<<<<< HEAD
-
-=======
->>>>>>> cb730ff8f84507a7de34036b1612bfe96c4c4ded
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
