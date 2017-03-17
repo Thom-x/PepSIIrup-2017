@@ -6,9 +6,9 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 
 /**
- * All you need to run a Eureka registration server.
- * 
- * @author Paul Chapman
+ * Eureka Server for PepSIIRup
+ * @author Dorian Coqueron & Pierre Gaultier
+ * @version 1.0
  */
 @SpringBootApplication
 @EnableEurekaServer
@@ -16,9 +16,6 @@ public class RegistrationServer {
 	
 	/**
 	 * Run the application using Spring Boot and an embedded servlet engine.
-	 * 
-	 * @param args
-	 *            Program arguments - ignored.
 	 */
 	public static void main(String[] args) {
 		// Tell server to look for registration.properties or registration.yml

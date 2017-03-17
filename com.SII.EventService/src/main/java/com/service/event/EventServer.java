@@ -7,6 +7,11 @@ import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
+/**
+ * Event Service
+ * @author Dorian Coqueron & Pierre Gaultier
+ * @version 1.0
+ */
 @EnableAutoConfiguration
 @EnableDiscoveryClient
 @PropertySource("classpath:application.properties")
