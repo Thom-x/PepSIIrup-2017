@@ -1,71 +1,72 @@
 package com.service.client;
 
-
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.UUID;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
 import com.service.event.Event;
 
 /**
- * Client controller, fetches Account info from the microservice via
+ * Rest Controller to use Comment Event
+ * @author Dorian Coqueron & Pierre Gaultier
+ * @version 1.0
  */
 @CrossOrigin
 @RestController
 @Component
+@CrossOrigin
 public class WebEventController {
 
-	private ConnectionFactory connectionFactory;
-	private Connection connection;
-	private Channel channel;
-	private String replyQueueName;
-	private final BlockingQueue<String> response;
-	private String corrId;
 	private static final String ENCODE = "UTF-8";
-	public WebEventController(){
-		this.connectionFactory = new ConnectionFactory();
-		connectionFactory.setHost("10.10.1.155");
-		connectionFactory.setUsername("BugsBunny");
-		connectionFactory.setPassword("Koi29Dr");
-		this.response = new ArrayBlockingQueue<String>(1);
-		try{
-			this.connection = connectionFactory.newConnection();
-			this.channel = this.connection.createChannel();
-			channel.exchangeDeclare("eureka.rpc", "direct",true);
-			replyQueueName = channel.queueDeclare().getQueue();
-			channel.queueBind(replyQueueName, "eureka.rpc", "event");
-		} catch (Exception e) {
-			e.printStackTrace();
+	private static final String EXCHANGE = "exc.event";
+	private static final Logger LOGGER = Logger.getLogger(WebEventController.class.getName());
+
+	/**
+	 * Method to find an Event by Owner with RabbitMq
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/findByOwner")
+	public String getEvent(@RequestParam(value="id", defaultValue="1") String id){
+		String response = "";
+		try {
+			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"findByOwner");
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.log( Level.SEVERE, "findByOwner : an UnsupportedEncodingException was thrown", e);
 		}
+		return response;
 	}
-    @RequestMapping("/findByOwner")
-    public String getEvent(@RequestParam(value="id", defaultValue="1") String id) throws InterruptedException, UnsupportedEncodingException {
-    	return rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"findByOwner");
+
+	/**
+	 * Method to find an Event by Place with RabbitMq
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getEventByPlace")
+	public String getAllEvent(@RequestParam(value="id", defaultValue="1") String id){
+		String response = "";
+		try {
+			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getEventByPlace");
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.log( Level.SEVERE, "getEventByPlace: an UnsupportedEncodingException was thrown", e);
+		}
+		return response;
 	}
-    
-    @RequestMapping("/getEventByPlace")
-    public String getAllEvent(@RequestParam(value="id", defaultValue="1") String id) throws InterruptedException, UnsupportedEncodingException {
-    	return rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getEventByPlace");
-	}
-    
-    @RequestMapping("/saveEvent")
-    public String updateEvent(@RequestParam(value="id", defaultValue="1") String id) throws InterruptedException, UnsupportedEncodingException {
-    	Event e = new Event("test");
-    	return rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(e),"saveEvent");
+
+	/**
+	 * Method to save an event with RabbitMq
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/saveEvent")
+	public String updateEvent(@RequestParam(value="id", defaultValue="1") String id){
+		Event e = new Event("test");
+		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(e),"saveEvent");
 	}
     
     @RequestMapping("/getAllEvent")
@@ -73,23 +74,20 @@ public class WebEventController {
     	return rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE), "getAllEvent");
     }
 
-    private String rabbitRPCRoutingKeyExchange(byte[] data, String routingKey){
-    	this.corrId = UUID.randomUUID().toString();
-		AMQP.BasicProperties props = new AMQP.BasicProperties.Builder().correlationId(this.corrId).replyTo(replyQueueName).build();   	
+	/**
+	 * Method to find all Events with RabbitMq
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getAllEvent")
+	public String findAllEvent(@RequestParam(value="id", defaultValue="1") String id){
+		String response ="";
 		try {
-			channel.basicPublish("eureka.rpc", routingKey, props, data);
-			channel.basicConsume(replyQueueName, true, new DefaultConsumer(channel) {
-				@Override
-			    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-			        if (properties.getCorrelationId().equals(corrId)) {
-			            response.offer(new String(body, ENCODE));
-			        }
-			    }
-			});
-	        return response.take();
-		} catch (Exception e) {
-			e.printStackTrace();
+			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE), "getAllEvent");
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.log( Level.SEVERE, "getAllEvent: an UnsupportedEncodingException was thrown", e);
 		}
-		return null;
-    }
+		return response;
+	}
+
 }

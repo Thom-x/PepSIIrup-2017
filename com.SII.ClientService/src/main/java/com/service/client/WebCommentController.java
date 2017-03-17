@@ -1,37 +1,42 @@
 package com.service.client;
 
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.connection.Connection;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 /**
- * Client controller, fetches Account info from the microservice via
+ * Rest Controller to use Comment Service
+ * @author Dorian Coqueron & Pierre Gaultier
+ * @version 1.0
  */
 @RestController
 @Component
+@CrossOrigin
 public class WebCommentController {
 
+	private static final String ENCODE = "UTF-8";
+	private static final String EXCHANGE = "exc.comment";
+	private static final Logger LOGGER = Logger.getLogger(WebCommentController.class.getName());
 	
-	@Autowired
-	private RabbitTemplate template;
-
-	@Autowired
-	private DirectExchange direct;
-	
-	
-    
-    @RequestMapping("/getComment")
-    public String getComment(@RequestParam(value="id", defaultValue="1") String id) {
-		String response = (String) template.convertSendAndReceive(direct.getName(), "comment",id);
-		System.out.println(response);
-		return response;
+	/**
+	 * Method to get Comment by Event with RabbitMq
+	 * @param id
+	 * @return
+	 */
+    @RequestMapping("/getCommentByEvent")
+    public String getComment(@RequestParam(value="id", defaultValue="1") String id){
+    	String response = "";
+    	try {
+			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getCommentByEvent");
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.log( Level.SEVERE, "an exception was thrown", e);
+		}
+    	return response;
     }
 	
 }

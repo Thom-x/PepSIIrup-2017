@@ -1,20 +1,25 @@
 package com.service.event;
 
-
+/**
+ * Event Class with JPA
+ * @author Dorian Coqueron & Pierre Gaultier
+ * @version 1.0
+ */
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.*;
+<<<<<<< HEAD
 
+=======
+>>>>>>> cb730ff8f84507a7de34036b1612bfe96c4c4ded
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-//@Column(name = "id",unique=true, nullable=false)
+
 @Entity
 @Table(name="Event")
 @JsonRootName("Event")
 public class Event implements Serializable{
 	
-
 	private static final long serialVersionUID = 1L;
 	@JsonProperty("id")
 	@Id
@@ -54,8 +59,10 @@ public class Event implements Serializable{
 	@Column(name = "Owner")
 	private int owner;
 	
-	
-	public Event(){}
+
+	public Event(){
+		//JPA need empty constructor
+	} 
 	
 	public Event(String name) {
 		this.name = name;
@@ -153,15 +160,34 @@ public class Event implements Serializable{
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Event){
-		Event event = (Event)obj;
-		if (event.getDateStart().equals(this.dateStart) && event.getDateEnd().equals(this.dateEnd)){
-			return true;
-		}
-		}
-		return false;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dateEnd == null) ? 0 : dateEnd.hashCode());
+		result = prime * result + ((dateStart == null) ? 0 : dateStart.hashCode());
+		return result;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Event other = (Event) obj;
+		if (dateEnd == null) {
+			if (other.dateEnd != null)
+				return false;
+		} else if (!dateEnd.equals(other.dateEnd))
+			return false;
+		if (dateStart == null) {
+			if (other.dateStart != null)
+				return false;
+		} else if (!dateStart.equals(other.dateStart))
+			return false;
+		return true;
+	}
 	
 }
