@@ -1,4 +1,4 @@
-package com.service.event;
+package com.modele;
 
 /**
  * Event Class with JPA
@@ -8,6 +8,8 @@ package com.service.event;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -28,10 +30,12 @@ public class Event implements Serializable{
 	private String name;
 	
 	@JsonProperty("Datestart")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone="CET")
 	@Column(name = "Datestart")
 	private Date dateStart;
 	
 	@JsonProperty("Dateend")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone="CET")
 	@Column(name = "Dateend")
 	private Date dateEnd;
 	
@@ -52,8 +56,9 @@ public class Event implements Serializable{
 	private int isCanceled;
 	
 	@JsonProperty("Owner")
-	@Column(name = "Owner")
-	private int owner;
+	@ManyToOne
+	@JoinColumn(name = "Owner")
+	private Person owner;
 	
 
 	public Event(){
@@ -67,12 +72,12 @@ public class Event implements Serializable{
 		this.placeID = "17";
 		this.description = "too long";
 		this.isCanceled = 0;
-		this.owner = 2;
+		this.owner = new Person();
 	}
 	
 	
 	public Event(String name, Date dateStart, Date dateEnd, String placeID, String description, int isCanceled,
-			int owner) {
+			Person owner) {
 		super();
 		this.name = name;
 		this.dateStart = dateStart;
@@ -147,11 +152,11 @@ public class Event implements Serializable{
 		this.isCanceled = isCanceled;
 	}
 
-	public int getOwner() {
+	public Person getOwner() {
 		return owner;
 	}
 
-	public void setOwner(int owner) {
+	public void setOwner(Person owner) {
 		this.owner = owner;
 	}
 
@@ -185,5 +190,14 @@ public class Event implements Serializable{
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Event [eventId=" + eventId + ", name=" + name + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd
+				+ ", placeID=" + placeID + ", description=" + description + ", image=" + image + ", isCanceled="
+				+ isCanceled + ", owner=" + owner + "]";
+	}
+	
+	
 	
 }

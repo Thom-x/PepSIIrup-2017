@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.modele.Person;
+
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 /**
@@ -31,16 +33,19 @@ public class PersonController {
 	 * Method to get a Person in DataBase, works with RabbitMq
 	 * @param id
 	 * @return
+	 * @throws JsonProcessingException 
 	 */
 	@RabbitListener(queues = "#{getPersonQueue.name}")
-	public String getPerson(byte[] id) {
-		String response = "";
+	public String getPerson(byte[] id) throws JsonProcessingException {
+		Person response = null;
 		try {
-			response = repository.findByPersonID(Integer.parseInt(new String(id,ENCODE))).toString();
+			response = repository.findByPersonID(Integer.parseInt(new String(id,ENCODE)));
 		} catch (NumberFormatException | UnsupportedEncodingException e) {
 			LOGGER.log( Level.SEVERE, "an exception was thrown", e);
 		}
-		return response;
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+		return mapper.writeValueAsString(response);
 	}
 
 	/**

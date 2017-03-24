@@ -7,19 +7,15 @@
     <version>1.1.0.RELEASE</version>
   </parent>
   <artifactId>com.SII.ClientService</artifactId>
+  
   <dependencies>
-    <dependency>
+  	<dependency>
     	<groupId>stage</groupId>
-        <artifactId>com.SII.PersonService</artifactId>
-        <version>1.1.0.RELEASE</version>
-    </dependency>
-
-    <dependency>
-    	<groupId>stage</groupId>
-        <artifactId>com.SII.EventService</artifactId>
+        <artifactId>com.SII.Modele</artifactId>
         <version>1.1.0.RELEASE</version>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>

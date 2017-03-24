@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.modele.Event;
+
 /**
  * Repository of the Event service, to work with SQL Server
  * @author Dorian Coqueron & Pierre Gaultier

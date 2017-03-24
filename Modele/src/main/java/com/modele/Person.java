@@ -1,4 +1,4 @@
-package com.service.person;
+package com.modele;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -26,6 +26,12 @@ public class Person implements Serializable{
 
 	@Column(name = "Pseudo")
 	private String pseudo;
+	
+	@Column(name = "Lastname")
+	private String lastName;
+	
+	@Column(name = "Firstname")
+	private String firstName;
 
 	@Column(name = "Job")
 	private String job;
@@ -53,6 +59,22 @@ public class Person implements Serializable{
 
 	public void setPseudo(String pseudo){
 		this.pseudo = pseudo;
+	}
+	
+	public String getLastName(){
+		return this.lastName;
+	}
+
+	public void setLastName(String lastName){
+		this.lastName = lastName;
+	}
+	
+	public String getFirstName(){
+		return this.firstName;
+	}
+
+	public void setFirstName(String firstName){
+		this.firstName = firstName;
 	}
 
 	public String getJob(){
