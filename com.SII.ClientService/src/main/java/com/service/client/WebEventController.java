@@ -1,15 +1,22 @@
 package com.service.client;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.service.event.Event;
+
+import com.modele.Event;
 
 /**
  * Rest Controller to use Comment Event
@@ -61,11 +68,14 @@ public class WebEventController {
 	 * Method to save an event with RabbitMq
 	 * @param id
 	 * @return
+	 * @throws ParseException 
 	 */
-	@RequestMapping("/saveEvent")
-	public String updateEvent(@RequestParam(value="id", defaultValue="1") String id){
-		Event e = new Event("test");
-		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(e),"saveEvent");
+	@RequestMapping(value = "/saveEvent", method = RequestMethod.POST)
+	public String updateEvent(@RequestBody Event event/*@RequestParam(value="name") String name,
+			@RequestParam(value="description", defaultValue="") String description, @RequestParam(value="date") String date,
+			@RequestParam(value="timeStart") String timeStart, @RequestParam(value="timeEnd") String timeEnd,
+			@RequestParam(value="lieu") String lieu, @RequestParam(value="photo", defaultValue = "") String photo*/) throws ParseException{
+		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(event),"saveEvent");
 	}
 
 	/**

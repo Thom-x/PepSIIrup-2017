@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.modele.Event;
 
 /**
  * Controller of the Event Service
@@ -31,10 +32,13 @@ public class EventController {
 	private static final String ENCODE = "UTF-8";
 
 	@RabbitListener(queues = "#{saveEventQueue.name}")
-	public String saveEvent(byte[] data){
+	public String saveEvent(byte[] data) throws JsonProcessingException{
 		Event e = (Event)SerializationUtils.deserialize(data);
-		repository.save(e);
-		return "ok";
+		System.out.println(e);
+		//repository.save(e);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+		return mapper.writeValueAsString(e);
 	}
 
 	@RabbitListener(queues = "#{findByOwnerQueue.name}")

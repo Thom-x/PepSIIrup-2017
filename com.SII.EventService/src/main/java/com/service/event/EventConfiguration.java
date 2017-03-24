@@ -19,10 +19,10 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan
-@EntityScan("com.service.event")
+@EntityScan({"com.service.event", "com.modele"})
 public class EventConfiguration {
 	
-	public static final String RABBITIP = "10.10.1.155";
+	public static final String RABBITIP = "10.10.1.169";
 	
 	@Bean
 	public ConnectionFactory connectionFactory() {
