@@ -1,11 +1,9 @@
 package com.service.client;
 
-import java.io.UnsupportedEncodingException;
-import java.util.logging.Level;
+
 import java.util.logging.Logger;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 /**
  * Rest Controller to use Review Service

@@ -1,10 +1,7 @@
 package com.service.client;
 
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang.SerializationUtils;
@@ -71,10 +68,7 @@ public class WebEventController {
 	 * @throws ParseException 
 	 */
 	@RequestMapping(value = "/saveEvent", method = RequestMethod.POST)
-	public String updateEvent(@RequestBody Event event/*@RequestParam(value="name") String name,
-			@RequestParam(value="description", defaultValue="") String description, @RequestParam(value="date") String date,
-			@RequestParam(value="timeStart") String timeStart, @RequestParam(value="timeEnd") String timeEnd,
-			@RequestParam(value="lieu") String lieu, @RequestParam(value="photo", defaultValue = "") String photo*/) throws ParseException{
+	public String updateEvent(@RequestBody Event event) throws ParseException{
 		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(event),"saveEvent");
 	}
 
