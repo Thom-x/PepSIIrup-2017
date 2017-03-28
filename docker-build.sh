@@ -1,5 +1,6 @@
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
+
 cd com.SII.RegisterService
 docker build -t eureka .
 cd ../com.SII.PersonneService
