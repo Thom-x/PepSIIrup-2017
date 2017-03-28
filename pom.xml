@@ -103,11 +103,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
-
-		<dependency>
 			<!-- Setup Spring Data common components -->
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-commons</artifactId>
@@ -192,6 +187,6 @@
 		<module>com.SII.ClientService</module>
 		<module>com.SII.PersonneService</module>
 		<module>com.SII.EventService</module>
-		<module>Modele</module>
+		<module>com.SII.Modele</module>
 	</modules>
 </project>
