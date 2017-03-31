@@ -6,7 +6,9 @@ import java.util.logging.Logger;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -65,10 +67,10 @@ public class WebPersonController {
 	 * @param job
 	 * @return
 	 */
-	@RequestMapping("/addPerson")
-	public String addPerson(@RequestParam(value="name", defaultValue="Dorian") String name, @RequestParam(value="job", defaultValue="stagiaire") String job){
-		Person p = new Person(name,job);
-		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(p),"addPerson");
+	@RequestMapping(value = "/addPerson", method = RequestMethod.POST)
+	public String addPerson(@RequestBody Person person){
+		System.out.println(person);
+		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(person),"addPerson");
 	}
 
 }

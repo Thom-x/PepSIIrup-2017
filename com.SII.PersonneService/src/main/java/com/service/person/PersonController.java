@@ -71,11 +71,13 @@ public class PersonController {
 	 * Method to add a Person in DataBase, works with RabbitMq
 	 * @param data
 	 * @return
+	 * @throws JsonProcessingException 
 	 */
 	@RabbitListener(queues = "#{addPersonQueue.name}")
-	public String addPerson(byte[] data){
+	public String addPerson(byte[] data) throws JsonProcessingException{
 		Person p =  (Person) SerializationUtils.deserialize(data);
 		repository.save(p);
-		return "ok";
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(p);
 	}
 }
