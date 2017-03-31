@@ -6,11 +6,11 @@ spring:
 eureka:
   instance:
      prefer-ip-address: true
-     ip-address: http://nantes-0150.sii.fr
+     ip-address: http://nantes-0156.sii.fr
      leaseRenewalIntervalInSeconds: 5   # DO NOT DO THIS IN PRODUCTION
   client:
     serviceUrl:
-      defaultZone: http://nantes-0150.sii.fr:1111/eureka/
+      defaultZone: http://nantes-0156.sii.fr:1111/eureka/
 
 # HTTP Server
 server:

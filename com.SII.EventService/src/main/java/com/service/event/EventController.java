@@ -34,11 +34,9 @@ public class EventController {
 	@RabbitListener(queues = "#{saveEventQueue.name}")
 	public String saveEvent(byte[] data) throws JsonProcessingException{
 		Event e = (Event)SerializationUtils.deserialize(data);
-		System.out.println(e);
-		//repository.save(e);
+		Event event = repository.save(e);
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
-		return mapper.writeValueAsString(e);
+		return mapper.writeValueAsString(event);
 	}
 
 	@RabbitListener(queues = "#{findByOwnerQueue.name}")
@@ -55,7 +53,6 @@ public class EventController {
 	public String getAllEvent(byte[] id) throws JsonProcessingException{
 		List<Event> events = repository.findAll();
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
 		return mapper.writeValueAsString(events);
 	}
 
