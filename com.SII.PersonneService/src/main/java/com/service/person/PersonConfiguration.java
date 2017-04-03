@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
 @EntityScan({"com.service.person", "com.modele"})
 public class PersonConfiguration {
 	
-	public static final String RABBITIP = "10.10.1.169";
+	public static final String RABBITIP = "10.10.192.33";
 	
 	@Bean
 	public ConnectionFactory connectionFactory() {

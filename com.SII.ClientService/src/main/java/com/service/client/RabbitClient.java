@@ -26,7 +26,7 @@ public class RabbitClient {
 	private String replyQueueName;
 	private String corrId;
 	private BlockingQueue<String> response;
-	public static final String RABBITIP = "10.10.1.169";
+	public static final String RABBITIP = "10.10.192.33";
 	private static final String ENCODE = "UTF-8";
 	private String exchange;
 	private static final Logger LOGGER = Logger.getLogger(RabbitClient.class.getName());

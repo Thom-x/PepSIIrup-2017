@@ -13,9 +13,9 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://nantes-0150.sii.fr:1111/eureka/
+      defaultZone: http://10.10.192.33:1111/eureka/
   instance:
     leaseRenewalIntervalInSeconds: 5   # DO NOT DO THIS IN PRODUCTION
     prefer-ip-address: true
-    ip-address: nantes-0150.sii.fr
+    ip-address: 10.10.192.33
     
