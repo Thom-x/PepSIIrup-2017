@@ -20,12 +20,9 @@ import com.modele.Event;
 public interface EventRepository extends CrudRepository<Event, Integer>{
 
 	Event findByName(String name);
-	
 	List<Event> findAll();
-	
 	@Query("select e From Event e where e.placeID = :placeID and e.dateStart > :dateStart")
 	List<Event> getEventFromPlace(@Param("placeID") String placeID, @Param("dateStart") Date dateStart);
-	
 	List<Event> findByOwner(int owner);
 	
 }

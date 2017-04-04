@@ -22,14 +22,12 @@ import org.springframework.context.annotation.Configuration;
 @EntityScan({"com.service.event", "com.modele"})
 public class EventConfiguration {
 	
-	public static final String RABBITIP = "10.10.192.33";
-	
 	@Bean
 	public ConnectionFactory connectionFactory() {
 	    CachingConnectionFactory connectionFactory =
-	        new CachingConnectionFactory(RABBITIP);
-    		connectionFactory.setUsername("BugsBunny");
-    		connectionFactory.setPassword("Koi29Dr");
+	        new CachingConnectionFactory(Constants.RABBITMQSERVER_ADDR);
+    		connectionFactory.setUsername(Constants.RABBITMQ_USERNAME);
+    		connectionFactory.setPassword(Constants.RABBITMQ_PASSWORD);
 	    return connectionFactory;
 	}
 		

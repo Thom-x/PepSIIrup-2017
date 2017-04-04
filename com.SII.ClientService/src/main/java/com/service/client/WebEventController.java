@@ -2,9 +2,9 @@ package com.service.client;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.time.Duration;
 import org.apache.commons.lang.SerializationUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.modele.Event;
+
+import serilogj.Log;
+import serilogj.LoggerConfiguration;
+import serilogj.core.LoggingLevelSwitch;
+import serilogj.events.LogEventLevel;
+import serilogj.sinks.seq.SeqSink;
 
 /**
  * Rest Controller to use Comment Event
@@ -27,7 +33,15 @@ public class WebEventController {
 
 	private static final String ENCODE = "UTF-8";
 	private static final String EXCHANGE = "exc.event";
-	private static final Logger LOGGER = Logger.getLogger(WebEventController.class.getName());
+	@Value("${spring.application.name}")
+	private String appName;
+
+	public WebEventController(){
+		LoggingLevelSwitch levelswitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
+		Log.setLogger(new LoggerConfiguration()		
+			.writeTo(new SeqSink(Constants.LOGSERVER_ADDR, Constants.LOGSERVER_SERVICE_APIKEY, null, Duration.ofSeconds(2), null, levelswitch))	
+					.createLogger());
+	}
 
 	/**
 	 * Method to find an Event by Owner with RabbitMq
@@ -40,8 +54,16 @@ public class WebEventController {
 		try {
 			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"findByOwner");
 		} catch (UnsupportedEncodingException e) {
-			LOGGER.log( Level.SEVERE, "findByOwner : an UnsupportedEncodingException was thrown", e);
+			Log
+			.forContext("MemberName", "findByOwner")
+			.forContext("Service", appName)
+			.error(e,"{date} UnsupportedEncodingException");
 		}
+		Log
+		.forContext("id", id)
+		.forContext("MemberName", "findByOwner")
+		.forContext("Service", appName)
+		.information("Request : findByOwner");
 		return response;
 	}
 
@@ -56,8 +78,16 @@ public class WebEventController {
 		try {
 			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getEventByPlace");
 		} catch (UnsupportedEncodingException e) {
-			LOGGER.log( Level.SEVERE, "getEventByPlace: an UnsupportedEncodingException was thrown", e);
+			Log
+			.forContext("MemberName", "getEventByPlace")
+			.forContext("Service", appName)
+			.error(e,"{date} UnsupportedEncodingException");
 		}
+		Log
+		.forContext("MemberName", "getEventByPlace")
+		.forContext("Service", appName)
+		.forContext("id", id)
+		.information("Request : getEventByPlace");
 		return response;
 	}
 
@@ -69,6 +99,11 @@ public class WebEventController {
 	 */
 	@RequestMapping(value = "/saveEvent", method = RequestMethod.POST)
 	public String updateEvent(@RequestBody Event event) throws ParseException{
+		Log
+		.forContext("MemberName", "saveEvent")
+		.forContext("Service", appName)
+		.forContext("event", event)
+		.information("Request : saveEvent");
 		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(event),"saveEvent");
 	}
 
@@ -83,8 +118,15 @@ public class WebEventController {
 		try {
 			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE), "getAllEvent");
 		} catch (UnsupportedEncodingException e) {
-			LOGGER.log( Level.SEVERE, "getAllEvent: an UnsupportedEncodingException was thrown", e);
+			Log
+			.forContext("MemberName", "getAllEvent")
+			.forContext("Service", appName)
+			.error(e,"{date} UnsupportedEncodingException");
 		}
+		Log
+		.forContext("MemberName", "getAllEvent")
+		.forContext("Service", appName)
+		.information("Request : getAllEvent");
 		return response;
 	}
 
