@@ -1,9 +1,9 @@
 package com.service.client;
 
 import java.io.UnsupportedEncodingException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.time.Duration;
 import org.apache.commons.lang.SerializationUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,12 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.modele.Person;
 
+import serilogj.Log;
+import serilogj.LoggerConfiguration;
+import serilogj.core.LoggingLevelSwitch;
+import serilogj.events.LogEventLevel;
+import serilogj.sinks.seq.SeqSink;
+
 
 /**
  * Rest Controller to use Person Service
  * @author Dorian Coqueron & Pierre Gaultier
  * @version 1.0
  */
+
 @RestController
 @Component
 @CrossOrigin
@@ -27,7 +34,15 @@ public class WebPersonController {
 
 	private static final String ENCODE = "UTF-8";
 	private static final String EXCHANGE = "exc.person";
-	private static final Logger LOGGER = Logger.getLogger(WebPersonController.class.getName());
+	@Value("${spring.application.name}")
+	private String appName;
+	
+	public WebPersonController(){
+		LoggingLevelSwitch levelswitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
+		Log.setLogger(new LoggerConfiguration()		
+		.writeTo(new SeqSink(Constants.LOGSERVER_ADDR, Constants.LOGSERVER_SERVICE_APIKEY, null, Duration.ofSeconds(2), null, levelswitch))	
+		.createLogger());
+	}
 
 	/**
 	 * Method to find a person by id with RabbitMQ
@@ -40,8 +55,16 @@ public class WebPersonController {
 		try {
 			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getPerson");
 		} catch (UnsupportedEncodingException e) {
-			LOGGER.log( Level.SEVERE, "an exception was thrown", e);
+			Log
+			.forContext("MemberName", "getAllPerson")
+			.forContext("Service", appName)
+			.error(e,"{date} UnsupportedEncodingException");
 		}
+		Log
+		.forContext("id", id)
+		.forContext("MemberName", "getPerson")
+		.forContext("Service", appName)
+		.information("Request : getPerson");
 		return response;
 	}
 
@@ -56,8 +79,15 @@ public class WebPersonController {
 		try {
 			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getAllPerson");
 		} catch (UnsupportedEncodingException e) {
-			LOGGER.log( Level.SEVERE, "an exception was thrown", e);
+			Log
+			.forContext("MemberName", "getAllPerson")
+			.forContext("Service", appName)
+			.error(e,"{date} UnsupportedEncodingException");
 		}
+		Log
+		.forContext("MemberName", "getAllPerson")
+		.forContext("Service", appName)
+		.information("Request : getAllPerson");
 		return response;
 	}
 
@@ -69,7 +99,11 @@ public class WebPersonController {
 	 */
 	@RequestMapping(value = "/addPerson", method = RequestMethod.POST)
 	public String addPerson(@RequestBody Person person){
-		System.out.println(person);
+		Log
+		.forContext("person", person)
+		.forContext("MemberName", "addPerson")
+		.forContext("Service", appName)
+		.information("Request : addPerson");
 		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(person),"addPerson");
 	}
 

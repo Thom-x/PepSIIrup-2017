@@ -9,7 +9,7 @@ eureka:
      ip-address: 10.10.192.33
      leaseRenewalIntervalInSeconds: 5   # DO NOT DO THIS IN PRODUCTION
   client:
-    serviceUrl:
+    serviceUrl: 
       defaultZone: http://10.10.192.33:1111/eureka/
 # HTTP Server
 server:

@@ -1,39 +1,38 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <packaging>jar</packaging>
-  
-  
-  <parent>
-    <groupId>com.SII</groupId>
-    <artifactId>BackendJava</artifactId>
-    <version>1.1.0.RELEASE</version>
-  </parent>
-  <artifactId>com.SII.EventService</artifactId>
-  
-    <dependencies>
-	  	<dependency>
-	    	<groupId>stage</groupId>
-	        <artifactId>com.SII.Modele</artifactId>
-	        <version>1.1.0.RELEASE</version>
-	    </dependency>
-  	</dependencies>
-  
-   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-               <mainClass>com.service.event.EventServer</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  <groupId>stage</groupId>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>jar</packaging>
+	<groupId>stage</groupId>
+	<artifactId>com.SII.EventService</artifactId>
+	<parent>
+		<groupId>com.SII</groupId>
+		<artifactId>BackendJava</artifactId>
+		<version>1.1.0.RELEASE</version>
+	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>stage</groupId>
+			<artifactId>com.SII.Modele</artifactId>
+			<version>1.1.0.RELEASE</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>com.service.event.EventServer</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 
 </project>

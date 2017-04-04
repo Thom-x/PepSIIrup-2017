@@ -1,17 +1,23 @@
 package com.service.client;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+
+import serilogj.Log;
+import serilogj.LoggerConfiguration;
+import serilogj.core.LoggingLevelSwitch;
+import serilogj.events.LogEventLevel;
+import serilogj.sinks.seq.SeqSink;
 
 /**
  * Rabbit Client to send routed messages to other services
@@ -26,20 +32,23 @@ public class RabbitClient {
 	private String replyQueueName;
 	private String corrId;
 	private BlockingQueue<String> response;
-	public static final String RABBITIP = "10.10.192.33";
+	public static final String RABBITIP = Constants.RABBITMQSERVER_ADDR;
 	private static final String ENCODE = "UTF-8";
 	private String exchange;
-	private static final Logger LOGGER = Logger.getLogger(RabbitClient.class.getName());
 	
 	/**
 	 * Settings for rabbit
 	 * @param exchangeName
 	 */
 	public RabbitClient(String exchangeName){
+		LoggingLevelSwitch levelswitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
+		Log.setLogger(new LoggerConfiguration()		
+		.writeTo(new SeqSink(Constants.LOGSERVER_ADDR, Constants.LOGSERVER_SERVICE_APIKEY, null, Duration.ofSeconds(2), null, levelswitch))	
+		.createLogger());
 		this.connectionFactory = new ConnectionFactory();
 		connectionFactory.setHost(RABBITIP);
-		connectionFactory.setUsername("BugsBunny");
-		connectionFactory.setPassword("Koi29Dr");
+		connectionFactory.setUsername(Constants.RABBITMQ_USERNAME);
+		connectionFactory.setPassword(Constants.RABBITMQ_PASSWORD);
 		response = new ArrayBlockingQueue<>(1);
 		this.exchange = exchangeName;
 		try{
@@ -48,7 +57,10 @@ public class RabbitClient {
 			channel.exchangeDeclare(exchange, "direct",true);
 			replyQueueName = channel.queueDeclare().getQueue();
 		} catch (Exception e) {
-			LOGGER.log( Level.SEVERE, "an exception was thrown", e);
+			Log
+			.forContext("MemberName", "RabbitClient:Constructor")
+			.forContext("Service", "web-service")
+			.error(e,"{date} Exception");
 		}
 	}
 
@@ -68,13 +80,20 @@ public class RabbitClient {
  			    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
  			        if (properties.getCorrelationId().equals(corrId)) {
  			            boolean b = response.offer(new String(body, ENCODE));
- 			            LOGGER.log( Level.FINE, "rabbit message handled status :", b);
+ 			            Log
+ 			            .forContext("responseStatus",b)
+ 			            .forContext("MemberName", "getPerson")
+ 			            .forContext("Service", "web-service")
+ 			            .information("rabbit message handled status ");
  			        }
  			    }
  			});
  	        return response.take();
  		} catch (Exception e) {
- 			LOGGER.log( Level.SEVERE, "an exception was thrown", e);
+			Log
+			.forContext("MemberName", "rabbitRPCRoutingKeyExchange")
+			.forContext("Service", "web-service")
+			.error(e,"{date} Exception");
  		}
  		return null;
      }
