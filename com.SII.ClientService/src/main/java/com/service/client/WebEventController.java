@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.modele.Event;
+import com.modele.Person;
 
 import serilogj.Log;
 import serilogj.LoggerConfiguration;
@@ -39,7 +40,7 @@ public class WebEventController {
 	public WebEventController(){
 		LoggingLevelSwitch levelswitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
 		Log.setLogger(new LoggerConfiguration()		
-			.writeTo(new SeqSink(Constants.LOGSERVER_ADDR, Constants.LOGSERVER_SERVICE_APIKEY, null, Duration.ofSeconds(2), null, levelswitch))	
+			.writeTo(new SeqSink(Constants.getINSTANCE().getLogserverAddr(), Constants.getINSTANCE().getLogserverApikey(), null, Duration.ofSeconds(2), null, levelswitch))	
 					.createLogger());
 	}
 
@@ -48,19 +49,10 @@ public class WebEventController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/findByOwner")
-	public String getEvent(@RequestParam(value="id", defaultValue="1") String id){
-		String response = "";
-		try {
-			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"findByOwner");
-		} catch (UnsupportedEncodingException e) {
-			Log
-			.forContext("MemberName", "findByOwner")
-			.forContext("Service", appName)
-			.error(e,"{date} UnsupportedEncodingException");
-		}
+	@RequestMapping(value="/findByOwner", method = RequestMethod.POST)
+	public String getEvent(@RequestBody Person pers){
+		String response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(pers),"findByOwner");
 		Log
-		.forContext("id", id)
 		.forContext("MemberName", "findByOwner")
 		.forContext("Service", appName)
 		.information("Request : findByOwner");

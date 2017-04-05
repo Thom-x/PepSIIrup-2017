@@ -7,7 +7,8 @@
     <version>1.1.0.RELEASE</version>
   </parent>
   <artifactId>com.SII.RegisterService</artifactId>
-
+  
+ 
   <build>
     <plugins>
       <plugin>
@@ -25,4 +26,7 @@
     </plugins>
   </build>
   
+  <properties>
+  	<test.ip>10.10.192.33</test.ip>
+  </properties>
 </project>
