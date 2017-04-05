@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.modele.Event;
+import com.modele.Person;
 
 /**
  * Repository of the Event service, to work with SQL Server
@@ -23,6 +24,6 @@ public interface EventRepository extends CrudRepository<Event, Integer>{
 	List<Event> findAll();
 	@Query("select e From Event e where e.placeID = :placeID and e.dateStart > :dateStart")
 	List<Event> getEventFromPlace(@Param("placeID") String placeID, @Param("dateStart") Date dateStart);
-	List<Event> findByOwner(int owner);
+	List<Event> findByOwner(Person owner);
 	
 }

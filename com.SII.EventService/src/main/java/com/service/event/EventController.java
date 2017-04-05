@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modele.Event;
+import com.modele.Person;
 
 import serilogj.Log;
 import serilogj.LoggerConfiguration;
@@ -41,7 +42,7 @@ public class EventController {
 	public EventController(){
 		LoggingLevelSwitch levelswitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
 		Log.setLogger(new LoggerConfiguration()		
-		.writeTo(new SeqSink(Constants.LOGSERVER_ADDR, Constants.LOGSERVER_SERVICE_APIKEY, null, Duration.ofSeconds(2), null, levelswitch))	
+		.writeTo(new SeqSink(Constants.getINSTANCE().getLogserverAddr(), Constants.getINSTANCE().getLogserverApikey(), null, Duration.ofSeconds(2), null, levelswitch))	
 		.createLogger());
 	}
 
@@ -75,7 +76,7 @@ public class EventController {
 		.forContext("MemberName", "findByOwner")
 		.forContext("Service", appName)
 		.information("RabbitMQ : findByOwner");
-		return repository.findByOwner(Integer.parseInt(new String(owner,ENCODE))).toString();
+		return repository.findByOwner((Person)SerializationUtils.deserialize(owner)).toString();
 	}
 
 	/**

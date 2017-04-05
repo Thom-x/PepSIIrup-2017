@@ -34,7 +34,7 @@ public class WebParticipantController {
 	public WebParticipantController(){
 		LoggingLevelSwitch levelswitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
 		Log.setLogger(new LoggerConfiguration()		
-			.writeTo(new SeqSink(Constants.LOGSERVER_ADDR, Constants.LOGSERVER_SERVICE_APIKEY, null, Duration.ofSeconds(2), null, levelswitch))	
+			.writeTo(new SeqSink(Constants.getINSTANCE().getLogserverAddr(), Constants.getINSTANCE().getLogserverApikey(), null, Duration.ofSeconds(2), null, levelswitch))	
 					.createLogger());
 	}
 	
@@ -44,7 +44,7 @@ public class WebParticipantController {
 	 * @return
 	 */
     @RequestMapping("/getAllParticipantById")
-    public String getParticipant(@RequestParam(value="id", defaultValue="1") String id){
+    public String getAllParticipant(@RequestParam(value="id", defaultValue="1") String id){
     	String response = "";
     	try {
 			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getAllParticipantById");

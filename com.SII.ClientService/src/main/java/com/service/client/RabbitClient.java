@@ -32,7 +32,6 @@ public class RabbitClient {
 	private String replyQueueName;
 	private String corrId;
 	private BlockingQueue<String> response;
-	public static final String RABBITIP = Constants.RABBITMQSERVER_ADDR;
 	private static final String ENCODE = "UTF-8";
 	private String exchange;
 	
@@ -41,14 +40,18 @@ public class RabbitClient {
 	 * @param exchangeName
 	 */
 	public RabbitClient(String exchangeName){
+			
+		//Logger
 		LoggingLevelSwitch levelswitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
 		Log.setLogger(new LoggerConfiguration()		
-		.writeTo(new SeqSink(Constants.LOGSERVER_ADDR, Constants.LOGSERVER_SERVICE_APIKEY, null, Duration.ofSeconds(2), null, levelswitch))	
+		.writeTo(new SeqSink(Constants.getINSTANCE().getLogserverAddr(), Constants.getINSTANCE().getLogserverApikey(), null, Duration.ofSeconds(2), null, levelswitch))	
 		.createLogger());
+		
+		//Rabbit settings
 		this.connectionFactory = new ConnectionFactory();
-		connectionFactory.setHost(RABBITIP);
-		connectionFactory.setUsername(Constants.RABBITMQ_USERNAME);
-		connectionFactory.setPassword(Constants.RABBITMQ_PASSWORD);
+		connectionFactory.setHost(Constants.getINSTANCE().getRabbitmqserverAddr());
+		connectionFactory.setUsername(Constants.getINSTANCE().getRabbitmqUsername());
+		connectionFactory.setPassword(Constants.getINSTANCE().getRabbitmqPassword());
 		response = new ArrayBlockingQueue<>(1);
 		this.exchange = exchangeName;
 		try{
@@ -60,7 +63,7 @@ public class RabbitClient {
 			Log
 			.forContext("MemberName", "RabbitClient:Constructor")
 			.forContext("Service", "web-service")
-			.error(e,"{date} Exception");
+			.error(e,"Exception");
 		}
 	}
 
@@ -93,7 +96,7 @@ public class RabbitClient {
 			Log
 			.forContext("MemberName", "rabbitRPCRoutingKeyExchange")
 			.forContext("Service", "web-service")
-			.error(e,"{date} Exception");
+			.error(e,"Exception");
  		}
  		return null;
      }

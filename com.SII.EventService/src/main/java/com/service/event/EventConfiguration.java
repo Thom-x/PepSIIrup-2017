@@ -23,11 +23,12 @@ import org.springframework.context.annotation.Configuration;
 public class EventConfiguration {
 	
 	@Bean
-	public ConnectionFactory connectionFactory() {
+	public ConnectionFactory connectionFactory() {	
+		
 	    CachingConnectionFactory connectionFactory =
-	        new CachingConnectionFactory(Constants.RABBITMQSERVER_ADDR);
-    		connectionFactory.setUsername(Constants.RABBITMQ_USERNAME);
-    		connectionFactory.setPassword(Constants.RABBITMQ_PASSWORD);
+	        new CachingConnectionFactory(Constants.getINSTANCE().getRabbitmqserverAddr());
+    		connectionFactory.setUsername(Constants.getINSTANCE().getRabbitmqUsername());
+    		connectionFactory.setPassword(Constants.getINSTANCE().getRabbitmqPassword());
 	    return connectionFactory;
 	}
 		

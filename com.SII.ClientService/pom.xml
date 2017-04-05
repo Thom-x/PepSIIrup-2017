@@ -9,6 +9,10 @@
 	</parent>
 	<artifactId>com.SII.ClientService</artifactId>
 
+	<properties>
+		<logserver.service.apikey>6oMsfWy7qq6ZRZAKhp3W</logserver.service.apikey>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>stage</groupId>

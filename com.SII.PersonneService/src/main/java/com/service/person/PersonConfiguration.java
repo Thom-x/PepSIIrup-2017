@@ -24,11 +24,11 @@ public class PersonConfiguration {
 	
 	@Bean
 	public ConnectionFactory connectionFactory() {
-	    CachingConnectionFactory connectionFactory =
-	        new CachingConnectionFactory(Constants.RABBITMQSERVER_ADDR);
-	    	connectionFactory.setUsername(Constants.RABBITMQ_USERNAME);
-	    	connectionFactory.setPassword(Constants.RABBITMQ_PASSWORD);
-	    return connectionFactory;
+		    CachingConnectionFactory connectionFactory =
+			        new CachingConnectionFactory(Constants.getINSTANCE().getRabbitmqserverAddr());
+		    		connectionFactory.setUsername(Constants.getINSTANCE().getRabbitmqUsername());
+		    		connectionFactory.setPassword(Constants.getINSTANCE().getRabbitmqPassword());
+			    return connectionFactory;
 	}
 		
 
