@@ -90,7 +90,7 @@ public class WebEventController {
 	 * @throws ParseException 
 	 */
 	@RequestMapping(value = "/saveEvent", method = RequestMethod.POST)
-	public String updateEvent(@RequestBody Event event) throws ParseException{
+	public String updateEvent(@RequestBody Event event){
 		Log
 		.forContext("MemberName", "saveEvent")
 		.forContext("Service", appName)

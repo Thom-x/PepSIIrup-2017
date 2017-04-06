@@ -25,7 +25,7 @@ import serilogj.sinks.seq.SeqSink;
  * @version 1.0
  */
 public class RabbitClient {
-	
+
 	private ConnectionFactory connectionFactory;
 	private Connection connection;
 	private Channel channel;
@@ -34,19 +34,19 @@ public class RabbitClient {
 	private BlockingQueue<String> response;
 	private static final String ENCODE = "UTF-8";
 	private String exchange;
-	
+
 	/**
 	 * Settings for rabbit
 	 * @param exchangeName
 	 */
 	public RabbitClient(String exchangeName){
-			
+
 		//Logger
 		LoggingLevelSwitch levelswitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
 		Log.setLogger(new LoggerConfiguration()		
-		.writeTo(new SeqSink(Constants.getINSTANCE().getLogserverAddr(), Constants.getINSTANCE().getLogserverApikey(), null, Duration.ofSeconds(2), null, levelswitch))	
-		.createLogger());
-		
+				.writeTo(new SeqSink(Constants.getINSTANCE().getLogserverAddr(), Constants.getINSTANCE().getLogserverApikey(), null, Duration.ofSeconds(2), null, levelswitch))	
+				.createLogger());
+
 		//Rabbit settings
 		this.connectionFactory = new ConnectionFactory();
 		connectionFactory.setHost(Constants.getINSTANCE().getRabbitmqserverAddr());
@@ -68,36 +68,36 @@ public class RabbitClient {
 	}
 
 	/**
- 	 * Method to exchange a message to another service
- 	 * @param data
- 	 * @param routingKey
- 	 * @return
- 	 */
-     public String rabbitRPCRoutingKeyExchange(byte[] data, String routingKey){
-     	this.corrId = UUID.randomUUID().toString();
- 		AMQP.BasicProperties props = new AMQP.BasicProperties.Builder().correlationId(this.corrId).replyTo(replyQueueName).build();   	
- 		try {
- 			channel.basicPublish(this.exchange, routingKey, props, data);
- 			channel.basicConsume(replyQueueName, true, new DefaultConsumer(channel) {
- 				@Override
- 			    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
- 			        if (properties.getCorrelationId().equals(corrId)) {
- 			            boolean b = response.offer(new String(body, ENCODE));
- 			            Log
- 			            .forContext("responseStatus",b)
- 			            .forContext("MemberName", "getPerson")
- 			            .forContext("Service", "web-service")
- 			            .information("rabbit message handled status ");
- 			        }
- 			    }
- 			});
- 	        return response.take();
- 		} catch (Exception e) {
+	 * Method to exchange a message to another service
+	 * @param data
+	 * @param routingKey
+	 * @return
+	 */
+	public String rabbitRPCRoutingKeyExchange(byte[] data, String routingKey){
+		this.corrId = UUID.randomUUID().toString();
+		AMQP.BasicProperties props = new AMQP.BasicProperties.Builder().correlationId(this.corrId).replyTo(replyQueueName).build();   	
+		try {
+			channel.basicPublish(this.exchange, routingKey, props, data);
+			channel.basicConsume(replyQueueName, true, new DefaultConsumer(channel) {
+				@Override
+				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+					if (properties.getCorrelationId().equals(corrId)) {
+						boolean b = response.offer(new String(body, ENCODE));
+						Log
+						.forContext("responseStatus",b)
+						.forContext("MemberName", "getPerson")
+						.forContext("Service", "web-service")
+						.information("rabbit message handled status ");
+					}
+				}
+			});
+			return response.take();
+		} catch (Exception e) {
 			Log
 			.forContext("MemberName", "rabbitRPCRoutingKeyExchange")
 			.forContext("Service", "web-service")
 			.error(e,"Exception");
- 		}
- 		return null;
-     }
- }
+		}
+		return null;
+	}
+}
