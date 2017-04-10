@@ -85,7 +85,6 @@ public class RabbitClient {
 						boolean b = response.offer(new String(body, ENCODE));
 						Log
 						.forContext("responseStatus",b)
-						.forContext("MemberName", "getPerson")
 						.forContext("Service", "web-service")
 						.information("rabbit message handled status ");
 					}

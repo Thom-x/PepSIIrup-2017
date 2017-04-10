@@ -43,7 +43,12 @@ public class PersonConfiguration {
 	}
 
 	@Bean
-	public Queue getPersonQueue() {
+	public Queue getPersonQueueById() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
+	public Queue getPersonQueueByEmail() {
 		return new AnonymousQueue();
 	}
 	
@@ -58,17 +63,22 @@ public class PersonConfiguration {
 	}
 
 	@Bean
-	public Binding binding1(DirectExchange direct, Queue getPersonQueue) {
-		return BindingBuilder.bind(getPersonQueue).to(direct).with("getPerson");
+	public Binding binding1(DirectExchange direct, Queue getPersonQueueById) {
+		return BindingBuilder.bind(getPersonQueueById).to(direct).with("getPersonById");
 	}
 	
 	@Bean
-	public Binding binding2(DirectExchange direct, Queue getAllPersonQueue) {
+	public Binding binding2(DirectExchange direct, Queue getPersonQueueByEmail) {
+		return BindingBuilder.bind(getPersonQueueByEmail).to(direct).with("getPersonByEmail");
+	}
+	
+	@Bean
+	public Binding binding3(DirectExchange direct, Queue getAllPersonQueue) {
 		return BindingBuilder.bind(getAllPersonQueue).to(direct).with("getAllPerson");
 	}
 	
 	@Bean
-	public Binding binding3(DirectExchange direct, Queue addPersonQueue) {
+	public Binding binding4(DirectExchange direct, Queue addPersonQueue) {
 		return BindingBuilder.bind(addPersonQueue).to(direct).with("addPerson");
 	}
 }
