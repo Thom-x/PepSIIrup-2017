@@ -1,8 +1,16 @@
 package com.service.client;
 
+import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 
+import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.modele.Review;
 
 import serilogj.Log;
 import serilogj.LoggerConfiguration;
@@ -29,5 +37,45 @@ public class WebReviewController {
 					.createLogger());
 	}
 	
+	
+	/**
+	 * Method to find a Review by id with RabbitMQ
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getReview")
+	public String getReview(@RequestParam(value="id", defaultValue="1") String id){
+		String response = "";
+		try {
+			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getReview");
+		} catch (UnsupportedEncodingException e) {
+			Log
+			.forContext("MemberName", "getReview")
+			.forContext("Service", appName)
+			.error(e,"{date} UnsupportedEncodingException");
+		}
+		Log
+		.forContext("id", id)
+		.forContext("MemberName", "getReview")
+		.forContext("Service", appName)
+		.information("Request : getReview");
+		return response;
+	}
+	
+	/**
+	 * Method to find add a person with RabbitMQ
+	 * @param review
+	 * @return
+	 */
+	@RequestMapping(value = "/addReview", method = RequestMethod.POST)
+	public String addPerson(@RequestBody Review review){
+		Log
+		.forContext("person", review)
+		.forContext("MemberName", "addReview")
+		.forContext("Service", appName)
+		.information("Request : addReview");
+		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(review),"addReview");
+	}
+
     
 }

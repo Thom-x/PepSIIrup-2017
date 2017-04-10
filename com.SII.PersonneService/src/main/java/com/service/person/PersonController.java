@@ -44,28 +44,56 @@ public class PersonController {
 	}
 
 	/**
-	 * Method to get a Person in DataBase, works with RabbitMq
+	 * Method to get a Person by id in DataBase, works with RabbitMq
 	 * @param id
 	 * @return
 	 * @throws JsonProcessingException 
 	 */
-	@RabbitListener(queues = "#{getPersonQueue.name}")
-	public String getPerson(byte[] id) throws JsonProcessingException {
+	@RabbitListener(queues = "#{getPersonQueueById.name}")
+	public String getPersonById(byte[] id) throws JsonProcessingException {
 		Person response = null;
 		try {
 			response = repository.findByPersonID(Integer.parseInt(new String(id,ENCODE)));
 		} catch (NumberFormatException | UnsupportedEncodingException e) {
 			Log
-			.forContext("MemberName", "getPerson")
+			.forContext("MemberName", "getPersonById")
 			.forContext("Service", appName)
 			.error(e,"{date} Exception");
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		Log
 		.forContext("id", id)
-		.forContext("MemberName", "getPerson")
+		.forContext("MemberName", "getPersonById")
 		.forContext("Service", appName)
-		.information("Request : getPerson");
+		.information("Request : getPersonById");
+		return mapper.writeValueAsString(response);
+	}
+	
+	/**
+	 * Method to get a Person by email in DataBase, works with RabbitMq
+	 * @param email
+	 * @return
+	 * @throws JsonProcessingException
+	 */
+	@RabbitListener(queues = "#{getPersonQueueByEmail.name}")
+	public String getPersonByEmail(byte[] email) throws JsonProcessingException {
+		Person response = null;
+		try {
+			System.out.println(new String(email,ENCODE));
+			response = repository.findByPersonEmail(new String(email,ENCODE));
+			System.out.println(response);
+		} catch (NumberFormatException | UnsupportedEncodingException e) {
+			Log
+			.forContext("MemberName", "getPersonByEmail")
+			.forContext("Service", appName)
+			.error(e,"{date} Exception");
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		Log
+		.forContext("email", email)
+		.forContext("MemberName", "getPersonByEmail")
+		.forContext("Service", appName)
+		.information("Request : getPersonByEmail");
 		return mapper.writeValueAsString(response);
 	}
 

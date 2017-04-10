@@ -36,6 +36,9 @@ public class Person implements Serializable{
 	@Column(name = "Job")
 	private String job;
 
+	@Column(name = "Personemail")
+	private String personEmail;
+	
 	public Person(String pseudo, String job) {
 		this.pseudo = pseudo;
 		this.job = job;
@@ -85,9 +88,21 @@ public class Person implements Serializable{
 		this.job = job;
 	}
 
+	public String getPersonEmail() {
+		return personEmail;
+	}
+
+	public void setPersonEmail(String personEmail) {
+		this.personEmail = personEmail;
+	}
+
 	@Override
 	public String toString() {
-		return "Person [personID=" + personID + ", pseudo=" + pseudo + ", job=" + job + "]";
+		return "Person [personID=" + personID + ", pseudo=" + pseudo + ", lastName=" + lastName + ", firstName="
+				+ firstName + ", job=" + job + ", personEmail=" + personEmail + "]";
 	}
+
+	
+
 	
 }

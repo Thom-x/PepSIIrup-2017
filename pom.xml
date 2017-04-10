@@ -6,13 +6,6 @@
 	<artifactId>BackendJava</artifactId>
 	<version>1.1.0.RELEASE</version>
 	<packaging>pom</packaging>
-
-	<properties>
-		<rabbitmq.addr>10.10.1.155</rabbitmq.addr>
-		<rabbitmq.username>BugsBunny</rabbitmq.username>
-		<rabbitmq.password>Koi29Dr</rabbitmq.password>
-		<logger.addr>10.10.1.155:5341</logger.addr>
-	</properties>
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-starter-parent</artifactId>
@@ -145,7 +138,6 @@
 			<version>0.3</version>
 		</dependency>
 
-
 		<dependency>
 			<!-- Spring Cloud starter -->
 			<groupId>org.springframework.cloud</groupId>
@@ -185,6 +177,11 @@
 			<groupId>io.advantageous.boon</groupId>
 			<artifactId>reflekt</artifactId>
 			<version>0.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.22.0</version>
 		</dependency>
 
 	</dependencies>
