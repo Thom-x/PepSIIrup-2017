@@ -121,7 +121,7 @@ public class WebPersonController {
 			Log
 			.forContext("MemberName", "getAllPerson")
 			.forContext("Service", appName)
-			.error(e,"{date} UnsupportedEncodingException");
+			.error(e,"UnsupportedEncodingException");
 		}
 		Log
 		.forContext("MemberName", "getAllPerson")
@@ -131,38 +131,43 @@ public class WebPersonController {
 	}
 
 	@RequestMapping(value="/connect", method = RequestMethod.POST)
-	public String connect(@RequestBody String idTokenString) throws GeneralSecurityException, IOException{
+	public String connect(@RequestBody String idTokenString){
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
 				.setAudience(Collections.singletonList(CLIENT_ID))
 				.build();
 
-		GoogleIdToken idToken = verifier.verify(idTokenString);
+		GoogleIdToken idToken = null;
+		try {
+			idToken = verifier.verify(idTokenString);
+		} catch (GeneralSecurityException | IOException e) {
+			Log
+			.forContext("MemberName", "getAllPerson")
+			.forContext("Service", appName)
+			.error(e,"Exception");
+		}
 		if (idToken != null) {
 			Payload payload = idToken.getPayload();
 			// Print user identifier
 			String userId = payload.getSubject();
-			System.out.println("User ID: " + userId);
 			// Get profile information from payload
 			String email = payload.getEmail();
-			boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
 			String name = (String) payload.get("name");
-			String pictureUrl = (String) payload.get("picture");
-			String locale = (String) payload.get("locale");
-			String familyName = (String) payload.get("family_name");
-			String givenName = (String) payload.get("given_name");		
 			Log
 			.forContext("email", email)
-			.forContext("emailVerified", emailVerified)
 			.forContext("name", name)
-			.forContext("pictureUrl", pictureUrl)
-			.forContext("locale", locale)
-			.forContext("familyName", familyName)
-			.forContext("givenName", givenName)
+			.forContext("userId", userId)
 			.forContext("Service", appName)
 			.information("User Connection");
 
-			String p = new RabbitClient("exc.person").rabbitRPCRoutingKeyExchange(email.getBytes("UTF-8"),"getPersonByEmail");
-			System.out.println(p);
+			String p = null;
+			try {
+				p = new RabbitClient("exc.person").rabbitRPCRoutingKeyExchange(email.getBytes("UTF-8"),"getPersonByEmail");
+			} catch (UnsupportedEncodingException e) {
+				Log
+				.forContext("MemberName", "getAllPerson")
+				.forContext("Service", appName)
+				.error(e,"UnsupportedEncodingException");
+			}
 			if(p != null){
 				return "{\"response\":\"connection\"}";
 			}
@@ -187,34 +192,32 @@ public class WebPersonController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value="/registerPerson", method = RequestMethod.POST)
-	public String registerPerson(@RequestBody Person pers, @RequestParam(value="id", defaultValue="1") String idTokenString) throws GeneralSecurityException, IOException{
+	public String registerPerson(@RequestBody Person pers, @RequestParam(value="id", defaultValue="1") String idTokenString){
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
 				.setAudience(Collections.singletonList(CLIENT_ID))
 				.build();
-		GoogleIdToken idToken = verifier.verify(idTokenString);
+		GoogleIdToken idToken = null;
+		try {
+			idToken = verifier.verify(idTokenString);
+		} catch (GeneralSecurityException | IOException e) {
+			Log
+			.forContext("MemberName", "getAllPerson")
+			.forContext("Service", appName)
+			.error(e,"Exception");
+		}
 		if (idToken != null) {
 			Payload payload = idToken.getPayload();
 			// Print user identifier
 			String userId = payload.getSubject();
-			System.out.println("User ID: " + userId);
 
 			// Get profile information from payload
 			String email = payload.getEmail();
-			boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
 			String name = (String) payload.get("name");
-			String pictureUrl = (String) payload.get("picture");
-			String locale = (String) payload.get("locale");
-			String familyName = (String) payload.get("family_name");
-			String givenName = (String) payload.get("given_name");	
 			Log
 			.forContext("id", idTokenString)
 			.forContext("email", email)
-			.forContext("emailVerified", emailVerified)
+			.forContext("userId", userId)
 			.forContext("name", name)
-			.forContext("pictureUrl", pictureUrl)
-			.forContext("locale", locale)
-			.forContext("familyName", familyName)
-			.forContext("givenName", givenName)
 			.forContext("Service", appName)
 			.information("User Connection");		
 			Log
@@ -224,7 +227,7 @@ public class WebPersonController {
 			.information("Pers");
 
 			new RabbitClient("exc.person").rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(pers),"addPerson");
-			return "{\"response\":\"connection\"}";
+			return "{\"response\":\"success\"}";
 		} else {
 			Log
 			.forContext("Service", appName)
