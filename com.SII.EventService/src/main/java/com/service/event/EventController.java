@@ -53,7 +53,8 @@ public class EventController {
 	 * @throws JsonProcessingException
 	 */
 	@RabbitListener(queues = "#{saveEventQueue.name}")
-	public String saveEvent(byte[] data) throws JsonProcessingException{
+	public String saveEvent(byte[] data){
+		String res = "";
 		Event e = (Event)SerializationUtils.deserialize(data);
 		Event event = repository.save(e);
 		ObjectMapper mapper = new ObjectMapper();
@@ -61,7 +62,15 @@ public class EventController {
 		.forContext("MemberName", "saveEvent")
 		.forContext("Service", appName)
 		.information("RabbitMQ : saveEvent");
-		return mapper.writeValueAsString(event);
+		try {
+			res =  mapper.writeValueAsString(event);
+		} catch (JsonProcessingException e1) {
+			Log
+			.forContext("MemberName", "saveEvent")
+			.forContext("Service", appName)
+			.error(e1,"JsonProcessingException");
+		}
+		return res;
 	}
 
 	/**
@@ -71,7 +80,8 @@ public class EventController {
 	 * @throws UnsupportedEncodingException
 	 */
 	@RabbitListener(queues = "#{findByOwnerQueue.name}")
-	public String findByOwner(byte[] owner) throws UnsupportedEncodingException{
+	public String findByOwner(byte[] owner){
+		
 		Log
 		.forContext("MemberName", "findByOwner")
 		.forContext("Service", appName)
@@ -86,12 +96,21 @@ public class EventController {
 	 * @throws UnsupportedEncodingException
 	 */
 	@RabbitListener(queues = "#{getEventByPlaceQueue.name}")
-	public String getEventByPlace(byte[] place) throws UnsupportedEncodingException{
+	public String getEventByPlace(byte[] place){
+		String res = "";
 		Log
 		.forContext("MemberName", "getEventByPlace")
 		.forContext("Service", appName)
 		.information("RabbitMQ : getEventByPlace");
-		return repository.getEventFromPlace(new String(place, ENCODE), new Date()).toString();
+		try {
+			res = repository.getEventFromPlace(new String(place, ENCODE), new Date()).toString();
+		} catch (UnsupportedEncodingException e1) {
+			Log
+			.forContext("MemberName", "getEventByPlace")
+			.forContext("Service", appName)
+			.error(e1,"UnsupportedEncodingException");
+		}
+		return res;
 	}
 	
 	/**
@@ -101,13 +120,22 @@ public class EventController {
 	 * @throws JsonProcessingException
 	 */
 	@RabbitListener(queues = "#{getAllEventQueue.name}")
-	public String getAllEvent(byte[] id) throws JsonProcessingException{
+	public String getAllEvent(byte[] id){
+		String res = "";
 		List<Event> events = repository.findAll();
 		ObjectMapper mapper = new ObjectMapper();
 		Log
 		.forContext("MemberName", "getAllEvent")
 		.forContext("Service", appName)
 		.information("RabbitMQ : getAllEvent");
-		return mapper.writeValueAsString(events);
+		try {
+			res = mapper.writeValueAsString(events);
+		} catch (JsonProcessingException e1) {
+			Log
+			.forContext("MemberName", "getAllEvent")
+			.forContext("Service", appName)
+			.error(e1,"JsonProcessingException");
+		}
+		return res;
 	}
 }

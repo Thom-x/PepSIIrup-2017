@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.time.Duration;
-import java.util.Collections;
-
+import java.util.Arrays;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -47,7 +46,8 @@ public class WebPersonController {
 	@Value("${spring.application.name}")
 	private String appName;
 	private static final JacksonFactory jacksonFactory = new JacksonFactory();
-	private static final String CLIENT_ID = "929890661942-49n2pcequcmns19fe1omff72tqcips1v.apps.googleusercontent.com";
+	private static final String CLIENT_ID1 = "1059176547192-jq81i94a7dccnpklm5ph4gauim29t0dg.apps.googleusercontent.com"; //ms	
+	private static final String CLIENT_ID2 = "784894623300-gmkq3hut99f16n220kjimotv0os7vt2e.apps.googleusercontent.com"; //java
 	private HttpTransport transport = new ApacheHttpTransport();
 
 
@@ -133,15 +133,15 @@ public class WebPersonController {
 	@RequestMapping(value="/connect", method = RequestMethod.POST)
 	public String connect(@RequestBody String idTokenString){
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
-				.setAudience(Collections.singletonList(CLIENT_ID))
+				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
 				.build();
-
+		System.out.println(idTokenString);
 		GoogleIdToken idToken = null;
 		try {
 			idToken = verifier.verify(idTokenString);
 		} catch (GeneralSecurityException | IOException e) {
 			Log
-			.forContext("MemberName", "getAllPerson")
+			.forContext("MemberName", "connect")
 			.forContext("Service", appName)
 			.error(e,"Exception");
 		}
@@ -161,7 +161,7 @@ public class WebPersonController {
 
 			String p = null;
 			try {
-				p = new RabbitClient("exc.person").rabbitRPCRoutingKeyExchange(email.getBytes("UTF-8"),"getPersonByEmail");
+				p = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(email.getBytes("UTF-8"),"getPersonByEmail");
 			} catch (UnsupportedEncodingException e) {
 				Log
 				.forContext("MemberName", "getAllPerson")
@@ -169,7 +169,7 @@ public class WebPersonController {
 				.error(e,"UnsupportedEncodingException");
 			}
 			if(p != null){
-				return "{\"response\":\"connection\"}";
+				return p;
 			}
 			else{
 				return "{\"response\":\"inscription\"}";
@@ -177,6 +177,7 @@ public class WebPersonController {
 		} else {
 			Log
 			.forContext("Service", appName)
+			.forContext("Token",idTokenString)
 			.information("Invalid Token");
 			return "{\"response\":\"error\"}";
 		}
@@ -194,14 +195,15 @@ public class WebPersonController {
 	@RequestMapping(value="/registerPerson", method = RequestMethod.POST)
 	public String registerPerson(@RequestBody Person pers, @RequestParam(value="id", defaultValue="1") String idTokenString){
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
-				.setAudience(Collections.singletonList(CLIENT_ID))
+				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
 				.build();
 		GoogleIdToken idToken = null;
+		System.out.println(idTokenString);
 		try {
 			idToken = verifier.verify(idTokenString);
-		} catch (GeneralSecurityException | IOException e) {
+		} catch (Exception e) {
 			Log
-			.forContext("MemberName", "getAllPerson")
+			.forContext("MemberName", "registerPerson")
 			.forContext("Service", appName)
 			.error(e,"Exception");
 		}
@@ -225,16 +227,13 @@ public class WebPersonController {
 			.forContext("LastName", pers.getLastName())
 			.forContext("Job", pers.getJob())
 			.information("Pers");
-
-			new RabbitClient("exc.person").rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(pers),"addPerson");
-			return "{\"response\":\"success\"}";
+			
+			return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(pers),"addPerson");
 		} else {
 			Log
 			.forContext("Service", appName)
 			.information("Invalid Token");
 			return "{\"response\":\"error\"}";
 		}		
-
 	}
-
 }
