@@ -148,9 +148,7 @@ public class WebEventController {
 		}		
 		
 	}
-	
-	
-
+		
 	/**
 	 * Method to find all Events with RabbitMq
 	 * @param id
