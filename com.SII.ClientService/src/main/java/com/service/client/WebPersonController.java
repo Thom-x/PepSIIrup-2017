@@ -198,11 +198,12 @@ public class WebPersonController {
 				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
 				.build();
 		GoogleIdToken idToken = null;
+		System.out.println(idTokenString);
 		try {
 			idToken = verifier.verify(idTokenString);
 		} catch (Exception e) {
 			Log
-			.forContext("MemberName", "getAllPerson")
+			.forContext("MemberName", "registerPerson")
 			.forContext("Service", appName)
 			.error(e,"Exception");
 		}
@@ -226,16 +227,13 @@ public class WebPersonController {
 			.forContext("LastName", pers.getLastName())
 			.forContext("Job", pers.getJob())
 			.information("Pers");
-
-			new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(pers),"addPerson");
-			return "{\"response\":\"success\"}";
+			
+			return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(pers),"addPerson");
 		} else {
 			Log
 			.forContext("Service", appName)
 			.information("Invalid Token");
 			return "{\"response\":\"error\"}";
 		}		
-
 	}
-
 }

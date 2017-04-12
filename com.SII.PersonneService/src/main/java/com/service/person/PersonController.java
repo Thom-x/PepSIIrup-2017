@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,15 +49,16 @@ public class PersonController {
 	 * @throws JsonProcessingException 
 	 */
 	@RabbitListener(queues = "#{getPersonQueueById.name}")
-	public String getPersonById(byte[] id) throws JsonProcessingException {
+	public String getPersonById(byte[] id){
 		Person response = null;
+		String res = "";
 		try {
 			response = repository.findByPersonID(Integer.parseInt(new String(id,ENCODE)));
 		} catch (NumberFormatException | UnsupportedEncodingException e) {
 			Log
 			.forContext("MemberName", "getPersonById")
 			.forContext("Service", appName)
-			.error(e,"{date} Exception");
+			.error(e,"Exception");
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		Log
@@ -66,7 +66,15 @@ public class PersonController {
 		.forContext("MemberName", "getPersonById")
 		.forContext("Service", appName)
 		.information("Request : getPersonById");
-		return mapper.writeValueAsString(response);
+		try {
+			res = mapper.writeValueAsString(response);
+		} catch (JsonProcessingException e) {
+			Log
+			.forContext("MemberName", "getPersonById")
+			.forContext("Service", appName)
+			.error(e,"JsonProcessingException");
+		}
+		return res;
 	}
 	
 	/**
@@ -76,17 +84,16 @@ public class PersonController {
 	 * @throws JsonProcessingException
 	 */
 	@RabbitListener(queues = "#{getPersonQueueByEmail.name}")
-	public String getPersonByEmail(byte[] email) throws JsonProcessingException {
+	public String getPersonByEmail(byte[] email) {
 		Person response = null;
+		String res = "";
 		try {
-			System.out.println(new String(email,ENCODE));
 			response = repository.findByPersonEmail(new String(email,ENCODE));
-			System.out.println(response);
 		} catch (NumberFormatException | UnsupportedEncodingException e) {
 			Log
 			.forContext("MemberName", "getPersonByEmail")
 			.forContext("Service", appName)
-			.error(e,"{date} Exception");
+			.error(e," Exception");
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		Log
@@ -94,7 +101,15 @@ public class PersonController {
 		.forContext("MemberName", "getPersonByEmail")
 		.forContext("Service", appName)
 		.information("Request : getPersonByEmail");
-		return mapper.writeValueAsString(response);
+		try {
+			res = mapper.writeValueAsString(response);
+		} catch (JsonProcessingException e) {
+			Log
+			.forContext("MemberName", "getPersonByEmail")
+			.forContext("Service", appName)
+			.error(e,"JsonProcessingException");
+		}
+		return res;
 	}
 
 	/**
@@ -113,7 +128,7 @@ public class PersonController {
 			Log
 			.forContext("MemberName", "getAllPerson")
 			.forContext("Service", appName)
-			.error(e,"{date} JsonProcessingException");
+			.error(e," JsonProcessingException");
 		}
 		Log
 		.forContext("MemberName", "getAllPerson")
@@ -129,19 +144,25 @@ public class PersonController {
 	 * @throws JsonProcessingException 
 	 */
 	@RabbitListener(queues = "#{addPersonQueue.name}")
-	public String addPerson(byte[] data) throws JsonProcessingException{
+	public String addPerson(byte[] data){
 		Person p =  (Person) SerializationUtils.deserialize(data);
-		repository.save(p);
+		System.out.println(p.getPseudo());
+		System.out.println(p.getPersonEmail());
+		p = repository.save(p);
+		String res = "";
 		ObjectMapper mapper = new ObjectMapper();
 		Log
 		.forContext("MemberName", "addPerson")
 		.forContext("Service", appName)
 		.information("Request : addPerson");
-		return mapper.writeValueAsString(p);
-	}
-	
-	@RequestMapping("/test")
-	public String test(){
-		return Constants.getINSTANCE().getLogserverAddr();
+		try {
+			res = mapper.writeValueAsString(p);
+		} catch (JsonProcessingException e) {
+			Log
+			.forContext("MemberName", "addPerson")
+			.forContext("Service", appName)
+			.error(e,"JsonProcessingException");
+		}
+		return res;
 	}
 }
