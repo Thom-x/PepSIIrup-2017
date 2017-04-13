@@ -7,13 +7,11 @@
 	<version>1.1.0.RELEASE</version>
 	
 	<modules>
-        <module>com.SII.RegisterService</module>
-        <module>com.SII.PersonneService</module>
-        <module>com.SII.EventService</module>
-    	<module>com.SII.ClientService</module>
-    </modules>
-	
-	
+       	 <module>com.SII.RegisterService</module>
+      	  <module>com.SII.PersonneService</module>
+      	  <module>com.SII.EventService</module>
+    	  <module>com.SII.ClientService</module>
+ 	</modules>
 	
 </project>
 	
