@@ -5,16 +5,19 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Map;
+
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -22,7 +25,6 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.apache.ApacheHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.modele.Person;
-
 import serilogj.Log;
 import serilogj.LoggerConfiguration;
 import serilogj.core.LoggingLevelSwitch;
@@ -131,11 +133,12 @@ public class WebPersonController {
 	}
 
 	@RequestMapping(value="/connect", method = RequestMethod.POST)
-	public String connect(@RequestBody String idTokenString){
+	public String connect(@RequestParam Map<String, String> body ){
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
 				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
 				.build();
-		System.out.println(idTokenString);
+		
+		String idTokenString = (String) body.get("tokenid");
 		GoogleIdToken idToken = null;
 		try {
 			idToken = verifier.verify(idTokenString);
@@ -192,13 +195,25 @@ public class WebPersonController {
 	 * @throws GeneralSecurityException
 	 * @throws IOException
 	 */
-	@RequestMapping(value="/registerPerson", method = RequestMethod.POST)
-	public String registerPerson(@RequestBody Person pers, @RequestParam(value="id", defaultValue="1") String idTokenString){
+	@RequestMapping(value="/registerPerson", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public String registerPerson(@RequestParam Map<String, String> body ){
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
 				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
 				.build();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Person pers = null;
+		String idTokenString = null;
+		try {
+			pers = mapper.readValue((String) body.get("person"),Person.class);
+		} catch (IOException e1) {
+			Log
+			.forContext("MemberName", "registerPerson")
+			.forContext("Service", appName)
+			.error(e1,"IOException");
+		}
+		idTokenString = (String) body.get("tokenid");
 		GoogleIdToken idToken = null;
-		System.out.println(idTokenString);
 		try {
 			idToken = verifier.verify(idTokenString);
 		} catch (Exception e) {
