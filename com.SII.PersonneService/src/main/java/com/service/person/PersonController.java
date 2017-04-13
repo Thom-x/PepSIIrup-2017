@@ -146,9 +146,15 @@ public class PersonController {
 	@RabbitListener(queues = "#{addPersonQueue.name}")
 	public String addPerson(byte[] data){
 		Person p =  (Person) SerializationUtils.deserialize(data);
-		System.out.println(p.getPseudo());
-		System.out.println(p.getPersonEmail());
-		p = repository.save(p);
+		if (p.checkPerson()){
+			p = repository.save(p);
+		}
+		else{
+			Log
+			.forContext("MemberName", "addPerson")
+			.forContext("Service", appName)
+			.error(new IllegalArgumentException(),"IllegalArgumentException");
+		}
 		String res = "";
 		ObjectMapper mapper = new ObjectMapper();
 		Log

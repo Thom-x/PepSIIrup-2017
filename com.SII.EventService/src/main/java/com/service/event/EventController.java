@@ -56,7 +56,16 @@ public class EventController {
 	public String saveEvent(byte[] data){
 		String res = "";
 		Event e = (Event)SerializationUtils.deserialize(data);
-		Event event = repository.save(e);
+		Event event = null;
+		if (e.checkEvent()){
+			 event = repository.save(e);
+		}
+		else{
+			Log
+			.forContext("MemberName", "saveEvent")
+			.forContext("Service", appName)
+			.error(new IllegalArgumentException(),"IllegalArgumentException");
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		Log
 		.forContext("MemberName", "saveEvent")
