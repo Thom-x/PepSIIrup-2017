@@ -13,4 +13,11 @@ addons:
 script:
 - mvn install:install-file -Dfile=com.SII.EventService/lib/sqljdbc42.jar -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc42 -Dversion=4.2 -Dpackaging=jar
 - mvn install:install-file -Dfile=com.SII.EventService/lib/serilogj.jar -DgroupId=serilogj -DartifactId=serilogj -Dversion=0.3 -Dpackaging=jar
+- cd com.SII.RegisterService
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+- cd ../com.SII.PersonneService
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+- cd ../com.SII.EventService
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+- cd ../com.SII.ClientService
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
