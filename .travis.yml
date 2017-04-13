@@ -8,6 +8,7 @@ jdk:
 - oraclejdk8
 addons:
   sonarqube:
+    organization: p1erregaultier-github
     token: $SONAR_TOKEN
 script:
 - mvn install:install-file -Dfile=com.SII.EventService/lib/sqljdbc42.jar -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc42 -Dversion=4.2 -Dpackaging=jar

@@ -24,19 +24,19 @@ public class Person implements Serializable{
 	@Column(name = "PersonID",unique=true, nullable=false)
 	private int personID;
 
-	@Column(name = "Pseudo")
+	@Column(name = "Pseudo") 
 	private String pseudo;
 	
-	@Column(name = "Lastname")
+	@Column(name = "Lastname") 
 	private String lastName;
 	
 	@Column(name = "Firstname")
 	private String firstName;
 
-	@Column(name = "Job")
+	@Column(name = "Job") 
 	private String job;
 
-	@Column(name = "Personemail")
+	@Column(name = "Personemail") 
 	private String personEmail;
 	
 	public Person(String pseudo, String job) {
@@ -103,6 +103,8 @@ public class Person implements Serializable{
 	}
 
 	
-
+	public boolean checkPerson(){
+		return pseudo != null && job != null && lastName != null && personEmail != null;
+	}
 	
 }
