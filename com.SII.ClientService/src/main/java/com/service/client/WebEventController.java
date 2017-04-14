@@ -6,6 +6,7 @@ import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Map;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -103,13 +105,24 @@ public class WebEventController {
 	 * @throws ParseException 
 	 */
 	@RequestMapping(value = "/saveEvent", method = RequestMethod.POST)
-	public String updateEvent(@RequestBody Event event, @RequestParam(value="id", defaultValue="1") String idTokenString){
+	public String updateEvent(@RequestParam Map<String, String> body){
+		ObjectMapper mapper = new ObjectMapper();
+		Event event = null;
+		try {
+			event = mapper.readValue((String) body.get("event"),Event.class);
+		} catch (IOException e1) {
+			Log
+			.forContext("MemberName", "saveEvent")
+			.forContext("Service", appName)
+			.error(e1," IOException");
+		}
 		Log
 		.forContext("MemberName", "saveEvent")
 		.forContext("Service", appName)
-		.forContext("event", event)
+		.forContext("event", body.get("event"))
 		.information("Request : saveEvent");
 		
+		String idTokenString = body.get("tokenid");
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
 				.setAudience(Collections.singletonList(CLIENT_ID))
 				.build();
@@ -124,10 +137,7 @@ public class WebEventController {
 		}
 		if (idToken != null) {
 			Payload payload = idToken.getPayload();
-			// Print user identifier
 			String userId = payload.getSubject();
-
-			// Get profile information from payload
 			String email = payload.getEmail();
 			String name = (String) payload.get("name");
 
@@ -163,7 +173,7 @@ public class WebEventController {
 			Log
 			.forContext("MemberName", "getAllEvent")
 			.forContext("Service", appName)
-			.error(e,"{date} UnsupportedEncodingException");
+			.error(e," UnsupportedEncodingException");
 		}
 		Log
 		.forContext("MemberName", "getAllEvent")
@@ -171,5 +181,21 @@ public class WebEventController {
 		.information("Request : getAllEvent");
 		return response;
 	}
-
+	
+	@RequestMapping(value = "/saveEventJasone", method = RequestMethod.POST)
+	public String updateEventJasone(@RequestParam Map<String, String> body){
+		ObjectMapper mapper = new ObjectMapper();
+		Event event = null;
+		System.out.println(body.get("event"));
+		try {
+			event = mapper.readValue((String) body.get("event"),Event.class);
+		} catch (IOException e1) {
+			Log
+			.forContext("MemberName", "saveEvent")
+			.forContext("Service", appName)
+			.error(e1," IOException");
+		}
+		String e = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(event),"saveEvent");
+		return e;
+	}	
 }
