@@ -52,7 +52,7 @@ public class WebParticipantController {
 			Log
 			.forContext("MemberName", "getAllParticipantById")
 			.forContext("Service", appName)
-			.error(e,"{date} UnsupportedEncodingException");
+			.error(e,"UnsupportedEncodingException");
 		}
 		Log
 		.forContext("MemberName", "getAllParticipantById")
