@@ -1,5 +1,6 @@
 package com.modele;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import java.io.Serializable;
@@ -19,23 +20,29 @@ public class Person implements Serializable{
 
 	private static final long serialVersionUID = 7525202378849284784L;
 
+	@JsonProperty("PersonId")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "PersonID",unique=true, nullable=false)
 	private int personID;
 
+	@JsonProperty("Pseudo")
 	@Column(name = "Pseudo") 
 	private String pseudo;
 	
+	@JsonProperty("LastName")
 	@Column(name = "Lastname") 
 	private String lastName;
 	
+	@JsonProperty("FirstName")
 	@Column(name = "Firstname")
 	private String firstName;
 
+	@JsonProperty("Job")
 	@Column(name = "Job") 
 	private String job;
 
+	@JsonProperty("PersonEmail")
 	@Column(name = "Personemail") 
 	private String personEmail;
 	

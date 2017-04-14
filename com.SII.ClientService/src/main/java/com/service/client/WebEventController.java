@@ -195,7 +195,7 @@ public class WebEventController {
 			.forContext("Service", appName)
 			.error(e1," IOException");
 		}
-		String e = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(event),"saveEvent");
-		return e;
+		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(event),"saveEvent");
+
 	}	
 }

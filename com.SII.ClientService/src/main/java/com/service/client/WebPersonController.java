@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -134,11 +136,15 @@ public class WebPersonController {
 
 	@RequestMapping(value="/connect", method = RequestMethod.POST)
 	public String connect(@RequestParam Map<String, String> body ){
+		Log
+		.forContext("userId",body.get("tokenid"))
+		.forContext("Service", appName)
+		.information("User Connection");		
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
 				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
 				.build();
 		
-		String idTokenString = (String) body.get("tokenid");
+		String idTokenString = body.get("tokenid");
 		GoogleIdToken idToken = null;
 		try {
 			idToken = verifier.verify(idTokenString);
@@ -192,16 +198,24 @@ public class WebPersonController {
 	 * @param pers
 	 * @param idTokenString
 	 * @return
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
 	 * @throws GeneralSecurityException
 	 * @throws IOException
 	 */
 	@RequestMapping(value="/registerPerson", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public String registerPerson(@RequestParam Map<String, String> body ){
+		ObjectMapper mapper = new ObjectMapper();
+		Log
+		.forContext("person", body.get("person"))
+		.forContext("userId",body.get("tokenid"))
+		.forContext("Service", appName)
+		.information("User Connection");		
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
 				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
 				.build();
 		
-		ObjectMapper mapper = new ObjectMapper();
+
 		Person pers = null;
 		String idTokenString = null;
 		try {
@@ -212,7 +226,7 @@ public class WebPersonController {
 			.forContext("Service", appName)
 			.error(e1,"IOException");
 		}
-		idTokenString = (String) body.get("tokenid");
+		idTokenString = body.get("tokenid");
 		GoogleIdToken idToken = null;
 		try {
 			idToken = verifier.verify(idTokenString);
@@ -222,21 +236,7 @@ public class WebPersonController {
 			.forContext("Service", appName)
 			.error(e,"Exception");
 		}
-		if (idToken != null) {
-			Payload payload = idToken.getPayload();
-			// Print user identifier
-			String userId = payload.getSubject();
-
-			// Get profile information from payload
-			String email = payload.getEmail();
-			String name = (String) payload.get("name");
-			Log
-			.forContext("id", idTokenString)
-			.forContext("email", email)
-			.forContext("userId", userId)
-			.forContext("name", name)
-			.forContext("Service", appName)
-			.information("User Connection");		
+		if (idToken != null && pers != null) {
 			Log
 			.forContext("FirstName", pers.getFirstName())
 			.forContext("LastName", pers.getLastName())
