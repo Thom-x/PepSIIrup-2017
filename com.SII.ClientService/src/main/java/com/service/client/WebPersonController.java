@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -203,6 +204,7 @@ public class WebPersonController {
 	 * @throws GeneralSecurityException
 	 * @throws IOException
 	 */
+
 	@RequestMapping(value="/registerPerson", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public String registerPerson(@RequestParam Map<String, String> body ){
 		ObjectMapper mapper = new ObjectMapper();
@@ -214,8 +216,6 @@ public class WebPersonController {
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
 				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
 				.build();
-		
-
 		Person pers = null;
 		String idTokenString = null;
 		try {
