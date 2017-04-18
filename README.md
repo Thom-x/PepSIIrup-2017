@@ -9,7 +9,7 @@ Application to create and manage SII Nantes events
 
 # Installation
 
-Clone the repository and then build it using Maven
+Clone this repository and then build every micro-services using Maven
 You will have to change ip address in the applications.properties files to fit to your server
 You also need to install RabbitMq (default port 5672) and Seq (default port 5341)
 ```bash
@@ -17,6 +17,7 @@ git clone https://github.com/TraineeSIIp/PepSIIrup-2017.git
 cd PepSIIrup-2017/
 mvn install:install-file -Dfile=lib/sqljdbc42.jar -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc42 -Dversion=4.2 -Dpackaging=jar
 mvn install:install-file -Dfile=lib/serilogj.jar -DgroupId=serilogj -DartifactId=serilogj -Dversion=0.3 -Dpackaging=jar
+//for each micro services
 mvn package
 ```
 # Deployment
