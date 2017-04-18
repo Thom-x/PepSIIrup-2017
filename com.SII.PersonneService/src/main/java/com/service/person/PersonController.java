@@ -144,7 +144,7 @@ public class PersonController {
 	 * @throws JsonProcessingException 
 	 */
 	@RabbitListener(queues = "#{addPersonQueue.name}")
-	public String addPerson(byte[] data){
+	public String addPerson(byte[] data) throws JsonProcessingException{
 		Person p =  (Person) SerializationUtils.deserialize(data);
 		if (p.checkPerson()){
 			p = repository.save(p);

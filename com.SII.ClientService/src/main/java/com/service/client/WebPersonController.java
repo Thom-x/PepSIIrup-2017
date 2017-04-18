@@ -190,6 +190,7 @@ public class WebPersonController {
 	 * @throws GeneralSecurityException
 	 * @throws IOException
 	 */
+
 	@RequestMapping(value="/registerPerson", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public String registerPerson(@RequestParam Map<String, String> body ){
 		ObjectMapper mapper = new ObjectMapper();
@@ -198,7 +199,6 @@ public class WebPersonController {
 		.forContext("userId",body.get("tokenid"))
 		.forContext("Service", appName)
 		.information("User Connection");		
-
 		Person pers = null;
 		try {
 			pers = mapper.readValue((String) body.get("person"),Person.class);
