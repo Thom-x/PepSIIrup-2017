@@ -8,16 +8,16 @@ jdk:
 - oraclejdk8
 addons:
   sonarqube:
+    organization: p1erregaultier-github
     token: $SONAR_TOKEN
 script:
-- mvn install:install-file -Dfile=lib/sqljdbc42.jar -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc42 -Dversion=4.2 -Dpackaging=jar
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+- mvn install:install-file -Dfile=com.SII.EventService/lib/sqljdbc42.jar -DgroupId=com.microsoft.sqlserver -DartifactId=sqljdbc42 -Dversion=4.2 -Dpackaging=jar
+- mvn install:install-file -Dfile=com.SII.EventService/lib/serilogj.jar -DgroupId=serilogj -DartifactId=serilogj -Dversion=0.3 -Dpackaging=jar
 - cd com.SII.RegisterService
-- docker build -t eureka .
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 - cd ../com.SII.PersonneService
-- docker build -t person .
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 - cd ../com.SII.EventService
-- docker build -t event .
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 - cd ../com.SII.ClientService
-- docker build -t client .
-- docker-compose up -d eureka person event client
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar

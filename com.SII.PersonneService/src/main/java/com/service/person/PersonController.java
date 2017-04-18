@@ -1,17 +1,22 @@
 package com.service.person;
 
 import java.io.UnsupportedEncodingException;
+import java.time.Duration;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.modele.Person;
+
+import serilogj.Log;
+import serilogj.LoggerConfiguration;
+import serilogj.core.LoggingLevelSwitch;
+import serilogj.events.LogEventLevel;
+import serilogj.sinks.seq.SeqSink;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -27,25 +32,84 @@ public class PersonController {
 	@Autowired 
 	private PersonRepository repository;
 	private static final String ENCODE = "UTF-8";
-	private static final Logger LOGGER = Logger.getLogger(PersonController.class.getName());
+	@Value("${spring.application.name}")
+	private String appName;
+	
+	public PersonController(){
+		LoggingLevelSwitch levelswitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
+		Log.setLogger(new LoggerConfiguration()		
+		.writeTo(new SeqSink(Constants.getINSTANCE().getLogserverAddr(), Constants.getINSTANCE().getLogserverApikey(), null, Duration.ofSeconds(2), null, levelswitch))	
+		.createLogger());
+	}
 
 	/**
-	 * Method to get a Person in DataBase, works with RabbitMq
+	 * Method to get a Person by id in DataBase, works with RabbitMq
 	 * @param id
 	 * @return
 	 * @throws JsonProcessingException 
 	 */
-	@RabbitListener(queues = "#{getPersonQueue.name}")
-	public String getPerson(byte[] id) throws JsonProcessingException {
+	@RabbitListener(queues = "#{getPersonQueueById.name}")
+	public String getPersonById(byte[] id){
 		Person response = null;
+		String res = "";
 		try {
 			response = repository.findByPersonID(Integer.parseInt(new String(id,ENCODE)));
 		} catch (NumberFormatException | UnsupportedEncodingException e) {
-			LOGGER.log( Level.SEVERE, "an exception was thrown", e);
+			Log
+			.forContext("MemberName", "getPersonById")
+			.forContext("Service", appName)
+			.error(e,"Exception");
 		}
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
-		return mapper.writeValueAsString(response);
+		Log
+		.forContext("id", id)
+		.forContext("MemberName", "getPersonById")
+		.forContext("Service", appName)
+		.information("Request : getPersonById");
+		try {
+			res = mapper.writeValueAsString(response);
+		} catch (JsonProcessingException e) {
+			Log
+			.forContext("MemberName", "getPersonById")
+			.forContext("Service", appName)
+			.error(e,"JsonProcessingException");
+		}
+		return res;
+	}
+	
+	/**
+	 * Method to get a Person by email in DataBase, works with RabbitMq
+	 * @param email
+	 * @return
+	 * @throws JsonProcessingException
+	 */
+	@RabbitListener(queues = "#{getPersonQueueByEmail.name}")
+	public String getPersonByEmail(byte[] email) {
+		Person response = null;
+		String res = "";
+		try {
+			response = repository.findByPersonEmail(new String(email,ENCODE));
+		} catch (NumberFormatException | UnsupportedEncodingException e) {
+			Log
+			.forContext("MemberName", "getPersonByEmail")
+			.forContext("Service", appName)
+			.error(e," Exception");
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		Log
+		.forContext("email", email)
+		.forContext("MemberName", "getPersonByEmail")
+		.forContext("Service", appName)
+		.information("Request : getPersonByEmail");
+		try {
+			res = mapper.writeValueAsString(response);
+		} catch (JsonProcessingException e) {
+			Log
+			.forContext("MemberName", "getPersonByEmail")
+			.forContext("Service", appName)
+			.error(e,"JsonProcessingException");
+		}
+		return res;
 	}
 
 	/**
@@ -58,12 +122,18 @@ public class PersonController {
 		String response = "";
 		List<Person> persons = repository.findAll();
 		ObjectMapper mapper = new ObjectMapper();
-	    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
 	    try {
 			response =  mapper.writeValueAsString(persons);
 		} catch (JsonProcessingException e) {
-			LOGGER.log( Level.SEVERE, "an exception was thrown", e);
+			Log
+			.forContext("MemberName", "getAllPerson")
+			.forContext("Service", appName)
+			.error(e," JsonProcessingException");
 		}
+		Log
+		.forContext("MemberName", "getAllPerson")
+		.forContext("Service", appName)
+		.information("Request : getAllPerson");
 		return response;
 	}
 
@@ -76,8 +146,29 @@ public class PersonController {
 	@RabbitListener(queues = "#{addPersonQueue.name}")
 	public String addPerson(byte[] data) throws JsonProcessingException{
 		Person p =  (Person) SerializationUtils.deserialize(data);
-		repository.save(p);
+		if (p.checkPerson()){
+			p = repository.save(p);
+		}
+		else{
+			Log
+			.forContext("MemberName", "addPerson")
+			.forContext("Service", appName)
+			.error(new IllegalArgumentException(),"IllegalArgumentException");
+		}
+		String res = "";
 		ObjectMapper mapper = new ObjectMapper();
-		return mapper.writeValueAsString(p);
+		Log
+		.forContext("MemberName", "addPerson")
+		.forContext("Service", appName)
+		.information("Request : addPerson");
+		try {
+			res = mapper.writeValueAsString(p);
+		} catch (JsonProcessingException e) {
+			Log
+			.forContext("MemberName", "addPerson")
+			.forContext("Service", appName)
+			.error(e,"JsonProcessingException");
+		}
+		return res;
 	}
 }

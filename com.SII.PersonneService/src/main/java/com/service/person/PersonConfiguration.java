@@ -22,15 +22,13 @@ import org.springframework.context.annotation.Configuration;
 @EntityScan({"com.service.person", "com.modele"})
 public class PersonConfiguration {
 	
-	public static final String RABBITIP = "10.10.1.169";
-	
 	@Bean
 	public ConnectionFactory connectionFactory() {
-	    CachingConnectionFactory connectionFactory =
-	        new CachingConnectionFactory(RABBITIP);
-	    	connectionFactory.setUsername("BugsBunny");
-	    	connectionFactory.setPassword("Koi29Dr");
-	    return connectionFactory;
+		    CachingConnectionFactory connectionFactory =
+			        new CachingConnectionFactory(Constants.getINSTANCE().getRabbitmqserverAddr());
+		    		connectionFactory.setUsername(Constants.getINSTANCE().getRabbitmqUsername());
+		    		connectionFactory.setPassword(Constants.getINSTANCE().getRabbitmqPassword());
+			    return connectionFactory;
 	}
 		
 
@@ -45,7 +43,12 @@ public class PersonConfiguration {
 	}
 
 	@Bean
-	public Queue getPersonQueue() {
+	public Queue getPersonQueueById() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
+	public Queue getPersonQueueByEmail() {
 		return new AnonymousQueue();
 	}
 	
@@ -60,17 +63,22 @@ public class PersonConfiguration {
 	}
 
 	@Bean
-	public Binding binding1(DirectExchange direct, Queue getPersonQueue) {
-		return BindingBuilder.bind(getPersonQueue).to(direct).with("getPerson");
+	public Binding binding1(DirectExchange direct, Queue getPersonQueueById) {
+		return BindingBuilder.bind(getPersonQueueById).to(direct).with("getPersonById");
 	}
 	
 	@Bean
-	public Binding binding2(DirectExchange direct, Queue getAllPersonQueue) {
+	public Binding binding2(DirectExchange direct, Queue getPersonQueueByEmail) {
+		return BindingBuilder.bind(getPersonQueueByEmail).to(direct).with("getPersonByEmail");
+	}
+	
+	@Bean
+	public Binding binding3(DirectExchange direct, Queue getAllPersonQueue) {
 		return BindingBuilder.bind(getAllPersonQueue).to(direct).with("getAllPerson");
 	}
 	
 	@Bean
-	public Binding binding3(DirectExchange direct, Queue addPersonQueue) {
+	public Binding binding4(DirectExchange direct, Queue addPersonQueue) {
 		return BindingBuilder.bind(addPersonQueue).to(direct).with("addPerson");
 	}
 }
