@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -104,7 +105,7 @@ public class WebEventController {
 	 * @return
 	 * @throws ParseException 
 	 */
-	@RequestMapping(value = "/saveEvent", method = RequestMethod.POST)
+	@RequestMapping(value = "/saveEvent",method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public String updateEvent(@RequestParam Map<String, String> body){
 		ObjectMapper mapper = new ObjectMapper();
 		Event event = null;
@@ -182,7 +183,7 @@ public class WebEventController {
 		return response;
 	}
 	
-	@RequestMapping(value = "/saveEventJasone", method = RequestMethod.POST)
+	@RequestMapping(value = "/saveEventJasone", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public String updateEventJasone(@RequestParam Map<String, String> body){
 		ObjectMapper mapper = new ObjectMapper();
 		Event event = null;
@@ -196,6 +197,5 @@ public class WebEventController {
 			.error(e1," IOException");
 		}
 		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(event),"saveEvent");
-
 	}	
 }

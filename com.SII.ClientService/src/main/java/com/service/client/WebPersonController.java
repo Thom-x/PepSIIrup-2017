@@ -140,20 +140,7 @@ public class WebPersonController {
 		.forContext("userId",body.get("tokenid"))
 		.forContext("Service", appName)
 		.information("User Connection");		
-		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
-				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
-				.build();
-		
-		String idTokenString = body.get("tokenid");
-		GoogleIdToken idToken = null;
-		try {
-			idToken = verifier.verify(idTokenString);
-		} catch (GeneralSecurityException | IOException e) {
-			Log
-			.forContext("MemberName", "connect")
-			.forContext("Service", appName)
-			.error(e,"Exception");
-		}
+		GoogleIdToken idToken = checkGoogleToken(body.get("tokenid"));
 		if (idToken != null) {
 			Payload payload = idToken.getPayload();
 			// Print user identifier
@@ -186,7 +173,7 @@ public class WebPersonController {
 		} else {
 			Log
 			.forContext("Service", appName)
-			.forContext("Token",idTokenString)
+			.forContext("Token",body.get("tokenid"))
 			.information("Invalid Token");
 			return "{\"response\":\"error\"}";
 		}
@@ -211,13 +198,8 @@ public class WebPersonController {
 		.forContext("userId",body.get("tokenid"))
 		.forContext("Service", appName)
 		.information("User Connection");		
-		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
-				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
-				.build();
-		
 
 		Person pers = null;
-		String idTokenString = null;
 		try {
 			pers = mapper.readValue((String) body.get("person"),Person.class);
 		} catch (IOException e1) {
@@ -226,16 +208,7 @@ public class WebPersonController {
 			.forContext("Service", appName)
 			.error(e1,"IOException");
 		}
-		idTokenString = body.get("tokenid");
-		GoogleIdToken idToken = null;
-		try {
-			idToken = verifier.verify(idTokenString);
-		} catch (Exception e) {
-			Log
-			.forContext("MemberName", "registerPerson")
-			.forContext("Service", appName)
-			.error(e,"Exception");
-		}
+		GoogleIdToken idToken = checkGoogleToken(body.get("tokenid"));
 		if (idToken != null && pers != null) {
 			Log
 			.forContext("FirstName", pers.getFirstName())
@@ -251,4 +224,26 @@ public class WebPersonController {
 			return "{\"response\":\"error\"}";
 		}		
 	}
+	
+	/**
+	 * Method to validate a google id token with Oauth
+	 * @param token
+	 * @return
+	 */
+	public GoogleIdToken checkGoogleToken(String token){
+		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
+				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
+				.build();
+		GoogleIdToken idToken = null;
+		try {
+			idToken = verifier.verify(token);
+		} catch (Exception e) {
+			Log
+			.forContext("MemberName", "registerPerson")
+			.forContext("Service", appName)
+			.error(e,"Exception");
+		}
+		return idToken;
+	}
+	
 }
