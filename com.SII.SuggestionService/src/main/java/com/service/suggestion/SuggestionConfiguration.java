@@ -35,7 +35,7 @@ public class SuggestionConfiguration {
 	
 	@Bean
 	public DirectExchange direct() {
-		return new DirectExchange("exc.event");
+		return new DirectExchange("exc.suggestion");
 	}
 
 	@Bean

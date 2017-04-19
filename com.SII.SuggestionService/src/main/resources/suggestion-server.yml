@@ -1,7 +1,7 @@
 # Spring properties
 spring:
   application:
-     name: event-service  # Service registers under this name
+     name: suggestion-service  # Service registers under this name
 
 # HTTP Server
 server:

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
@@ -42,11 +43,12 @@ import serilogj.sinks.seq.SeqSink;
 public class WebSuggestionController {
 
 	private static final String ENCODE = "UTF-8";
-	private static final String EXCHANGE = "exc.event";
+	private static final String EXCHANGE = "exc.suggestion";
 	@Value("${spring.application.name}")
 	private String appName;
 	private static final JacksonFactory jacksonFactory = new JacksonFactory();
-	private static final String CLIENT_ID = "929890661942-49n2pcequcmns19fe1omff72tqcips1v.apps.googleusercontent.com";
+	private static final String CLIENT_ID1 = "1059176547192-jq81i94a7dccnpklm5ph4gauim29t0dg.apps.googleusercontent.com"; //ms	
+	private static final String CLIENT_ID2 = "784894623300-gmkq3hut99f16n220kjimotv0os7vt2e.apps.googleusercontent.com"; //java
 	private HttpTransport transport = new ApacheHttpTransport();
 
 	public WebSuggestionController(){
@@ -75,14 +77,14 @@ public class WebSuggestionController {
 			.error(e1," IOException");
 		}
 		Log
-		.forContext("MemberName", "saveEvent")
+		.forContext("MemberName", "saveSuggestion")
 		.forContext("Service", appName)
-		.forContext("event", body.get("event"))
-		.information("Request : saveEvent");
+		.forContext("suggestion", body.get("suggestion"))
+		.information("Request : saveSuggestion");
 		
 		String idTokenString = body.get("tokenid");
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
-				.setAudience(Collections.singletonList(CLIENT_ID))
+				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
 				.build();
 		GoogleIdToken idToken = null;
 		try {

@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
@@ -50,7 +51,8 @@ public class WebEventController {
 	@Value("${spring.application.name}")
 	private String appName;
 	private static final JacksonFactory jacksonFactory = new JacksonFactory();
-	private static final String CLIENT_ID = "929890661942-49n2pcequcmns19fe1omff72tqcips1v.apps.googleusercontent.com";
+	private static final String CLIENT_ID1 = "1059176547192-jq81i94a7dccnpklm5ph4gauim29t0dg.apps.googleusercontent.com"; //ms	
+	private static final String CLIENT_ID2 = "784894623300-gmkq3hut99f16n220kjimotv0os7vt2e.apps.googleusercontent.com"; //java
 	private HttpTransport transport = new ApacheHttpTransport();
 
 	public WebEventController(){
@@ -125,7 +127,7 @@ public class WebEventController {
 		
 		String idTokenString = body.get("tokenid");
 		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
-				.setAudience(Collections.singletonList(CLIENT_ID))
+				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
 				.build();
 		GoogleIdToken idToken = null;
 		try {
@@ -183,19 +185,4 @@ public class WebEventController {
 		return response;
 	}
 	
-	@RequestMapping(value = "/saveEventJasone", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public String updateEventJasone(@RequestParam Map<String, String> body){
-		ObjectMapper mapper = new ObjectMapper();
-		Event event = null;
-		System.out.println(body.get("event"));
-		try {
-			event = mapper.readValue((String) body.get("event"),Event.class);
-		} catch (IOException e1) {
-			Log
-			.forContext("MemberName", "saveEvent")
-			.forContext("Service", appName)
-			.error(e1," IOException");
-		}
-		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(event),"saveEvent");
-	}	
 }
