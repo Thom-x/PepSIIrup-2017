@@ -188,7 +188,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.service.event.EventServer</mainClass>
+							<mainClass>com.service.suggestion.SuggestionServer</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

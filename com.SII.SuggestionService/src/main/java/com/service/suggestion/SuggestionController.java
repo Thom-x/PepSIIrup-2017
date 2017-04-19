@@ -1,9 +1,6 @@
 package com.service.suggestion;
 
-import java.io.UnsupportedEncodingException;
 import java.time.Duration;
-import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -61,7 +58,7 @@ public class SuggestionController {
 		Log
 		.forContext("MemberName", "saveSuggestion")
 		.forContext("Service", appName)
-		.information("RabbitMQ : saveEvent");
+		.information("RabbitMQ : saveSuggestion");
 		try {
 			res =  mapper.writeValueAsString(s);
 		} catch (JsonProcessingException e1) {
