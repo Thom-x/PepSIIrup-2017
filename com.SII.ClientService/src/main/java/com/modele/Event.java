@@ -30,12 +30,12 @@ public class Event implements Serializable{
 	private String name;
 	
 	@JsonProperty("DateStart")
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone="CET")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="CET")
 	@Column(name = "Datestart")
 	private Date dateStart;
 	
 	@JsonProperty("DateEnd")
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone="CET")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="CET")
 	@Column(name = "Dateend")
 	private Date dateEnd;
 	

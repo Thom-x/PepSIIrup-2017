@@ -19,13 +19,13 @@ public class Review implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@JsonProperty("id")
+	@JsonProperty("PersonId")
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "Personid",unique=true, nullable=false)
 	private Person personId;
 	
-	@JsonProperty("id")
+	@JsonProperty("EventId")
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "EventId",unique=true, nullable=false)
