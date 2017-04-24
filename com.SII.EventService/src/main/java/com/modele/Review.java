@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,14 +19,16 @@ public class Review implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@JsonProperty("id")
+	@JsonProperty("PersonId")
 	@Id
-	@Column(name = "Personid",unique=true, nullable=false)
+	@ManyToOne
+	@JoinColumn(name = "Personid",unique=true, nullable=false)
 	private Person personId;
 	
-	@JsonProperty("id")
+	@JsonProperty("EventId")
 	@Id
-	@Column(name = "EventId",unique=true, nullable=false)
+	@ManyToOne
+	@JoinColumn(name = "Eventid",unique=true, nullable=false)
 	private Event eventId;
 	
 	@JsonProperty("Rate")
@@ -38,7 +42,12 @@ public class Review implements Serializable {
 
 	public Review(){
 		//JPA need empty constructor
-	} 
+	}
+	
+	public Review(Person person, Event event){
+		this.personId = person;
+		this.eventId = event;
+	}
 
 
 	public Person getPersonId() {

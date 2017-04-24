@@ -54,7 +54,7 @@ public class EventController {
 	 */
 	@RabbitListener(queues = "#{saveEventQueue.name}")
 	public String saveEvent(byte[] data){
-		String res = "";
+		String res = null;
 		Event e = (Event)SerializationUtils.deserialize(data);
 		Event event = null;
 		if (e.checkEvent()){
@@ -83,7 +83,7 @@ public class EventController {
 	}
 
 	/**
-	 * method to find an event by his owner
+	 * method to find all events by  owner
 	 * @param owner
 	 * @return
 	 * @throws UnsupportedEncodingException
@@ -97,6 +97,26 @@ public class EventController {
 		.information("RabbitMQ : findByOwner");
 		return repository.findByOwner((Person)SerializationUtils.deserialize(owner)).toString();
 	}
+	
+	/**
+	 * method to find all event of a person
+	 * @param owner
+	 * @return
+	 * @throws JsonProcessingException 
+	 * @throws UnsupportedEncodingException
+	 */
+	@RabbitListener(queues = "#{getEventsByPersonQueue.name}")
+	public String getEventsByPerson(byte[] person) throws JsonProcessingException{
+		List<Event> res;
+		Log
+		.forContext("MemberName", "getEventsByPerson")
+		.forContext("Service", appName)
+		.information("RabbitMQ : getEventsByPerson");
+		res = repository.getEventsByPerson((Person)SerializationUtils.deserialize(person));
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(res);
+	}
+	
 
 	/**
 	 * method to get an event by his place
