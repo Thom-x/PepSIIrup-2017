@@ -66,7 +66,7 @@ public class WebPersonController {
 			Log
 			.forContext("MemberName", "getPersonById")
 			.forContext("Service", appName)
-			.error(e,"{date} UnsupportedEncodingException");
+			.error(e,"UnsupportedEncodingException");
 		}
 		Log
 		.forContext("id", id)
@@ -90,7 +90,7 @@ public class WebPersonController {
 			Log
 			.forContext("MemberName", "getPersonByEmail")
 			.forContext("Service", appName)
-			.error(e,"{date} UnsupportedEncodingException");
+			.error(e," UnsupportedEncodingException");
 		}
 		Log
 		.forContext("email", email)

@@ -24,7 +24,6 @@ public class EventConfiguration {
 	
 	@Bean
 	public ConnectionFactory connectionFactory() {	
-		
 	    CachingConnectionFactory connectionFactory =
 	        new CachingConnectionFactory(Constants.getINSTANCE().getRabbitmqserverAddr());
     		connectionFactory.setUsername(Constants.getINSTANCE().getRabbitmqUsername());

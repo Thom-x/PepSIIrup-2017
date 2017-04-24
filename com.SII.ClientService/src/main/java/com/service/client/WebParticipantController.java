@@ -96,7 +96,7 @@ public class WebParticipantController {
 			.forContext("name", name)
 			.forContext("Service", appName)
 			.information("User Connection");		
-			return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(review.getBytes("UTF-8"),"addNewParticipant");
+			return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(review.getBytes(ENCODE),"addNewParticipant");
 		} else {
 			Log
 			.forContext("Service", appName)
@@ -112,11 +112,12 @@ public class WebParticipantController {
 	 * @throws UnsupportedEncodingException 
 	 */
     @RequestMapping(value = "/cancelParticipation",method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String cancelParticipation(@RequestParam Map<String, String> body) throws UnsupportedEncodingException{
+    public String cancelParticipation(@RequestParam Map<String, String> body){
 
     	String person = body.get("person");
     	String event = body.get("event");
     	String review ="{\"PersonId\":"+person+",\"EventId\":"+event+",\"Rate\": null,\"Text\": null}" ;
+    	String res = null;
 
     	GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
 		if (idToken != null) {
@@ -132,13 +133,23 @@ public class WebParticipantController {
 			.forContext("name", name)
 			.forContext("Service", appName)
 			.information("User Connection");		
-			return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(review.getBytes("UTF-8"),"cancelParticipation");
-		} else {
+			try {
+				res = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(review.getBytes(ENCODE),"cancelParticipation");
+			} catch (UnsupportedEncodingException e) {
+				Log
+				.forContext("MemberName", "registerPerson")
+				.forContext("Service", appName)
+				.error(e,"UnsupportedEncodingException");
+				}
+				return res;
+			} 
+			else {
 			Log
 			.forContext("Service", appName)
 			.information("Invalid Token");
 			return "{\"response\":\"error\"}";
 		}		
     }
+    
     
 }

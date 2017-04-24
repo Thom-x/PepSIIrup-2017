@@ -13,8 +13,8 @@ import serilogj.Log;
 public class OauthTokenVerifier {
 	
 	private static final JacksonFactory jacksonFactory = new JacksonFactory();
-	private static final String CLIENT_ID1 = "1059176547192-jq81i94a7dccnpklm5ph4gauim29t0dg.apps.googleusercontent.com"; //ms	
-	private static final String CLIENT_ID2 = "784894623300-gmkq3hut99f16n220kjimotv0os7vt2e.apps.googleusercontent.com"; //java
+	private static final String CLIENT_ID1 = "1059176547192-jq81i94a7dccnpklm5ph4gauim29t0dg.apps.googleusercontent.com"; //microsoft key	
+	private static final String CLIENT_ID2 = "784894623300-gmkq3hut99f16n220kjimotv0os7vt2e.apps.googleusercontent.com"; //java key
 	private static HttpTransport transport = new ApacheHttpTransport();
 	
 	/**

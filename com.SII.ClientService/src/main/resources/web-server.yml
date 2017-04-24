@@ -6,11 +6,11 @@ spring:
 eureka:
   instance:
      prefer-ip-address: true
-     ip-address: 10.10.192.33
+     ip-address: 10.10.1.155
      leaseRenewalIntervalInSeconds: 5   # DO NOT DO THIS IN PRODUCTION
   client:
     serviceUrl: 
-      defaultZone: http://10.10.192.33:1111/eureka/
+      defaultZone: http://10.10.1.155:1111/eureka/
 # HTTP Server
 server:
   port: 80   # HTTP (Tomcat) port
