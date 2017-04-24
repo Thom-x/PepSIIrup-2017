@@ -51,7 +51,7 @@ public class PersonController {
 	@RabbitListener(queues = "#{getPersonQueueById.name}")
 	public String getPersonById(byte[] id){
 		Person response = null;
-		String res = "";
+		String res = null;
 		try {
 			response = repository.findByPersonID(Integer.parseInt(new String(id,ENCODE)));
 		} catch (NumberFormatException | UnsupportedEncodingException e) {
@@ -86,7 +86,7 @@ public class PersonController {
 	@RabbitListener(queues = "#{getPersonQueueByEmail.name}")
 	public String getPersonByEmail(byte[] email) {
 		Person response = null;
-		String res = "";
+		String res = null;
 		try {
 			response = repository.findByPersonEmail(new String(email,ENCODE));
 		} catch (NumberFormatException | UnsupportedEncodingException e) {

@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 public class Suggestion implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	@JsonProperty("id")
+	@JsonProperty("SuggestionId")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Suggestionid",unique=true, nullable=false)

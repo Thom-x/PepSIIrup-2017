@@ -53,7 +53,7 @@ public class WebEventController {
 	}
 
 	/**
-	 * Method to find an Event by Owner with RabbitMq
+	 * Method to all Events of the event owner with RabbitMq
 	 * @param id
 	 * @return
 	 */
@@ -67,6 +67,9 @@ public class WebEventController {
 		return response;
 	}
 
+
+	
+	
 	/**
 	 * Method to find an Event by Place with RabbitMq
 	 * @param id

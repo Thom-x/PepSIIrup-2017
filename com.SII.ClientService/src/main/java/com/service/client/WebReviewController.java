@@ -63,7 +63,7 @@ public class WebReviewController {
 	}
 	
 	/**
-	 * Method to find add a person with RabbitMQ
+	 * Method to add a review with RabbitMQ
 	 * @param review
 	 * @return
 	 */
@@ -78,4 +78,19 @@ public class WebReviewController {
 	}
 
     
+	/**
+	 * Method to update a review with RabbitMQ
+	 * @param review
+	 * @return
+	 */
+	@RequestMapping(value = "/updateReview", method = RequestMethod.POST)
+	public String updateReview(@RequestBody Review review){
+		Log
+		.forContext("person", review)
+		.forContext("MemberName", "updateReview")
+		.forContext("Service", appName)
+		.information("Request : updateReview");
+		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(review),"updateReview");
+	}
+	
 }

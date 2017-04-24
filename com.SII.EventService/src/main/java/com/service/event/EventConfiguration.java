@@ -24,7 +24,6 @@ public class EventConfiguration {
 	
 	@Bean
 	public ConnectionFactory connectionFactory() {	
-		
 	    CachingConnectionFactory connectionFactory =
 	        new CachingConnectionFactory(Constants.getINSTANCE().getRabbitmqserverAddr());
     		connectionFactory.setUsername(Constants.getINSTANCE().getRabbitmqUsername());
@@ -59,6 +58,11 @@ public class EventConfiguration {
 	}
 	
 	@Bean
+	public Queue getEventsByPersonQueue() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
 	public Queue getAllEventQueue() {
 		return new AnonymousQueue();
 	}
@@ -74,12 +78,17 @@ public class EventConfiguration {
 	}
 	
 	@Bean
-	public Binding binding3(DirectExchange direct, Queue getEventByPlaceQueue) {
+	public Binding binding3(DirectExchange direct, Queue getEventsByPersonQueue) {
+		return BindingBuilder.bind(getEventsByPersonQueue).to(direct).with("getEventsByPerson");
+	}
+	
+	@Bean
+	public Binding binding4(DirectExchange direct, Queue getEventByPlaceQueue) {
 		return BindingBuilder.bind(getEventByPlaceQueue).to(direct).with("getEventByPlace");
 	}
 	
 	@Bean
-	public Binding binding4(DirectExchange direct, Queue getAllEventQueue) {
+	public Binding binding5(DirectExchange direct, Queue getAllEventQueue) {
 		return BindingBuilder.bind(getAllEventQueue).to(direct).with("getAllEvent");
 	}
 

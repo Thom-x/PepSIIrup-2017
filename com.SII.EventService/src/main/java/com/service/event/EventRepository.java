@@ -25,5 +25,6 @@ public interface EventRepository extends CrudRepository<Event, Integer>{
 	@Query("select e From Event e where e.placeID = :placeID and e.dateStart > :dateStart")
 	List<Event> getEventFromPlace(@Param("placeID") String placeID, @Param("dateStart") Date dateStart);
 	List<Event> findByOwner(Person owner);
-	
+	@Query("select e From Event e ,Review r where e.eventId = r.eventId and r.personId = :person")
+	List<Event> getEventsByPerson(@Param("person") Person person);
 }

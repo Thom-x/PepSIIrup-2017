@@ -31,7 +31,6 @@ public class SuggestionController {
 
 	@Autowired
 	private SuggestionRepository repository;
-	private static final String ENCODE = "UTF-8";
 	@Value("${spring.application.name}")
 	private String appName;
 	
