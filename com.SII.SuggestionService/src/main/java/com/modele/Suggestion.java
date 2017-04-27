@@ -35,7 +35,7 @@ public class Suggestion implements Serializable{
 	private String job;
 	
 	@JsonProperty("Date")
-	@JsonFormat(pattern = "dd/MM/yyyy", timezone="CET")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="CET")
 	@Column(name = "Date", nullable = false)
 	private Date date;
 	
