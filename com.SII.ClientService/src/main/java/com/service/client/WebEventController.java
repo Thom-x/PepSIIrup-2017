@@ -68,8 +68,6 @@ public class WebEventController {
 	}
 
 
-	
-	
 	/**
 	 * Method to find an Event by Place with RabbitMq
 	 * @param id

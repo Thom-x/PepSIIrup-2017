@@ -1,16 +1,25 @@
 package com.service.client;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.util.Map;
 
-
+import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.modele.Event;
+import com.modele.Review;
 
 import serilogj.Log;
 import serilogj.LoggerConfiguration;
@@ -23,6 +32,9 @@ import serilogj.sinks.seq.SeqSink;
  * @author Dorian Coqueron & Pierre Gaultier
  * @version 1.0
  */
+@RestController
+@Component
+@CrossOrigin
 public class WebReviewController {
 
 	private static final String ENCODE = "UTF-8";
@@ -69,14 +81,10 @@ public class WebReviewController {
 	 */
 	@RequestMapping(value = "/addReview", method = RequestMethod.POST)
 	public String addPerson(@RequestParam Map<String, String> body){
-		String person = body.get("person");
-		String event = body.get("event");
-		String rate = body.get("rate");
-		String text = body.get("text");
+		String review = body.get("review");
 		String res = null;
 		GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
 		if (idToken != null) {
-			String review ="{\"PersonId\":"+person+",\"EventId\":"+event+",\"Rate\": "+rate+",\"Text\": "+text+"}" ;
 			Log
 			.forContext("person", review)
 			.forContext("MemberName", "updateReview")
@@ -104,36 +112,28 @@ public class WebReviewController {
 	 * Method to update a review with RabbitMQ
 	 * @param review
 	 * @return
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
 	 */
 	@RequestMapping(value = "/updateReview", method = RequestMethod.POST)
-	public String updateReview(@RequestParam Map<String, String> body){
-		String person = body.get("person");
-		String event = body.get("event");
-		String rate = body.get("rate");
-		String text = body.get("text");
-		String res = null;
+	public String updateReview(@RequestParam Map<String, String> body) throws JsonParseException, JsonMappingException, IOException{
+		String res;
 		GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
 		if (idToken != null) {
-			String review ="{\"PersonId\":"+person+",\"EventId\":"+event+",\"Rate\": "+rate+",\"Text\": "+text+"}" ;
 			Log
-			.forContext("person", review)
+			.forContext("person", body.get("review"))
 			.forContext("MemberName", "updateReview")
 			.forContext("Service", appName)
 			.information("Request : updateReview");
-			try {
-				res =  new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(review.getBytes(ENCODE),"updateReview");
-			} catch (UnsupportedEncodingException e) {
-				Log
-				.forContext("MemberName", "saveParticipant")
-				.forContext("Service", appName)
-				.error(e,"UnsupportedEncodingException");
-			}
+				res = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(body.get("review").getBytes(ENCODE),"updateReview");
 		} else {
 			Log
 			.forContext("Service", appName)
 			.information("Invalid Token");
 			return "{\"response\":\"error\"}";
 		}
+
 		return res;
 	}
 

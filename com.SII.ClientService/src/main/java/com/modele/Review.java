@@ -23,13 +23,13 @@ public class Review implements Serializable {
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "Personid",unique=true, nullable=false)
-	private Person personId;
+	private int personId;
 	
 	@JsonProperty("EventId")
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "EventId",unique=true, nullable=false)
-	private Event eventId;
+	private int eventId;
 	
 	@JsonProperty("Rate")
 	@Column(name = "Rate")
@@ -37,34 +37,53 @@ public class Review implements Serializable {
 	
 	@JsonProperty("Text")
 	@Column(name = "Text")
-	private int text;
+	private String text;
 	
 
 	public Review(){
 		//JPA need empty constructor
 	}
-	
-	public Review(Person person, Event event){
-		this.personId = person;
-		this.eventId = event;
-	}
 
 
-	public Person getPersonId() {
+	public int getPersonId() {
 		return personId;
 	}
 
-	public void setPersonId(Person personId) {
+
+
+	public void setPersonId(int personId) {
 		this.personId = personId;
 	}
 
-	public Event getEventId() {
+
+
+	public int getEventId() {
 		return eventId;
 	}
 
-	public void setEventId(Event eventId) {
+
+
+	public void setEventId(int eventId) {
 		this.eventId = eventId;
 	}
+
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+
+	public String getText() {
+		return text;
+	}
+
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
 
 	public int getRate() {
 		return rate;
@@ -74,14 +93,6 @@ public class Review implements Serializable {
 		this.rate = rate;
 	}
 
-	public int getText() {
-		return text;
-	}
-
-	public void setText(int text) {
-		this.text = text;
-	}
-	
 	
 	
 }
