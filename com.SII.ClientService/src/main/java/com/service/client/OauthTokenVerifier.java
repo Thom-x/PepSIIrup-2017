@@ -12,10 +12,9 @@ import serilogj.Log;
 
 public class OauthTokenVerifier {
 	
-	private static final JacksonFactory jacksonFactory = new JacksonFactory();
+
 	private static final String CLIENT_ID1 = "1059176547192-jq81i94a7dccnpklm5ph4gauim29t0dg.apps.googleusercontent.com"; //microsoft key	
 	private static final String CLIENT_ID2 = "784894623300-gmkq3hut99f16n220kjimotv0os7vt2e.apps.googleusercontent.com"; //java key
-	private static HttpTransport transport = new ApacheHttpTransport();
 	
 	/**
 	 * Method to validate a google id token with Oauth
@@ -23,7 +22,7 @@ public class OauthTokenVerifier {
 	 * @return
 	 */
 	public static GoogleIdToken checkGoogleToken(String token){
-		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
+		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new ApacheHttpTransport(), new JacksonFactory())
 				.setAudience(Arrays.asList(CLIENT_ID1, CLIENT_ID2))
 				.build();
 		GoogleIdToken idToken = null;

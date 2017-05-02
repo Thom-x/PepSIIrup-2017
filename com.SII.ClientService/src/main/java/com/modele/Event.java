@@ -49,7 +49,7 @@ public class Event implements Serializable{
 	
 	@JsonProperty("Image")
 	@Column(name = "Image")
-	private byte[] image;
+	private String image;
 	
 	@JsonProperty("IsCanceled")
 	@Column(name = "Iscanceled")
@@ -60,7 +60,11 @@ public class Event implements Serializable{
 	@JoinColumn(name = "Owner")
 	private Person owner;
 	
-
+	@JsonProperty("EventType")
+	@ManyToOne
+	@JoinColumn(name = "Eventtype")
+	private EventType eventType;
+	
 	public Event(){
 		//JPA need empty constructor
 	} 
@@ -73,11 +77,10 @@ public class Event implements Serializable{
 		this.description = "too long";
 		this.isCanceled = 0;
 		this.owner = new Person();
-	}
+		this.image = "";
+	}	
 	
-	
-	public Event(String name, Date dateStart, Date dateEnd, String placeID, String description, int isCanceled,
-			Person owner) {
+	public Event(String name, Date dateStart, Date dateEnd, String placeID, String description, int isCanceled, String image, Person owner) {
 		super();
 		this.name = name;
 		this.dateStart = dateStart;
@@ -85,6 +88,7 @@ public class Event implements Serializable{
 		this.placeID = placeID;
 		this.description = description;
 		this.isCanceled = isCanceled;
+		this.image = image;
 		this.owner = owner;
 	}
 
@@ -136,11 +140,11 @@ public class Event implements Serializable{
 		this.description = description;
 	}
 
-	public byte[] getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(byte[] image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
