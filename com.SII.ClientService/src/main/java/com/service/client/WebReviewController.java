@@ -107,7 +107,6 @@ public class WebReviewController {
 		return res;
 	}
 
-
 	/**
 	 * Method to update a review with RabbitMQ
 	 * @param review
@@ -133,7 +132,6 @@ public class WebReviewController {
 			.information("Invalid Token");
 			return "{\"response\":\"error\"}";
 		}
-
 		return res;
 	}
 
