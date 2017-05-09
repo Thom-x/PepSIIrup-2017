@@ -163,4 +163,27 @@ public class WebEventController {
 		return response;
 	}
 	
+	/**
+	 * Method to find all Events with RabbitMq
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getAllEventType")
+	public String findAllEventType(@RequestParam(value="id", defaultValue="1") String id){
+		String response ="";
+		try {
+			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE), "getAllEventType");
+		} catch (UnsupportedEncodingException e) {
+			Log
+			.forContext("MemberName", "getAllEventType")
+			.forContext("Service", appName)
+			.error(e," UnsupportedEncodingException");
+		}
+		Log
+		.forContext("MemberName", "getAllEventType")
+		.forContext("Service", appName)
+		.information("Request : getAllEventType");
+		return response;
+	}
+	
 }

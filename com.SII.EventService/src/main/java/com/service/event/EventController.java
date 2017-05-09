@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modele.Event;
+import com.modele.EventType;
 import com.modele.Person;
 
 import serilogj.Log;
@@ -35,6 +36,8 @@ public class EventController {
 
 	@Autowired
 	private EventRepository repository;
+	@Autowired
+	private EventTypeRepository eventTypeRepository;
 	private static final String ENCODE = "UTF-8";
 	@Value("${spring.application.name}")
 	private String appName;
@@ -167,4 +170,31 @@ public class EventController {
 		}
 		return res;
 	}
+	
+	/**
+	 * method to get all the events type 
+	 * @param id
+	 * @return
+	 * @throws JsonProcessingException
+	 */
+	@RabbitListener(queues = "#{getAllEventTypeQueue.name}")
+	public String getAllEventType(byte[] id){
+		String res = "";
+		List<EventType> eventsType = eventTypeRepository.findAll();
+		ObjectMapper mapper = new ObjectMapper();
+		Log
+		.forContext("MemberName", "getAllEventType")
+		.forContext("Service", appName)
+		.information("RabbitMQ : getAllEventType");
+		try {
+			res = mapper.writeValueAsString(eventsType);
+		} catch (JsonProcessingException e1) {
+			Log
+			.forContext("MemberName", "getAllEventType")
+			.forContext("Service", appName)
+			.error(e1,"JsonProcessingException");
+		}
+		return res;
+	}
+	
 }

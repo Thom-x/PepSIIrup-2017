@@ -196,7 +196,7 @@ public class Event implements Serializable{
 	}
 
 	public boolean checkEvent() {
-		return name != null &&  dateStart != null && dateEnd != null && placeID != null && description != null && owner != null;
+		return name != null &&  dateStart != null && dateEnd != null && placeID != null && description != null && owner != null && eventType != null;
 	}
 	
 }
