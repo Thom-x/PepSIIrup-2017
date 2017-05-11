@@ -1,11 +1,9 @@
 package com.service.client;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.util.Map;
 
-import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -15,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-import com.modele.Comment;
 
 import serilogj.Log;
 import serilogj.LoggerConfiguration;
@@ -47,7 +43,7 @@ public class WebCommentController {
 			.writeTo(new SeqSink(Constants.getINSTANCE().getLogserverAddr(), Constants.getINSTANCE().getLogserverApikey(), null, Duration.ofSeconds(2), null, levelswitch))	
 					.createLogger());
 	}
-	
+
 	/**
 	 * Method to get Comment by Event with RabbitMq
 	 * @param id
@@ -78,15 +74,11 @@ public class WebCommentController {
 	 * @return
 	 */
     @RequestMapping("/getResponseList")
-    public String getResponseList(@RequestParam(value="id", defaultValue="1") String id){
-		Log
-		.forContext("MemberName", "getResponseList")
-		.forContext("Service", appName)
-		.forContext("id", id)
-		.information("Request : getResponseList");
+    public String getResponseList(@RequestParam(value="commentId", defaultValue="1") String commentId,@RequestParam(value="eventId", defaultValue="1") String eventId){
+
     	String response = "";
     	try {
-			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE),"getResponseList");
+			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange((eventId+":"+commentId).getBytes(ENCODE),"getResponseList");
 		} catch (UnsupportedEncodingException e) {
 			Log
 			.forContext("MemberName", "getResponseList")
@@ -96,7 +88,8 @@ public class WebCommentController {
 		Log
 		.forContext("MemberName", "getResponseList")
 		.forContext("Service", appName)
-		.forContext("id", id)
+		.forContext("commentId", commentId)
+		.forContext("eventId", eventId)
 		.information("Request : getResponseList");
     	return response;
     }
@@ -105,31 +98,15 @@ public class WebCommentController {
 	 * Method to save an comment with RabbitMq
 	 * @param id
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping(value = "/saveComment",method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public String saveComment(@RequestParam Map<String, String> body){
+	public String saveComment(@RequestParam Map<String, String> body) throws UnsupportedEncodingException{
 		Log
 		.forContext("MemberName", "saveComment")
 		.forContext("Service", appName)
 		.forContext("comment", body.get("comment"))
 		.information("Request : saveEvent");
-		
-		ObjectMapper mapper = new ObjectMapper();
-		Comment comment = null;
-		try {
-			comment = mapper.readValue(body.get("comment"),Comment.class);
-		} catch (IOException e1) {
-			Log
-			.forContext("MemberName", "saveComment")
-			.forContext("Service", appName)
-			.error(e1," IOException");
-		}
-		Log
-		.forContext("MemberName", "saveComment")
-		.forContext("Service", appName)
-		.forContext("event", body.get("comment"))
-		.information("Request : saveComment");
-		
 		GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
 		if (idToken != null) {
 			Payload payload = idToken.getPayload();
@@ -144,7 +121,7 @@ public class WebCommentController {
 			.forContext("name", name)
 			.forContext("Service", appName)
 			.information("User Connection");		
-			new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(comment),"postComment");
+			new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(body.get("comment").getBytes(ENCODE),"postComment");
 			return "{\"response\":\"success\"}";
 		} else {
 			Log

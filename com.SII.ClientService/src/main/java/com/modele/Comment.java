@@ -56,7 +56,6 @@ public class Comment implements Serializable{
 		//JPA need empty constructor
 	}
 
-
 	public Comment(int commentId, int responseTo, String text, Date datePost, int eventId, int personId, Person person) {
 		super();
 		this.commentId = commentId;
@@ -67,7 +66,6 @@ public class Comment implements Serializable{
 		this.personId = personId;
 		this.person = person;
 	}
-
 
 	public int getCommentId() {
 		return commentId;
