@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.util.Map;
 
-import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,10 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.modele.Event;
-import com.modele.Review;
 
 import serilogj.Log;
 import serilogj.LoggerConfiguration;

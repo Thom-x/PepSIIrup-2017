@@ -88,18 +88,6 @@ public class WebParticipantController {
     	String review ="{\"PersonId\":"+person+",\"EventId\":"+event+",\"Rate\": null,\"Text\": null}" ;
     	GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
 		if (idToken != null) {
-			Payload payload = idToken.getPayload();
-			String userId = payload.getSubject();
-			String email = payload.getEmail();
-			String name = (String) payload.get("name");
-
-			Log
-			.forContext("id", body.get("tokenid"))
-			.forContext("email", email)
-			.forContext("userId", userId)
-			.forContext("name", name)
-			.forContext("Service", appName)
-			.information("User Connection");		
 			try {
 				res =  new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(review.getBytes(ENCODE),"addNewParticipant");
 			} catch (UnsupportedEncodingException e) {
