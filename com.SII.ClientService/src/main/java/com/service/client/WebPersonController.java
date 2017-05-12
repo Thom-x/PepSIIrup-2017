@@ -215,4 +215,24 @@ public class WebPersonController {
 		}		
 	}
 	
+	/**
+	 * Method to find all persons with RabbitMQ
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/get5Sec")
+	public String get5Sec(){
+		String response = "Born to be a #Fungenieur";
+		try {
+		    Thread.sleep(5000);                 
+		} catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
+		}
+		Log
+		.forContext("MemberName", "getAllPerson")
+		.forContext("Service", appName)
+		.information("Request : getAllPerson");
+		return response;
+	}
+	
 }

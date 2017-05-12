@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 
 import com.modele.Event;
 import com.modele.Person;
@@ -117,18 +116,6 @@ public class WebEventController {
 		
 		GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
 		if (idToken != null) {
-			Payload payload = idToken.getPayload();
-			String userId = payload.getSubject();
-			String email = payload.getEmail();
-			String name = (String) payload.get("name");
-
-			Log
-			.forContext("id", body.get("tokenid"))
-			.forContext("email", email)
-			.forContext("userId", userId)
-			.forContext("name", name)
-			.forContext("Service", appName)
-			.information("User Connection");		
 			new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(event),"saveEvent");
 			return "{\"response\":\"success\"}";
 		} else {

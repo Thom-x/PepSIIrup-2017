@@ -58,7 +58,7 @@ public class WebCommentController {
 			Log
 			.forContext("MemberName", "getCommentByEvent")
 			.forContext("Service", appName)
-			.error(e,"{date} UnsupportedEncodingException");
+			.error(e,"UnsupportedEncodingException");
 		}
 		Log
 		.forContext("MemberName", "getCommentByEvent")
@@ -101,7 +101,7 @@ public class WebCommentController {
 	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping(value = "/saveComment",method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public String saveComment(@RequestParam Map<String, String> body) throws UnsupportedEncodingException{
+	public String saveComment(@RequestParam Map<String, String> body){
 		Log
 		.forContext("MemberName", "saveComment")
 		.forContext("Service", appName)
@@ -121,7 +121,14 @@ public class WebCommentController {
 			.forContext("name", name)
 			.forContext("Service", appName)
 			.information("User Connection");		
-			new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(body.get("comment").getBytes(ENCODE),"postComment");
+			try {
+				new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(body.get("comment").getBytes(ENCODE),"postComment");
+			} catch (UnsupportedEncodingException e) {
+				Log
+				.forContext("MemberName", "saveComment")
+				.forContext("Service", appName)
+				.error(e," UnsupportedEncodingException");
+			}
 			return "{\"response\":\"success\"}";
 		} else {
 			Log
@@ -131,27 +138,5 @@ public class WebCommentController {
 		}		
 		
 	}
-	
-	/**
-	 * Method to save an comment with RabbitMq
-	 * @param id
-	 * @return
-	 * @throws UnsupportedEncodingException 
-	 */
-	@RequestMapping(value = "/saveCommentG",method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public String saveCommentG(@RequestParam Map<String, String> body) throws UnsupportedEncodingException{
-		Log
-		.forContext("MemberName", "saveComment")
-		.forContext("Service", appName)
-		.forContext("comment", body.get("comment"))
-		.information("Request : saveEvent");
-		Log
-		.forContext("MemberName", "saveComment")
-		.forContext("Service", appName)
-		.forContext("event", body.get("comment"))
-		.information("Request : saveComment");
-		new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(body.get("comment").getBytes(ENCODE),"postComment");
-		return "{\"response\":\"success\"}";
-	}
-        
+	       
 }
