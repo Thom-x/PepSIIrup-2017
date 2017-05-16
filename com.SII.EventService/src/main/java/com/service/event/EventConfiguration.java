@@ -73,6 +73,17 @@ public class EventConfiguration {
 	}
 	
 	@Bean
+	public Queue searchEventByNameQueue() {
+		return new AnonymousQueue();
+	}
+
+	@Bean
+	public Queue getUpcommingEventsQueue() {
+		return new AnonymousQueue();
+	}
+
+	
+	@Bean
 	public Binding binding1(DirectExchange direct, Queue saveEventQueue) {
 		return BindingBuilder.bind(saveEventQueue).to(direct).with("saveEvent");
 	}
@@ -101,5 +112,16 @@ public class EventConfiguration {
 	public Binding binding6(DirectExchange direct, Queue getAllEventTypeQueue) {
 		return BindingBuilder.bind(getAllEventTypeQueue()).to(direct).with("getAllEventType");
 	}
+	
+	@Bean
+	public Binding binding7(DirectExchange direct, Queue searchEventByNameQueue) {
+		return BindingBuilder.bind(searchEventByNameQueue()).to(direct).with("searchEventByName");
+	}
 
+	@Bean
+	public Binding binding8(DirectExchange direct, Queue getUpcommingEventsQueue) {
+		return BindingBuilder.bind(getUpcommingEventsQueue()).to(direct).with("getUpcommingEvents");
+	}
+
+	
 }
