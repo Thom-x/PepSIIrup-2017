@@ -2,13 +2,19 @@ package com.service.event;
 
 import java.io.UnsupportedEncodingException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +24,7 @@ import com.modele.Event;
 import com.modele.EventType;
 import com.modele.Person;
 
+import me.xdrop.fuzzywuzzy.FuzzySearch;
 import serilogj.Log;
 import serilogj.LoggerConfiguration;
 import serilogj.core.LoggingLevelSwitch;
@@ -119,7 +126,6 @@ public class EventController {
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.writeValueAsString(res);
 	}
-	
 
 	/**
 	 * method to get an event by his place
@@ -196,5 +202,100 @@ public class EventController {
 		}
 		return res;
 	}
+	
+	/**
+	 * method to search events by name/description/owner using fuzzi distance
+	 * @param name
+	 * @return
+	 */
+	@RabbitListener(queues = "#{searchEventByNameQueue.name}")
+	public String searchEventByName(byte[] name){
+		String res = "";
+		List<Event> events = null;
+		List<Event> resEvents = new ArrayList<Event>() ;
+		SortedMap<Integer, ArrayList<Event>> ev = new TreeMap<Integer,  ArrayList<Event>>();
+		try {
+			Log
+			.forContext("MemberName", "searchEventByName")
+			.forContext("Service", appName)
+			.forContext("name",new String(name, ENCODE))
+			.information("RabbitMQ : searchEventByName");
+		} catch (UnsupportedEncodingException e2) {
+			Log
+			.forContext("MemberName", "searchEventByName")
+			.forContext("Service", appName)
+			.error(e2,"UnsupportedEncodingException");
+		}
+		events = repository.findAll();
+		
+		for (Event e : events){
+			try {
+				int fuzzyName =FuzzySearch.tokenSetPartialRatio(e.getName(),new String(name, ENCODE));
+				int fuzzyDescr =FuzzySearch.tokenSetPartialRatio(e.getDescription(),new String(name, ENCODE));
+				int fuzzyOwner =FuzzySearch.tokenSetPartialRatio(e.getOwner().getPseudo(),new String(name, ENCODE));
+				if (fuzzyName>70 || fuzzyDescr>80 || fuzzyOwner>90){
+					int key = Math.max(Math.max(fuzzyName,fuzzyDescr),fuzzyOwner);
+					List<Event> itemsList = ev.get(key);
+					if(itemsList == null) {
+					      itemsList = new ArrayList<Event>();
+					      itemsList.add(e);
+					      ev.put(key, (ArrayList<Event>) itemsList);
+					}
+					else{
+						 itemsList.add(e);
+					 }
+				}
+			} catch (UnsupportedEncodingException e1) {
+				Log
+				.forContext("MemberName", "searchEventByName")
+				.forContext("Service", appName)
+				.error(e1,"UnsupportedEncodingException");
+			}
+		}
+		for(int i : ev.keySet()){
+			for( Event eventToSend : ev.get(i)){
+				resEvents.add(eventToSend);
+			}
+		}
+		Collections.reverse(resEvents);
+		ObjectMapper mapper = new ObjectMapper();
+		Log
+		.forContext("MemberName", "searchEventByName")
+		.forContext("Service", appName)
+		.information("RabbitMQ : searchEventByName");
+		try {
+			res = mapper.writeValueAsString(resEvents);
+		} catch (JsonProcessingException e1) {
+			Log
+			.forContext("MemberName", "searchEventByName")
+			.forContext("Service", appName)
+			.error(e1,"JsonProcessingException");
+		}
+		return res;
+	}
+	
+
+	/**
+	 * method to get all upcomming events
+	 * @param id
+	 * @return
+	 * @throws JsonProcessingException
+	 * @throws UnsupportedEncodingException 
+	 * @throws NumberFormatException 
+	 */
+	@RabbitListener(queues = "#{getUpcommingEventsQueue.name}")
+	public String getUpcommingEvents(byte[] id) throws JsonProcessingException, NumberFormatException, UnsupportedEncodingException{
+		String res = "";
+		int num = Integer.parseInt(new String(id, ENCODE));
+		Pageable p = new PageRequest(0,num);
+		List<Event> events = repository.getUpcommingEvents(new Date(), p);
+		Log
+		.forContext("MemberName", "getUpcommingEvents")
+		.forContext("Service", appName)
+		.information("RabbitMQ : getUpcommingEvents");
+		ObjectMapper mapper = new ObjectMapper();
+		res = mapper.writeValueAsString(events);
+		return res;
+	}	
 	
 }

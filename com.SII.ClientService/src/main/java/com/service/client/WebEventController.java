@@ -33,6 +33,7 @@ import serilogj.sinks.seq.SeqSink;
  * @author Dorian Coqueron & Pierre Gaultier
  * @version 1.0
  */
+
 @RestController
 @Component
 @CrossOrigin
@@ -170,6 +171,57 @@ public class WebEventController {
 		.forContext("MemberName", "getAllEventType")
 		.forContext("Service", appName)
 		.information("Request : getAllEventType");
+		return response;
+	}
+	
+	/**
+	 * Method to search Events by name with RabbitMq
+	 * @param name
+	 * @return
+	 */
+	@RequestMapping("/searchEventByName")
+	public String searchEventByName(@RequestParam(value="name", defaultValue="foot") String name){
+		String response ="";
+		try {
+			Log
+			.forContext("MemberName", "searchEventByName")
+			.forContext("Service", appName)
+			.forContext("Name", name)
+			.information("Request : searchEventByName");
+			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(name.getBytes(ENCODE), "searchEventByName");
+		} catch (UnsupportedEncodingException e) {
+			Log
+			.forContext("MemberName", "getAllEventType")
+			.forContext("Service", appName)
+			.error(e," searchEventByName");
+		}
+		Log
+		.forContext("MemberName", "searchEventByName")
+		.forContext("Service", appName)
+		.information("Request : searchEventByName");
+		return response;
+	}	
+	
+	/**
+	 * Method to find all Events with RabbitMq
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getUpcommingEvents")
+	public String getUpcommingEvents(@RequestParam(value="id", defaultValue="10") String id){
+		String response ="";
+		try {
+			response = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(id.getBytes(ENCODE), "getUpcommingEvents");
+		} catch (UnsupportedEncodingException e) {
+			Log
+			.forContext("MemberName", "getUpcommingEvents")
+			.forContext("Service", appName)
+			.error(e," UnsupportedEncodingException");
+		}
+		Log
+		.forContext("MemberName", "getUpcommingEvents")
+		.forContext("Service", appName)
+		.information("Request : getUpcommingEvents");
 		return response;
 	}
 	

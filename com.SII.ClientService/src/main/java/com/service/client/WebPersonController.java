@@ -167,7 +167,6 @@ public class WebPersonController {
 			.information("Invalid Token");
 			return "{\"response\":\"error\"}";
 		}
-
 	}
 
 	/**
