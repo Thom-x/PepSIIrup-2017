@@ -31,15 +31,9 @@ public class PersonConfiguration {
 			    return connectionFactory;
 	}
 		
-
 	@Bean
 	public DirectExchange direct() {
 		return new DirectExchange("exc.person");
-	}
-
-	@Bean
-	public PersonServer server() {
-		return new PersonServer();
 	}
 
 	@Bean

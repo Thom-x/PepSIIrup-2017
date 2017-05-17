@@ -31,16 +31,11 @@ public class EventConfiguration {
 	    return connectionFactory;
 	}
 		
-	
 	@Bean
 	public DirectExchange direct() {
 		return new DirectExchange("exc.event");
 	}
 
-	@Bean
-	public EventServer server() {
-		return new EventServer();
-	}
 	
 	@Bean
 	public Queue saveEventQueue() {

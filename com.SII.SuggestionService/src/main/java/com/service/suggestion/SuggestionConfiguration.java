@@ -37,11 +37,6 @@ public class SuggestionConfiguration {
 	public DirectExchange direct() {
 		return new DirectExchange("exc.suggestion");
 	}
-
-	@Bean
-	public SuggestionServer server() {
-		return new SuggestionServer();
-	}
 	
 	@Bean
 	public Queue saveSuggestionQueue() {

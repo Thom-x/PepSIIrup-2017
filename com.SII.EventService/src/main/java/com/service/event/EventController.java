@@ -210,10 +210,10 @@ public class EventController {
 	 */
 	@RabbitListener(queues = "#{searchEventByNameQueue.name}")
 	public String searchEventByName(byte[] name){
-		String res = "";
+		String res = null;
 		List<Event> events = null;
-		List<Event> resEvents = new ArrayList<Event>() ;
-		SortedMap<Integer, ArrayList<Event>> ev = new TreeMap<Integer,  ArrayList<Event>>();
+		List<Event> resEvents = new ArrayList<>() ;
+		SortedMap<Integer, ArrayList<Event>> indexedEvents = new TreeMap<Integer,  ArrayList<Event>>();
 		try {
 			Log
 			.forContext("MemberName", "searchEventByName")
@@ -235,11 +235,11 @@ public class EventController {
 				int fuzzyOwner =FuzzySearch.tokenSetPartialRatio(e.getOwner().getPseudo(),new String(name, ENCODE));
 				if (fuzzyName>70 || fuzzyDescr>80 || fuzzyOwner>90){
 					int key = Math.max(Math.max(fuzzyName,fuzzyDescr),fuzzyOwner);
-					List<Event> itemsList = ev.get(key);
+					List<Event> itemsList = indexedEvents.get(key);
 					if(itemsList == null) {
-					      itemsList = new ArrayList<Event>();
+					      itemsList = new ArrayList<>();
 					      itemsList.add(e);
-					      ev.put(key, (ArrayList<Event>) itemsList);
+					      indexedEvents.put(key, (ArrayList<Event>) itemsList);
 					}
 					else{
 						 itemsList.add(e);
@@ -252,8 +252,8 @@ public class EventController {
 				.error(e1,"UnsupportedEncodingException");
 			}
 		}
-		for(int i : ev.keySet()){
-			for( Event eventToSend : ev.get(i)){
+		for(int i : indexedEvents.keySet()){
+			for( Event eventToSend : indexedEvents.get(i)){
 				resEvents.add(eventToSend);
 			}
 		}
@@ -284,9 +284,17 @@ public class EventController {
 	 * @throws NumberFormatException 
 	 */
 	@RabbitListener(queues = "#{getUpcommingEventsQueue.name}")
-	public String getUpcommingEvents(byte[] id) throws JsonProcessingException, NumberFormatException, UnsupportedEncodingException{
+	public String getUpcommingEvents(byte[] id){
 		String res = "";
-		int num = Integer.parseInt(new String(id, ENCODE));
+		int num = -1;
+		try {
+			num = Integer.parseInt(new String(id, ENCODE));
+		} catch (NumberFormatException | UnsupportedEncodingException e) {
+			Log
+			.forContext("MemberName", "getUpcommingEvents")
+			.forContext("Service", appName)
+			.error(e,"Exception");
+		}
 		Pageable p = new PageRequest(0,num);
 		List<Event> events = repository.getUpcommingEvents(new Date(), p);
 		Log
@@ -294,7 +302,14 @@ public class EventController {
 		.forContext("Service", appName)
 		.information("RabbitMQ : getUpcommingEvents");
 		ObjectMapper mapper = new ObjectMapper();
-		res = mapper.writeValueAsString(events);
+		try {
+			res = mapper.writeValueAsString(events);
+		} catch (JsonProcessingException e) {
+			Log
+			.forContext("MemberName", "getUpcommingEvents")
+			.forContext("Service", appName)
+			.error(e,"JsonProcessingException");
+		}
 		return res;
 	}	
 	
