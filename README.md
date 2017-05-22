@@ -24,11 +24,12 @@ mvn package
 
 Run the following script to start the app
 ```bash
-# build docker images and start them
-./docker-build.sh
+# Launch every services with its jar
+./java -jar com.sii.ClienService-1.1.0.RELEASE.jar
+# Or use docker to build image and lauch them
 ```
 # Usage
-The Rest client is up on port 80, and you can find others services at port 1111, port 2222 and port 3333
+The Rest client is up on port 80, you can find eureka dashboard at port 1111, and others services at port random free ports
 
 # License
 [MIT License](https://github.com/TraineeSIIp/PepSIIrup-2017/blob/master/LICENSE)
