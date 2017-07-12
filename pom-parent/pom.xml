@@ -69,7 +69,6 @@
     </build>
 
     <modules>
-        <module>../oauth-server</module>
         <module>../client</module>
         <module>../event</module>
         <module>../personne</module>
