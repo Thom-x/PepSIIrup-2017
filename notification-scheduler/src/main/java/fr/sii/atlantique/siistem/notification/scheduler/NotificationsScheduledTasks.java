@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import fr.sii.atlantique.siistem.sender.mail.model.Mail;
+import fr.sii.atlantique.siistem.notification.scheduler.model.Mail;
+import fr.sii.atlantique.siistem.notification.scheduler.model.SMS;
 
 @Component
 public class NotificationsScheduledTasks {
@@ -15,9 +16,13 @@ public class NotificationsScheduledTasks {
 	private static final Logger log = LoggerFactory.getLogger(NotificationsScheduledTasks.class);
 
 	private String msg = "Notification passing through RabbitMQ";
-	private String from = "no-reply-nte@nantes.sii.fr";
-	private String to = "apena@sii.fr";
-	private String subject = "notification test";
+	private String mailFrom = "no-reply-nte@nantes.sii.fr";
+	private String mailTo = "apena@sii.fr";
+	private String mailSubject = "notification test";
+	private String smsTo = "0642081559";
+
+	private boolean mailNotif = true;
+	private boolean smsNotif = true;
 
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
@@ -26,7 +31,14 @@ public class NotificationsScheduledTasks {
 	public void readNotifications() {
 		log.info("Notifications : <" + msg + ">");
 
-		rabbitTemplate.convertAndSend(NotificationSchedulerApplication.mailQueueName, new Mail(from, to, subject, msg));
-		log.info("message sent.");
+		if (mailNotif) {
+			rabbitTemplate.convertAndSend(NotificationSchedulerApplication.mailQueueName,
+					new Mail(mailFrom, mailTo, mailSubject, msg));
+			log.info("mail notification sent.");
+		} else if (smsNotif) {
+			rabbitTemplate.convertAndSend(NotificationSchedulerApplication.smsQueueName, new SMS(smsTo, msg));
+			log.info("sms notification sent.");
+		}
+
 	}
 }

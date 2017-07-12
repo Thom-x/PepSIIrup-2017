@@ -1,4 +1,4 @@
-package fr.sii.atlantique.siistem.sender.mail.model;
+package fr.sii.atlantique.siistem.notification.scheduler.model;
 
 import java.io.Serializable;
 
