@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import java.io.Serializable;
 
 
+
 /**
  * Class Person, with JPA
  * @author Dorian Coqueron & Pierre Gaultier
@@ -34,6 +35,48 @@ public class Person implements Serializable{
 	@JsonProperty("PersonEmail")
 	private String personEmail;
 	
+	@JsonProperty("Phone")
+	private String personTelephone;
+	
+	@JsonProperty("MailNotif")
+	private Boolean mailNotif;
+	
+	@JsonProperty("TelNotif")
+	private Boolean telNotif;
+	
+	@JsonProperty("IDpreference")
+	private NotifPreference typeNotif;
+	
+	
+	
+	public Person(String pseudo, String job, String personTelephone ) {
+		this.pseudo = pseudo;
+		this.job = job;
+		this.personTelephone = personTelephone;
+	}
+
+	public Person(){
+		//JPA need empty constructor
+	} 
+	
+	
+
+	public Boolean getMailNotif() {
+		return mailNotif;
+	}
+
+	public void setMailNotif(Boolean mailNotif) {
+		this.mailNotif = mailNotif;
+	}
+
+	public Boolean getTelNotif() {
+		return telNotif;
+	}
+
+	public void setTelNotif(Boolean telNotif) {
+		this.telNotif = telNotif;
+	}
+
 	public int getPersonID(){
 		return this.personID;
 	}
@@ -82,13 +125,35 @@ public class Person implements Serializable{
 		this.personEmail = personEmail;
 	}
 
+
+	
+	public String getPersonTelephone() {
+		return personTelephone;
+	}
+
+	public void setPersonTelephone(String personTelephone) {
+		this.personTelephone = personTelephone;
+	}
+
+	public void setJob(String job) {
+		this.job = job;
+	}
+
+	public NotifPreference getTypeNotif() {
+		return typeNotif;
+	}
+
+	public void setTypeNotif(NotifPreference typeNotif) {
+		this.typeNotif = typeNotif;
+	}
+
 	@Override
 	public String toString() {
 		return "Person [personID=" + personID + ", pseudo=" + pseudo + ", lastName=" + lastName + ", firstName="
-				+ firstName + ", job=" + job + ", personEmail=" + personEmail + "]";
+				+ firstName + ", job=" + job + ", personEmail=" + personEmail + ", personTelephone=" + personTelephone
+				+ "]";
 	}
 
-	
 	public boolean checkPerson(){
 		return pseudo != null && job != null && lastName != null && personEmail != null;
 	}

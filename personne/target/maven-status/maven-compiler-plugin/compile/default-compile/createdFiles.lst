@@ -1,9 +1,0 @@
-fr\sii\atlantique\siistem\personne\model\Event.class
-fr\sii\atlantique\siistem\personne\service\PersonConfiguration.class
-fr\sii\atlantique\siistem\personne\model\EventType.class
-fr\sii\atlantique\siistem\personne\service\Constants.class
-fr\sii\atlantique\siistem\personne\model\Review.class
-fr\sii\atlantique\siistem\personne\service\PersonRepository.class
-fr\sii\atlantique\siistem\personne\model\Person.class
-fr\sii\atlantique\siistem\personne\PersonServer.class
-fr\sii\atlantique\siistem\personne\service\PersonController.class

@@ -17,8 +17,5 @@ eureka:
   instance:
     leaseRenewalIntervalInSeconds: 5   # DO NOT DO THIS IN PRODUCTION
     prefer-ip-address: true
-<<<<<<< HEAD:com.SII.PersonneService/src/main/resources/person-server.yml
-=======
     ip-address: 10.10.2.25
->>>>>>> cdef7b075f287a4a694d00f86b270a0245027f38:personne/src/main/resources/person-server.yml
     
