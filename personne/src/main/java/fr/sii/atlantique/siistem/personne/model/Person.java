@@ -50,6 +50,20 @@ public class Person implements Serializable{
 	@Column(name = "Phone") 
 	private String personTelephone;
 	
+	@JsonProperty("MailNotif")
+	@Column(name = "Mailnotif") 
+	private Boolean mailNotif;
+	
+	@JsonProperty("TelNotif")
+	@Column(name = "Telnotif") 
+	private Boolean telNotif;
+	
+	@JsonProperty("IDpreference")
+	@ManyToOne
+	@JoinColumn(name = "Idpreference")
+	private NotifPreference typeNotif;
+	
+	
 	public Person(String pseudo, String job, String personTelephone ) {
 		this.pseudo = pseudo;
 		this.job = job;
@@ -59,6 +73,23 @@ public class Person implements Serializable{
 	public Person(){
 		//JPA need empty constructor
 	} 
+	
+
+	public Boolean getMailNotif() {
+		return mailNotif;
+	}
+
+	public void setMailNotif(Boolean mailNotif) {
+		this.mailNotif = mailNotif;
+	}
+
+	public Boolean getTelNotif() {
+		return telNotif;
+	}
+
+	public void setTelNotif(Boolean telNotif) {
+		this.telNotif = telNotif;
+	}
 
 	public int getPersonID(){
 		return this.personID;
@@ -120,6 +151,14 @@ public class Person implements Serializable{
 
 	public void setJob(String job) {
 		this.job = job;
+	}
+
+	public NotifPreference getTypeNotif() {
+		return typeNotif;
+	}
+
+	public void setTypeNotif(NotifPreference typeNotif) {
+		this.typeNotif = typeNotif;
 	}
 
 	@Override
