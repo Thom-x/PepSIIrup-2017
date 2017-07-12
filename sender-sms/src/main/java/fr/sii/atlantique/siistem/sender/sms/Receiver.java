@@ -46,6 +46,7 @@ public class Receiver {
 	}
 
 	private void sendSms(SMS sms) throws UnsupportedEncodingException {
+		// TODO prévoir reception d'un SMS contenant une liste de numéro pour envoyer
 		final String smsDataMapped = MessageFormat.format(SERVICE_SMS_DATA, sms.getMessage(), sms.getTo());
 		final String strUrl = MessageFormat.format(SERVICE_URL, smsLogin, smsApikey, smsDataMapped);
 		log.info(strUrl);
