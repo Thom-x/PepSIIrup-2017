@@ -46,9 +46,14 @@ public class Person implements Serializable{
 	@Column(name = "Personemail") 
 	private String personEmail;
 	
-	public Person(String pseudo, String job) {
+	@JsonProperty("Phone")
+	@Column(name = "Phone") 
+	private String personTelephone;
+	
+	public Person(String pseudo, String job, String personTelephone ) {
 		this.pseudo = pseudo;
 		this.job = job;
+		this.personTelephone = personTelephone;
 	}
 
 	public Person(){
@@ -103,13 +108,27 @@ public class Person implements Serializable{
 		this.personEmail = personEmail;
 	}
 
+
+	
+	public String getPersonTelephone() {
+		return personTelephone;
+	}
+
+	public void setPersonTelephone(String personTelephone) {
+		this.personTelephone = personTelephone;
+	}
+
+	public void setJob(String job) {
+		this.job = job;
+	}
+
 	@Override
 	public String toString() {
 		return "Person [personID=" + personID + ", pseudo=" + pseudo + ", lastName=" + lastName + ", firstName="
-				+ firstName + ", job=" + job + ", personEmail=" + personEmail + "]";
+				+ firstName + ", job=" + job + ", personEmail=" + personEmail + ", personTelephone=" + personTelephone
+				+ "]";
 	}
 
-	
 	public boolean checkPerson(){
 		return pseudo != null && job != null && lastName != null && personEmail != null;
 	}
