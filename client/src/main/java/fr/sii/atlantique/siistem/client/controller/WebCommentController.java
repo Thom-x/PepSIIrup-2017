@@ -1,26 +1,23 @@
-package fr.sii.atlantique.siistem.client.service;
-
-import java.io.UnsupportedEncodingException;
-import java.time.Duration;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+package fr.sii.atlantique.siistem.client.controller;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-
+import fr.sii.atlantique.siistem.client.service.Constants;
+import fr.sii.atlantique.siistem.client.service.OauthTokenVerifier;
+import fr.sii.atlantique.siistem.client.service.RabbitClient;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 import serilogj.Log;
 import serilogj.LoggerConfiguration;
 import serilogj.core.LoggingLevelSwitch;
 import serilogj.events.LogEventLevel;
 import serilogj.sinks.seq.SeqSink;
+
+import java.io.UnsupportedEncodingException;
+import java.time.Duration;
+import java.util.Map;
 
 /**
  * Rest Controller to use Comment Service
@@ -40,7 +37,7 @@ public class WebCommentController {
 	public WebCommentController(){
 		LoggingLevelSwitch levelswitch = new LoggingLevelSwitch(LogEventLevel.Verbose);
 		Log.setLogger(new LoggerConfiguration()		
-			.writeTo(new SeqSink(Constants.getINSTANCE().getLogserverAddr(), Constants.getINSTANCE().getLogserverApikey(), null, Duration.ofSeconds(2), null, levelswitch))	
+			.writeTo(new SeqSink(Constants.getINSTANCE().getLogserverAddr(), Constants.getINSTANCE().getLogserverApikey(), null, Duration.ofSeconds(2), null, levelswitch))
 					.createLogger());
 	}
 
