@@ -10,7 +10,6 @@
 	</parent>
 
 	<artifactId>client</artifactId>
-	<packaging>pom</packaging>
 
 	<dependencies>
 		<dependency>

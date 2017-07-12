@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>register</artifactId>
-    <packaging>jar</packaging>
 
     <dependencies>
         <!-- spring libraries -->
