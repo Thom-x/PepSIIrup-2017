@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>oauth-server</artifactId>
-    
+
     <build>
         <plugins>
             <plugin>
