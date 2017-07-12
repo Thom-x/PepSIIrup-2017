@@ -1,9 +1,6 @@
 package fr.sii.atlantique.siistem.client.controller;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import fr.sii.atlantique.siistem.client.service.Constants;
-import fr.sii.atlantique.siistem.client.service.OauthTokenVerifier;
 import fr.sii.atlantique.siistem.client.service.RabbitClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -93,47 +90,24 @@ public class WebCommentController {
     
 	/**
 	 * Method to save an comment with RabbitMq
-	 * @param id
 	 * @return
-	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping(value = "/saveComment",method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public String saveComment(@RequestParam Map<String, String> body){
+	public String saveComment(@RequestParam Map<String, String> body) {
 		Log
 		.forContext("MemberName", "saveComment")
 		.forContext("Service", appName)
 		.forContext("comment", body.get("comment"))
 		.information("Request : saveEvent");
-		GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
-		if (idToken != null) {
-			Payload payload = idToken.getPayload();
-			String userId = payload.getSubject();
-			String email = payload.getEmail();
-			String name = (String) payload.get("name");
-
+		try {
+			new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(body.get("comment").getBytes(ENCODE),"postComment");
+		} catch (UnsupportedEncodingException e) {
 			Log
-			.forContext("id", body.get("tokenid"))
-			.forContext("email", email)
-			.forContext("userId", userId)
-			.forContext("name", name)
+			.forContext("MemberName", "saveComment")
 			.forContext("Service", appName)
-			.information("User Connection");		
-			try {
-				new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(body.get("comment").getBytes(ENCODE),"postComment");
-			} catch (UnsupportedEncodingException e) {
-				Log
-				.forContext("MemberName", "saveComment")
-				.forContext("Service", appName)
-				.error(e," UnsupportedEncodingException");
-			}
-			return "{\"response\":\"success\"}";
-		} else {
-			Log
-			.forContext("Service", appName)
-			.information("Invalid Token");
-			return "{\"response\":\"error\"}";
-		}		
-		
+			.error(e," UnsupportedEncodingException");
+		}
+		return "{\"response\":\"success\"}";
 	}
 	       
 }

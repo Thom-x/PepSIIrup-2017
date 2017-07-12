@@ -2,11 +2,8 @@ package fr.sii.atlantique.siistem.client.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import fr.sii.atlantique.siistem.client.model.Person;
 import fr.sii.atlantique.siistem.client.service.Constants;
-import fr.sii.atlantique.siistem.client.service.OauthTokenVerifier;
 import fr.sii.atlantique.siistem.client.service.RabbitClient;
 import org.springframework.amqp.utils.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -83,23 +80,15 @@ public class WebParticipantController {
     	String res = null;
     	
     	String review ="{\"PersonId\":"+person+",\"EventId\":"+event+",\"Rate\": null,\"Text\": null}" ;
-    	GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
-		if (idToken != null) {
-			try {
-				res =  new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(review.getBytes(ENCODE),"addNewParticipant");
-			} catch (UnsupportedEncodingException e) {
-				Log
-				.forContext("MemberName", "saveParticipant")
-				.forContext("Service", appName)
-				.error(e,"UnsupportedEncodingException");
-			}
-		} else {
+		try {
+			res =  new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(review.getBytes(ENCODE),"addNewParticipant");
+		} catch (UnsupportedEncodingException e) {
 			Log
+			.forContext("MemberName", "saveParticipant")
 			.forContext("Service", appName)
-			.information("Invalid Token");
-			return "{\"response\":\"error\"}";
+			.error(e,"UnsupportedEncodingException");
 		}
-		return res;		
+		return res;
     }
     
 	/**
@@ -115,36 +104,15 @@ public class WebParticipantController {
     	String review ="{\"PersonId\":"+person+",\"EventId\":"+event+",\"Rate\": null,\"Text\": null}" ;
     	String res = null;
 
-    	GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
-		if (idToken != null) {
-			Payload payload = idToken.getPayload();
-			String userId = payload.getSubject();
-			String email = payload.getEmail();
-			String name = (String) payload.get("name");
-
+		try {
+			res = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(review.getBytes(ENCODE),"cancelParticipation");
+		} catch (UnsupportedEncodingException e) {
 			Log
-			.forContext("id", body.get("tokenid"))
-			.forContext("email", email)
-			.forContext("userId", userId)
-			.forContext("name", name)
+			.forContext("MemberName", "registerPerson")
 			.forContext("Service", appName)
-			.information("User Connection");		
-			try {
-				res = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(review.getBytes(ENCODE),"cancelParticipation");
-			} catch (UnsupportedEncodingException e) {
-				Log
-				.forContext("MemberName", "registerPerson")
-				.forContext("Service", appName)
-				.error(e,"UnsupportedEncodingException");
-				}
-				return res;
-			} 
-			else {
-			Log
-			.forContext("Service", appName)
-			.information("Invalid Token");
-			return "{\"response\":\"error\"}";
-		}		
+			.error(e,"UnsupportedEncodingException");
+		}
+		return res;
     }
     
     

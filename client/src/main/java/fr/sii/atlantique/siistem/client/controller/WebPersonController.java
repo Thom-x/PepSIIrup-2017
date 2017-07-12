@@ -3,11 +3,8 @@ package fr.sii.atlantique.siistem.client.controller;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import fr.sii.atlantique.siistem.client.model.Person;
 import fr.sii.atlantique.siistem.client.service.Constants;
-import fr.sii.atlantique.siistem.client.service.OauthTokenVerifier;
 import fr.sii.atlantique.siistem.client.service.RabbitClient;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -122,51 +119,6 @@ public class WebPersonController {
 		return response;
 	}
 
-	@RequestMapping(value="/connect", method = RequestMethod.POST)
-	public String connect(@RequestParam Map<String, String> body ){
-		Log
-		.forContext("userId",body.get("tokenid"))
-		.forContext("Service", appName)
-		.information("User Connection");		
-		GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
-		if (idToken != null) {
-			Payload payload = idToken.getPayload();
-			// Print user identifier
-			String userId = payload.getSubject();
-			// Get profile information from payload
-			String email = payload.getEmail();
-			String name = (String) payload.get("name");
-			Log
-			.forContext("email", email)
-			.forContext("name", name)
-			.forContext("userId", userId)
-			.forContext("Service", appName)
-			.information("User Connection");
-
-			String p = null;
-			try {
-				p = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(email.getBytes("UTF-8"),"getPersonByEmail");
-			} catch (UnsupportedEncodingException e) {
-				Log
-				.forContext("MemberName", "getAllPerson")
-				.forContext("Service", appName)
-				.error(e,"UnsupportedEncodingException");
-			}
-			if(p != null){
-				return p;
-			}
-			else{
-				return "{\"response\":\"inscription\"}";
-			}			
-		} else {
-			Log
-			.forContext("Service", appName)
-			.forContext("Token",body.get("tokenid"))
-			.information("Invalid Token");
-			return "{\"response\":\"error\"}";
-		}
-	}
-
 	/**
 	 * Method to  add a person
 	 * @param pers
@@ -195,8 +147,7 @@ public class WebPersonController {
 			.forContext("Service", appName)
 			.error(e1,"IOException");
 		}
-		GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
-		if (idToken != null && pers != null) {
+		if (pers != null) {
 			Log
 			.forContext("FirstName", pers.getFirstName())
 			.forContext("LastName", pers.getLastName())

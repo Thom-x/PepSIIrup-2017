@@ -1,11 +1,9 @@
 package fr.sii.atlantique.siistem.client.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import fr.sii.atlantique.siistem.client.model.Event;
 import fr.sii.atlantique.siistem.client.model.Person;
 import fr.sii.atlantique.siistem.client.service.Constants;
-import fr.sii.atlantique.siistem.client.service.OauthTokenVerifier;
 import fr.sii.atlantique.siistem.client.service.RabbitClient;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -89,11 +87,10 @@ public class WebEventController {
 
 	/**
 	 * Method to save an event with RabbitMq
-	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "/saveEvent",method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public String updateEvent(@RequestParam Map<String, String> body){
+	@RequestMapping(value = "/saveEvent", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public String updateEvent(@RequestParam Map<String, String> body) {
 		ObjectMapper mapper = new ObjectMapper();
 		Event event = null;
 		try {
@@ -110,17 +107,9 @@ public class WebEventController {
 		.forContext("event", body.get("event"))
 		.information("Request : saveEvent");
 		
-		GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
-		if (idToken != null) {
-			new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(event),"saveEvent");
-			return "{\"response\":\"success\"}";
-		} else {
-			Log
-			.forContext("Service", appName)
-			.information("Invalid Token");
-			return "{\"response\":\"error\"}";
-		}		
-		
+		new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(event),"saveEvent");
+		return "{\"response\":\"success\"}";
+
 	}
 		
 	/**

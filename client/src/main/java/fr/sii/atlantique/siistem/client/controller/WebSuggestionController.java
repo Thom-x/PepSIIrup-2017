@@ -1,10 +1,8 @@
 package fr.sii.atlantique.siistem.client.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import fr.sii.atlantique.siistem.client.model.Suggestion;
 import fr.sii.atlantique.siistem.client.service.Constants;
-import fr.sii.atlantique.siistem.client.service.OauthTokenVerifier;
 import fr.sii.atlantique.siistem.client.service.RabbitClient;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,15 +64,6 @@ public class WebSuggestionController {
 		.forContext("suggestion", body.get("suggestion"))
 		.information("Request : saveSuggestion");
 		
-		GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
-		if (idToken != null) {
-			return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(suggestion),"saveSuggestion");
-		} else {
-			Log
-			.forContext("Service", appName)
-			.information("Invalid Token");
-			return "{\"response\":\"error\"}";
-		}		
-		
+		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(SerializationUtils.serialize(suggestion),"saveSuggestion");
 	}
 }

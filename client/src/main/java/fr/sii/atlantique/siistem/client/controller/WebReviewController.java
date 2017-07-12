@@ -2,9 +2,7 @@ package fr.sii.atlantique.siistem.client.controller;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import fr.sii.atlantique.siistem.client.service.Constants;
-import fr.sii.atlantique.siistem.client.service.OauthTokenVerifier;
 import fr.sii.atlantique.siistem.client.service.RabbitClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -76,33 +74,24 @@ public class WebReviewController {
 	public String addPerson(@RequestParam Map<String, String> body){
 		String review = body.get("review");
 		String res = null;
-		GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
-		if (idToken != null) {
+		Log
+		.forContext("person", review)
+		.forContext("MemberName", "updateReview")
+		.forContext("Service", appName)
+		.information("Request : updateReview");
+		try {
+			res =  new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(review.getBytes(ENCODE),"addReview");
+		} catch (UnsupportedEncodingException e) {
 			Log
-			.forContext("person", review)
-			.forContext("MemberName", "updateReview")
+			.forContext("MemberName", "saveParticipant")
 			.forContext("Service", appName)
-			.information("Request : updateReview");
-			try {
-				res =  new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(review.getBytes(ENCODE),"addReview");
-			} catch (UnsupportedEncodingException e) {
-				Log
-				.forContext("MemberName", "saveParticipant")
-				.forContext("Service", appName)
-				.error(e,"UnsupportedEncodingException");
-			}
-		} else {
-			Log
-			.forContext("Service", appName)
-			.information("Invalid Token");
-			return "{\"response\":\"error\"}";
+			.error(e,"UnsupportedEncodingException");
 		}
 		return res;
 	}
 
 	/**
 	 * Method to update a review with RabbitMQ
-	 * @param review
 	 * @return
 	 * @throws IOException 
 	 * @throws JsonMappingException 
@@ -110,22 +99,12 @@ public class WebReviewController {
 	 */
 	@RequestMapping(value = "/updateReview", method = RequestMethod.POST)
 	public String updateReview(@RequestParam Map<String, String> body) throws JsonParseException, JsonMappingException, IOException{
-		String res;
-		GoogleIdToken idToken = OauthTokenVerifier.checkGoogleToken(body.get("tokenid"));
-		if (idToken != null) {
 			Log
 			.forContext("person", body.get("review"))
 			.forContext("MemberName", "updateReview")
 			.forContext("Service", appName)
 			.information("Request : updateReview");
-				res = new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(body.get("review").getBytes(ENCODE),"updateReview");
-		} else {
-			Log
-			.forContext("Service", appName)
-			.information("Invalid Token");
-			return "{\"response\":\"error\"}";
-		}
-		return res;
+		return new RabbitClient(EXCHANGE).rabbitRPCRoutingKeyExchange(body.get("review").getBytes(ENCODE),"updateReview");
 	}
 
 }
