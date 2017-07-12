@@ -20,6 +20,9 @@ public class Person implements Serializable{
 	@JsonProperty("PersonId")
 	private int personID;
 
+	@JsonProperty("Password")
+	private String password;
+
 	@JsonProperty("Pseudo")
 	private String pseudo;
 	
@@ -83,6 +86,14 @@ public class Person implements Serializable{
 
 	public void setPersonID(int id){
 		this.personID = id;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getPseudo(){
