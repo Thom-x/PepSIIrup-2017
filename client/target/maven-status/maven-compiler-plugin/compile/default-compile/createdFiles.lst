@@ -1,0 +1,17 @@
+fr\sii\atlantique\siistem\client\model\Event.class
+fr\sii\atlantique\siistem\client\service\WebCommentController.class
+fr\sii\atlantique\siistem\client\model\Person.class
+fr\sii\atlantique\siistem\client\service\WebReviewController.class
+fr\sii\atlantique\siistem\client\WebServer.class
+fr\sii\atlantique\siistem\client\service\WebSuggestionController.class
+fr\sii\atlantique\siistem\client\model\Review.class
+fr\sii\atlantique\siistem\client\model\Comment.class
+fr\sii\atlantique\siistem\client\model\Suggestion.class
+fr\sii\atlantique\siistem\client\service\Constants.class
+fr\sii\atlantique\siistem\client\service\WebParticipantController.class
+fr\sii\atlantique\siistem\client\service\WebEventController.class
+fr\sii\atlantique\siistem\client\service\RabbitClient$1.class
+fr\sii\atlantique\siistem\client\service\WebPersonController.class
+fr\sii\atlantique\siistem\client\service\OauthTokenVerifier.class
+fr\sii\atlantique\siistem\client\service\RabbitClient.class
+fr\sii\atlantique\siistem\client\model\EventType.class

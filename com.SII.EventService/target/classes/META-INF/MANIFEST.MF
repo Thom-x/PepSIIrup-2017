@@ -1,0 +1,76 @@
+Manifest-Version: 1.0
+Implementation-Title: com.SII.EventService
+Implementation-Version: 1.1.0.RELEASE
+Built-By: pgaultier
+Implementation-Vendor-Id: stage
+Class-Path: spring-webmvc-4.2.6.RELEASE.jar spring-beans-4.2.6.RELEASE
+ .jar spring-context-4.2.6.RELEASE.jar spring-aop-4.2.6.RELEASE.jar ao
+ palliance-1.0.jar spring-core-4.2.6.RELEASE.jar spring-expression-4.2
+ .6.RELEASE.jar spring-web-4.2.6.RELEASE.jar jackson-databind-2.6.6.ja
+ r jackson-annotations-2.6.6.jar jackson-core-2.6.6.jar fuzzywuzzy-1.1
+ .7.jar hamcrest-library-1.3.jar spring-boot-starter-1.3.5.RELEASE.jar
+  spring-boot-1.3.5.RELEASE.jar spring-boot-autoconfigure-1.3.5.RELEAS
+ E.jar spring-boot-starter-logging-1.3.5.RELEASE.jar logback-classic-1
+ .1.7.jar logback-core-1.1.7.jar jul-to-slf4j-1.7.21.jar log4j-over-sl
+ f4j-1.7.21.jar snakeyaml-1.16.jar spring-boot-starter-web-1.3.5.RELEA
+ SE.jar spring-boot-starter-tomcat-1.3.5.RELEASE.jar tomcat-embed-core
+ -8.0.33.jar tomcat-embed-el-8.0.33.jar tomcat-embed-logging-juli-8.0.
+ 33.jar tomcat-embed-websocket-8.0.33.jar spring-boot-starter-validati
+ on-1.3.5.RELEASE.jar hibernate-validator-5.2.4.Final.jar validation-a
+ pi-1.1.0.Final.jar classmate-1.1.0.jar spring-data-commons-1.11.4.REL
+ EASE.jar slf4j-api-1.7.21.jar jcl-over-slf4j-1.7.21.jar spring-boot-s
+ tarter-test-1.3.5.RELEASE.jar hamcrest-core-1.3.jar spring-boot-start
+ er-data-jpa-1.3.5.RELEASE.jar spring-boot-starter-aop-1.3.5.RELEASE.j
+ ar aspectjweaver-1.8.9.jar spring-boot-starter-jdbc-1.3.5.RELEASE.jar
+  tomcat-jdbc-8.0.33.jar tomcat-juli-8.0.33.jar spring-jdbc-4.2.6.RELE
+ ASE.jar hibernate-entitymanager-4.3.11.Final.jar jboss-logging-3.3.0.
+ Final.jar jboss-logging-annotations-1.2.0.Beta1.jar hibernate-core-4.
+ 3.11.Final.jar antlr-2.7.7.jar jandex-1.1.0.Final.jar dom4j-1.6.1.jar
+  xml-apis-1.0.b2.jar hibernate-commons-annotations-4.0.5.Final.jar hi
+ bernate-jpa-2.1-api-1.0.0.Final.jar javassist-3.18.1-GA.jar javax.tra
+ nsaction-api-1.2.jar spring-data-jpa-1.9.4.RELEASE.jar spring-orm-4.2
+ .6.RELEASE.jar spring-tx-4.2.6.RELEASE.jar spring-aspects-4.2.6.RELEA
+ SE.jar hsqldb-2.3.3.jar sqljdbc42-4.2.jar serilogj-0.3.jar spring-clo
+ ud-starter-1.1.0.RELEASE.jar spring-cloud-context-1.1.0.RELEASE.jar s
+ pring-security-crypto-4.0.4.RELEASE.jar spring-cloud-commons-1.1.0.RE
+ LEASE.jar spring-security-rsa-1.0.1.RELEASE.jar bcpkix-jdk15on-1.47.j
+ ar bcprov-jdk15on-1.47.jar spring-cloud-starter-eureka-server-1.1.0.R
+ ELEASE.jar spring-cloud-netflix-eureka-server-1.1.0.RELEASE.jar sprin
+ g-boot-starter-actuator-1.3.5.RELEASE.jar spring-boot-actuator-1.3.5.
+ RELEASE.jar spring-boot-starter-freemarker-1.3.5.RELEASE.jar freemark
+ er-2.3.23.jar spring-context-support-4.2.6.RELEASE.jar spring-cloud-n
+ etflix-core-1.1.0.RELEASE.jar spring-cloud-netflix-eureka-client-1.1.
+ 0.RELEASE.jar eureka-client-1.4.6.jar jettison-1.3.7.jar stax-api-1.0
+ .1.jar netflix-eventbus-0.3.0.jar jsr311-api-1.1.1.jar servo-core-0.1
+ 0.1.jar servo-internal-0.10.1.jar jersey-core-1.19.1.jar jersey-clien
+ t-1.19.1.jar jersey-apache-client4-1.19.1.jar httpclient-4.5.2.jar ht
+ tpcore-4.4.4.jar commons-codec-1.9.jar guice-4.0.jar governator-api-1
+ .12.10.jar jersey-servlet-1.19.1.jar jersey-server-1.19.1.jar eureka-
+ core-1.4.6.jar aws-java-sdk-core-1.10.30.jar aws-java-sdk-ec2-1.10.30
+ .jar aws-java-sdk-autoscaling-1.9.3.jar aws-java-sdk-sts-1.9.3.jar aw
+ s-java-sdk-route53-1.9.3.jar governator-1.12.10.jar governator-core-1
+ .12.10.jar asm-5.0.4.jar woodstox-core-asl-4.4.1.jar stax-api-1.0-2.j
+ ar archaius-core-0.7.4.jar jsr305-3.0.1.jar javax.inject-1.jar jackso
+ n-dataformat-xml-2.6.6.jar jackson-module-jaxb-annotations-2.6.6.jar 
+ stax2-api-3.1.4.jar xstream-1.4.2.jar xmlpull-1.1.3.1.jar xpp3_min-1.
+ 1.4c.jar spring-cloud-starter-archaius-1.1.0.RELEASE.jar commons-conf
+ iguration-1.8.jar commons-lang-2.6.jar commons-logging-1.1.1.jar guav
+ a-18.0.jar spring-cloud-starter-ribbon-1.1.0.RELEASE.jar ribbon-2.1.5
+ .jar ribbon-transport-2.1.5.jar rxnetty-contexts-0.4.9.jar rxnetty-se
+ rvo-0.4.9.jar hystrix-core-1.5.2.jar HdrHistogram-2.1.7.jar rxnetty-0
+ .4.9.jar netty-codec-http-4.0.27.Final.jar netty-codec-4.0.27.Final.j
+ ar netty-handler-4.0.27.Final.jar netty-transport-native-epoll-4.0.27
+ .Final.jar netty-common-4.0.27.Final.jar netty-buffer-4.0.27.Final.ja
+ r netty-transport-4.0.27.Final.jar ribbon-core-2.1.5.jar ribbon-httpc
+ lient-2.1.5.jar commons-collections-3.2.2.jar netflix-commons-util-0.
+ 1.1.jar ribbon-loadbalancer-2.1.5.jar netflix-statistics-0.1.1.jar rx
+ java-1.1.5.jar ribbon-eureka-2.1.5.jar spring-boot-starter-amqp-1.3.5
+ .RELEASE.jar spring-messaging-4.2.6.RELEASE.jar spring-rabbit-1.5.6.R
+ ELEASE.jar spring-amqp-1.5.6.RELEASE.jar spring-retry-1.1.2.RELEASE.j
+ ar http-client-1.0.0.RELEASE.jar amqp-client-3.5.7.jar boon-json-0.6.
+ 6.jar boon-reflekt-0.6.6.jar boon-util-0.6.6.jar reflekt-0.5.0.jar
+Build-Jdk: 1.8.0_131
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+Main-Class: com.service.event.EventServer
+

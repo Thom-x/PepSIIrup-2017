@@ -1,0 +1,120 @@
+package fr.sii.atlantique.siistem.event.service;
+
+import org.springframework.amqp.core.AnonymousQueue;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * Configuration of the Event Service
+ * @author Dorian Coqueron & Pierre Gaultier
+ * @version 1.0
+ */
+@Configuration
+@ComponentScan
+public class EventConfiguration {
+	
+	@Bean
+	public ConnectionFactory connectionFactory() {	
+	    CachingConnectionFactory connectionFactory =
+	        new CachingConnectionFactory(Constants.getINSTANCE().getRabbitmqserverAddr());
+    		connectionFactory.setUsername(Constants.getINSTANCE().getRabbitmqUsername());
+    		connectionFactory.setPassword(Constants.getINSTANCE().getRabbitmqPassword());
+	    return connectionFactory;
+	}
+		
+	@Bean
+	public DirectExchange direct() {
+		return new DirectExchange("exc.event");
+	}
+
+	
+	@Bean
+	public Queue saveEventQueue() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
+	public Queue findByOwnerQueue() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
+	public Queue getEventByPlaceQueue() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
+	public Queue getEventsByPersonQueue() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
+	public Queue getAllEventQueue() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
+	public Queue getAllEventTypeQueue() {
+		return new AnonymousQueue();
+	}
+	
+	@Bean
+	public Queue searchEventByNameQueue() {
+		return new AnonymousQueue();
+	}
+
+	@Bean
+	public Queue getUpcommingEventsQueue() {
+		return new AnonymousQueue();
+	}
+
+	
+	@Bean
+	public Binding binding1(DirectExchange direct, Queue saveEventQueue) {
+		return BindingBuilder.bind(saveEventQueue).to(direct).with("saveEvent");
+	}
+	
+	@Bean
+	public Binding binding2(DirectExchange direct, Queue findByOwnerQueue) {
+		return BindingBuilder.bind(findByOwnerQueue).to(direct).with("findByOwner");
+	}
+	
+	@Bean
+	public Binding binding3(DirectExchange direct, Queue getEventsByPersonQueue) {
+		return BindingBuilder.bind(getEventsByPersonQueue).to(direct).with("getEventsByPerson");
+	}
+	
+	@Bean
+	public Binding binding4(DirectExchange direct, Queue getEventByPlaceQueue) {
+		return BindingBuilder.bind(getEventByPlaceQueue).to(direct).with("getEventByPlace");
+	}
+	
+	@Bean
+	public Binding binding5(DirectExchange direct, Queue getAllEventQueue) {
+		return BindingBuilder.bind(getAllEventQueue).to(direct).with("getAllEvent");
+	}
+	
+	@Bean
+	public Binding binding6(DirectExchange direct, Queue getAllEventTypeQueue) {
+		return BindingBuilder.bind(getAllEventTypeQueue()).to(direct).with("getAllEventType");
+	}
+	
+	@Bean
+	public Binding binding7(DirectExchange direct, Queue searchEventByNameQueue) {
+		return BindingBuilder.bind(searchEventByNameQueue()).to(direct).with("searchEventByName");
+	}
+
+	@Bean
+	public Binding binding8(DirectExchange direct, Queue getUpcommingEventsQueue) {
+		return BindingBuilder.bind(getUpcommingEventsQueue()).to(direct).with("getUpcommingEvents");
+	}
+
+	
+}
