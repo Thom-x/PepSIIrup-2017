@@ -1,0 +1,14 @@
+spring:
+  application:
+     name: personne-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/SIISTEM_PERSON
+
+server:
+  port: 8181
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka/
