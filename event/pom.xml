@@ -33,6 +33,21 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.lightbend.akka</groupId>
+			<artifactId>akka-stream-alpakka-amqp_2.12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-stream_2.11</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>fr.sii.atlantique.siistem</groupId>
+			<artifactId>messaging</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
