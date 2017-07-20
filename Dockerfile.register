@@ -1,0 +1,15 @@
+FROM maven as builder
+
+COPY . /tmp/app/
+
+WORKDIR /tmp/app/register
+
+RUN mvn clean package
+
+FROM java
+
+WORKDIR /opt/sii/
+COPY --from=builder /tmp/app/register/target/*.jar ./app.jar
+
+EXPOSE 1111
+CMD ["java","-jar","app.jar"]
