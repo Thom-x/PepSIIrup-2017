@@ -46,6 +46,8 @@
 			<groupId>serilogj</groupId>
 			<artifactId>serilogj</artifactId>
 			<version>0.3</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/../lib/serilogj.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -60,6 +62,9 @@
       		<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
