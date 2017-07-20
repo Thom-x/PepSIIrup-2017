@@ -1,15 +1,17 @@
 package fr.sii.atlantique.siistem.event.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Data
 public class Comment {
 
+    @Id
     @JsonProperty("CommentId")
     private String id;
 
@@ -17,7 +19,6 @@ public class Comment {
     private String text;
 
     @JsonProperty("DatePost")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="CET")
     private Date datePost;
 
     @JsonProperty("Person")

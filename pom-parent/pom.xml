@@ -77,10 +77,10 @@
     </build>
 
     <modules>
+        <module>../register</module>
         <module>../client</module>
         <module>../event</module>
         <module>../personne</module>
-        <module>../register</module>
         <module>../messaging</module>
     </modules>
 </project>

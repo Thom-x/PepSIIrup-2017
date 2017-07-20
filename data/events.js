@@ -9,14 +9,14 @@
       "image":"1",
       "canceled":false,
       "owner":{  
-         "_id":"1",
+         "_id":"1"
       },
       "eventType":{  
          "_id":"2",
          "label":"AfterWork"
       },
 	  "comments":[{
-		  "id":"1",
+		  "_id":"1",
 		  "text":"Bisous",
 		  "datePost": new Date("2017-06-19T12:00:00Z"),
 		  "person": {
@@ -42,7 +42,7 @@ db.events.insert(
       "image":"2",
       "canceled":false,
       "owner":{  
-         "_id":"2",
+         "_id":"2"
       },
       "eventType":{  
          "_id":"3",

@@ -1,6 +1,5 @@
 package fr.sii.atlantique.siistem.event.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -13,12 +12,10 @@ import java.util.List;
 
 @Data
 @Document(collection = "events")
-public class Event {
-	
-	private static final long serialVersionUID = 1L;
+public class Event implements Serializable {
 
-	@JsonProperty("EventId")
 	@Id
+	@JsonProperty("EventId")
 	private String id;
 	
 	@JsonProperty("Name")
@@ -26,11 +23,9 @@ public class Event {
 	private String name;
 	
 	@JsonProperty("DateStart")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="CET")
 	private Date dateStart;
 	
 	@JsonProperty("DateEnd")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="CET")
 	private Date dateEnd;
 	
 	@JsonProperty("PlaceId")

@@ -4,6 +4,10 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/SIISTEM_PERSON
+  jackson:
+    date-format: yyyy-MM-dd HH:mm
+    time-zone: CET
+    default-property-inclusion: non_empty
 
 server:
   port: 8181
