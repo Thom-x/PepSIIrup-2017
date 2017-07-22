@@ -1,15 +1,14 @@
 FROM maven as builder
 
-COPY . /tmp/app/
-
-WORKDIR /tmp/app/register
-
-RUN mvn clean package
+ADD . /tmp/app/
+WORKDIR /tmp/app/pom-parent
+RUN mvn clean install
 
 FROM java
 
 WORKDIR /opt/sii/
 COPY --from=builder /tmp/app/register/target/*.jar ./app.jar
+COPY --from=builder /tmp/app/docker/application-register.yml ./application.yml
 
 EXPOSE 1111
 CMD ["java","-jar","app.jar"]

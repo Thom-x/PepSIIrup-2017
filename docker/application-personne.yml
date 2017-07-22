@@ -1,0 +1,18 @@
+spring:
+  application:
+     name: personne-service
+  data:
+    mongodb:
+      uri: mongodb://mongo:27017/SIISTEM_PERSON
+  jackson:
+    date-format: yyyy-MM-dd HH:mm
+    time-zone: CET
+    default-property-inclusion: non_empty
+
+server:
+  port: 8181
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://register:1111/eureka/

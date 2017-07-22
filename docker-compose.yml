@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile.client
     image: pepsiirup-client:latest
     ports:
-      - "4949:80"
+      - "4949:8080"
     depends_on:
      - register
   event:
@@ -16,6 +16,7 @@ services:
     image: pepsiirup-event:latest
     depends_on:
      - register
+     - mongo
   personne:
     build:
       context: .
@@ -23,11 +24,14 @@ services:
     image: pepsiirup-personne:latest
     depends_on:
      - register
+     - mongo
   register:
     build:
       context: .
       dockerfile: Dockerfile.register
     image: pepsiirup-register:latest
+    ports:
+      - "4950:1111"
   rabbitmq:
     image: rabbitmq
   mongo:

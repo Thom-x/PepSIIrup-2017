@@ -56,13 +56,6 @@
         </dependency>
 
         <dependency>
-            <!-- Serilog -->
-            <groupId>serilogj</groupId>
-            <artifactId>serilogj</artifactId>
-            <version>0.3</version>
-        </dependency>
-
-        <dependency>
             <!-- Spring Cloud starter -->
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
