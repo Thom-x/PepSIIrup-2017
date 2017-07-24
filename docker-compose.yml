@@ -33,6 +33,6 @@ services:
     ports:
       - "4950:1111"
   rabbitmq:
-    image: rabbitmq
+    image: rabbitmq:alpine
   mongo:
     image: mongo

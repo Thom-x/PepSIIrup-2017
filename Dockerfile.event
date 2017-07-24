@@ -1,10 +1,10 @@
-FROM maven as builder
+FROM maven:alpine as builder
 
 ADD . /tmp/app/
 WORKDIR /tmp/app/pom-parent
 RUN mvn clean install
 
-FROM java
+FROM java:alpine
 
 WORKDIR /opt/sii/
 COPY --from=builder /tmp/app/event/target/*.jar ./app.jar
